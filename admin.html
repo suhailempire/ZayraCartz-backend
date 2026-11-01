@@ -5,16 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ZayraCartz Operations Console</title>
   <style>
-    :root { --charcoal: #1C1C1C; --gold: #C5A880; --border: #DDD; }
+    :root { --charcoal: #1C1C1C; --gold: #C5A880; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #F4F6F8; color: #1C1C1C; padding-bottom: 50px; }
     .topbar { background: var(--charcoal); color: #FFF; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
-    .topbar h1 { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+    .topbar h1 { font-size: 16px; font-weight: 700; }
     .topbar h1 span { color: var(--gold); }
-    .btn { background: var(--charcoal); color: #FFF; border: none; padding: 10px 16px; font-size: 13px; font-weight: 700; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
-    .btn-secondary { background: #666; }
+    .btn { background: var(--charcoal); color: #FFF; border: none; padding: 10px 14px; font-size: 12px; font-weight: 700; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
     .container { max-width: 900px; margin: 15px auto; padding: 0 14px; }
-    .card { background: #FFF; border-radius: 6px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border); }
+    .card { background: #FFF; border-radius: 6px; padding: 16px; margin-bottom: 16px; border: 1px solid #DDD; }
     h2 { font-size: 15px; margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid #EEE; padding-bottom: 6px; }
     .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
     @media (min-width: 600px) { .metrics-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -22,81 +21,69 @@
     .metric-box span { font-size: 11px; color: var(--gold); text-transform: uppercase; }
     .metric-box h3 { font-size: 20px; margin-top: 4px; }
     input, select, textarea { width: 100%; padding: 9px; margin: 4px 0 10px; border: 1px solid #CCC; border-radius: 4px; font-size: 13px; }
-    .variant-row { background: #F9F9F9; padding: 10px; border: 1px solid #E0E0E0; border-radius: 4px; margin-bottom: 8px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th, td { text-align: left; padding: 10px; border-bottom: 1px solid #EEE; }
   </style>
 </head>
 <body>
 
-  <!-- Authentication Guard View -->
   <div id="authScreen" class="container" style="margin-top: 50px;">
     <div class="card" style="max-width: 380px; margin: 0 auto;">
-      <h2>Operator Sign In</h2>
+      <h2>Admin Sign In</h2>
       <input type="email" id="loginEmail" placeholder="Email (zayracarts@gmail.com)">
       <input type="password" id="loginPass" placeholder="Password (ZayraAdmin@2026)">
       <button class="btn" style="width:100%;" onclick="login()">Enter Console</button>
     </div>
   </div>
 
-  <!-- Operational Dashboard View -->
   <div id="dashScreen" style="display:none;">
     <div class="topbar">
       <h1>ZAYRA<span>CARTZ</span> OPERATIONS CONSOLE</h1>
-      <button class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="logout()">Logout</button>
+      <button class="btn" style="background:#555; padding:4px 8px; font-size:11px;" onclick="logout()">Logout</button>
     </div>
 
     <div class="container">
-      <!-- Executive KPI Cards -->
       <div class="metrics-grid">
-        <div class="metric-box"><span>Gross Sales</span><h3 id="mRev">₹0</h3></div>
+        <div class="metric-box"><span>Verified Sales</span><h3 id="mRev">₹0</h3></div>
         <div class="metric-box"><span>Orders Placed</span><h3 id="mOrders">0</h3></div>
-        <div class="metric-box"><span>Completed</span><h3 id="mCompleted">0</h3></div>
-        <div class="metric-box"><span style="color:#e74c3c;">Low Stock Alert</span><h3 id="mStock" style="color:#e74c3c;">0</h3></div>
+        <div class="metric-box"><span>Live Products</span><h3 id="mProds">0</h3></div>
+        <div class="metric-box"><span style="color:#e74c3c;">Pending UTR</span><h3 id="mPendingUtr" style="color:#e74c3c;">0</h3></div>
       </div>
 
-      <!-- Multi-Variant Product Publishing -->
+      <!-- Add Product -->
       <div class="card">
-        <h2>Ingest Product & Variants</h2>
-        <input type="text" id="pTitle" placeholder="Product Title (e.g. Architect Oversized Tee)">
-        <input type="text" id="pSlug" placeholder="Unique Slug (e.g. architect-oversized-tee)">
+        <h2>+ Add Product (Fashion / Shoes / Perfume / Watch)</h2>
+        <input type="text" id="pTitle" placeholder="Product Title (e.g. Zayra Noir Perfume)">
+        <select id="pCat">
+          <option value="fashion">Fashion & Apparel</option>
+          <option value="shoes">Footwear & Sneakers</option>
+          <option value="fragrance">Perfumes & Scents</option>
+          <option value="watches">Watches & Accessories</option>
+        </select>
+        <div style="display:flex; gap:8px;">
+          <input type="number" id="pPrice" placeholder="Base Price in ₹ (e.g. 899)">
+          <input type="number" id="pMrp" placeholder="MRP in ₹ (e.g. 1499)">
+        </div>
+        <input type="text" id="pImg" placeholder="Image URL (Unsplash or hosted link)">
         <textarea id="pDesc" rows="2" placeholder="Product description..."></textarea>
         
-        <div style="display:flex; gap:8px;">
-          <input type="number" id="pBasePrice" placeholder="Base Price in ₹ (e.g. 899)">
-          <input type="number" id="pCatId" placeholder="Category ID (e.g. 1)">
-        </div>
-
-        <div style="font-size:12px; font-weight:700; margin:10px 0 6px;">Variant Breakdown:</div>
-        <div id="variantsContainer">
-          <div class="variant-row">
-            <div style="display:flex; gap:6px;">
-              <input type="text" placeholder="Title (e.g. 50 ml or XL)" class="v-title">
-              <input type="text" placeholder="SKU (e.g. ZC-01-XL)" class="v-sku">
-            </div>
-            <div style="display:flex; gap:6px;">
-              <input type="number" placeholder="Price in ₹" class="v-price">
-              <input type="number" placeholder="Stock Qty" class="v-stock">
-            </div>
-            <input type="text" placeholder="Image URL (Unsplash or CDN)" class="v-img">
-          </div>
-        </div>
-
-        <button class="btn btn-secondary" style="margin-bottom:12px; font-size:11px;" onclick="addVariantRow()">+ Add Another Variant</button>
-        <button class="btn" style="width:100%;" onclick="publishProduct()">Publish Product to Catalog</button>
+        <label style="font-size:11px; font-weight:700;">Variants JSON (e.g. 50ml/100ml with prices):</label>
+        <textarea id="pVariants" rows="2">[{"name":"50 ml","price":899,"mrp":1499},{"name":"100 ml","price":1499,"mrp":2499}]</textarea>
+        
+        <button class="btn" style="width:100%;" onclick="saveProduct()">Publish Product</button>
       </div>
 
-      <!-- Live Order Ledger -->
+      <!-- Orders Ledger with 1-Click UTR Verification -->
       <div class="card">
-        <h2>Recent Customer Orders</h2>
+        <h2>Orders & Bank UTR Verification</h2>
         <div style="overflow-x:auto;">
           <table>
             <thead>
               <tr>
                 <th>Order #</th>
-                <th>Customer</th>
-                <th>Amount</th>
-                <th>Status</th>
+                <th>Customer & Phone</th>
+                <th>UTR Number</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="ordersTable">Loading...</tbody>
@@ -113,137 +100,97 @@
     async function login() {
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPass').value.trim();
-
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
-
       const data = await res.json();
-      if (res.ok && ['owner', 'admin'].includes(data.user.role)) {
+      if (res.ok) {
         token = data.token;
         localStorage.setItem('zc_admin_jwt', token);
         loadDashboard();
-      } else {
-        alert(data.error || 'Authentication denied: Insufficient privileges.');
-      }
+      } else alert(data.error || 'Login failed');
     }
 
-    function logout() {
-      localStorage.removeItem('zc_admin_jwt');
-      location.reload();
-    }
+    function logout() { localStorage.removeItem('zc_admin_jwt'); location.reload(); }
 
     async function loadDashboard() {
       document.getElementById('authScreen').style.display = 'none';
       document.getElementById('dashScreen').style.display = 'block';
 
-      try {
-        const res = await fetch('/api/admin/metrics', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+      const mRes = await fetch('/api/admin/metrics', { headers: { 'Authorization': `Bearer ${token}` } });
+      if (!mRes.ok) return logout();
+      const m = await mRes.json();
+      document.getElementById('mRev').innerText = `₹${m.totalRevenue}`;
+      document.getElementById('mOrders').innerText = m.totalOrders;
+      document.getElementById('mProds').innerText = m.totalProducts;
+      document.getElementById('mPendingUtr').innerText = m.pendingUtrCount;
 
-        if (!res.ok) return logout();
+      const oRes = await fetch('/api/admin/orders', { headers: { 'Authorization': `Bearer ${token}` } });
+      const orders = await oRes.json();
+      const tbody = document.getElementById('ordersTable');
 
-        const data = await res.json();
-        document.getElementById('mRev').innerText = `₹${data.metrics.gross_sales_inr}`;
-        document.getElementById('mOrders').innerText = data.metrics.total_orders;
-        document.getElementById('mCompleted').innerText = data.metrics.completed_orders;
-        document.getElementById('mStock').innerText = data.metrics.low_stock_variants;
-
-        const tbody = document.getElementById('ordersTable');
-        if (data.recent_orders.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="4">No orders placed yet.</td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = data.recent_orders.map(o => `
-          <tr>
-            <td><b>${o.order_number}</b></td>
-            <td>${o.customer_name}<br><small>${o.customer_phone}</small></td>
-            <td>₹${(Number(o.total_amount_paise) / 100).toFixed(0)}</td>
-            <td><span style="color:${o.payment_status === 'PAID' ? 'green' : 'orange'}; font-weight:700;">${o.payment_status}</span></td>
-          </tr>
-        `).join('');
-      } catch (err) {
-        console.error('Dashboard load failed:', err);
+      if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">No orders placed yet.</td></tr>';
+        return;
       }
+
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td>
+            <b>${o.order_number}</b><br>
+            ₹${o.total_amount} (${o.payment_method})<br>
+            <small style="color:${o.payment_status === 'PAID' ? 'green' : 'orange'}">${o.payment_status}</small>
+          </td>
+          <td>
+            <b>${o.customer_name}</b><br>
+            <a href="https://wa.me/91${o.customer_phone}?text=Hi%20${o.customer_name}" target="_blank" style="color:green; text-decoration:none;">💬 ${o.customer_phone}</a><br>
+            <small>${o.shipping_address}</small>
+          </td>
+          <td>
+            <b>${o.utr_number || 'COD (No UTR)'}</b>
+          </td>
+          <td>
+            ${o.payment_status === 'AWAITING_VERIFICATION' ? `
+              <button class="btn" style="background:#27ae60; padding:4px 8px; font-size:11px;" onclick="verifyPay(${o.id}, 'APPROVE')">✓ Confirm</button>
+              <button class="btn" style="background:#e74c3c; padding:4px 8px; font-size:11px;" onclick="verifyPay(${o.id}, 'REJECT')">✕ Reject</button>
+            ` : (o.payment_status === 'PAID' ? '<span style="color:green; font-weight:700;">Verified</span>' : '<span style="color:red; font-weight:700;">Cancelled</span>')}
+          </td>
+        </tr>
+      `).join('');
     }
 
-    function addVariantRow() {
-      const box = document.getElementById('variantsContainer');
-      const div = document.createElement('div');
-      div.className = 'variant-row';
-      div.innerHTML = `
-        <div style="display:flex; gap:6px;">
-          <input type="text" placeholder="Title (e.g. 100 ml or XXL)" class="v-title">
-          <input type="text" placeholder="SKU" class="v-sku">
-        </div>
-        <div style="display:flex; gap:6px;">
-          <input type="number" placeholder="Price in ₹" class="v-price">
-          <input type="number" placeholder="Stock Qty" class="v-stock">
-        </div>
-        <input type="text" placeholder="Image URL" class="v-img">
-      `;
-      box.appendChild(div);
+    async function verifyPay(id, action) {
+      if (!confirm(action === 'APPROVE' ? "Confirm bank payment received?" : "Reject fake UTR?")) return;
+      await fetch(`/api/admin/orders/${id}/verify-pay`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ action })
+      });
+      loadDashboard();
     }
 
-    async function publishProduct() {
+    async function saveProduct() {
       const title = document.getElementById('pTitle').value.trim();
-      const slug = document.getElementById('pSlug').value.trim();
+      const category = document.getElementById('pCat').value;
+      const price = parseFloat(document.getElementById('pPrice').value);
+      const compare_price = parseFloat(document.getElementById('pMrp').value);
+      const img = document.getElementById('pImg').value.trim();
       const description = document.getElementById('pDesc').value.trim();
-      const basePriceInr = parseFloat(document.getElementById('pBasePrice').value);
-      const categoryId = parseInt(document.getElementById('pCatId').value, 10);
+      let variants = [];
+      try { variants = JSON.parse(document.getElementById('pVariants').value); } catch(e) {}
 
-      if (!title || !slug || isNaN(basePriceInr) || isNaN(categoryId)) {
-        return alert('Please fill in title, slug, price, and category.');
-      }
+      if (!title || isNaN(price)) return alert("Title and Price required!");
 
-      const variantRows = document.querySelectorAll('.variant-row');
-      const variants = [];
-
-      variantRows.forEach((r, idx) => {
-        const vTitle = r.querySelector('.v-title').value.trim() || `Option ${idx + 1}`;
-        const vSku = r.querySelector('.v-sku').value.trim() || `SKU-${Date.now()}-${idx}`;
-        const vPriceInr = parseFloat(r.querySelector('.v-price').value) || basePriceInr;
-        const vStock = parseInt(r.querySelector('.v-stock').value, 10) || 50;
-        const vImg = r.querySelector('.v-img').value.trim();
-
-        variants.push({
-          title: vTitle,
-          sku: vSku,
-          price_paise: Math.round(vPriceInr * 100), // Converted to integer paise
-          stock_quantity: vStock,
-          images: vImg ? [vImg] : []
-        });
-      });
-
-      const payload = {
-        title,
-        slug,
-        description,
-        category_id: categoryId,
-        base_price_paise: Math.round(basePriceInr * 100),
-        variants
-      };
-
-      const res = await fetch('/api/admin/products', {
+      await fetch('/api/admin/products', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ title, category, price, compare_price, images: img ? [img] : [], description, variants })
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        alert('Product with multi-variants published to live storefront!');
-        location.reload();
-      } else {
-        alert(`Error: ${data.error}`);
-      }
+      alert("Product published!");
+      location.reload();
     }
   </script>
 </body>
