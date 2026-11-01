@@ -2,308 +2,248 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZayraCartz Master Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ZayraCartz Operations Console</title>
   <style>
-    :root { --ivory: #FAF8F5; --charcoal: #1C1C1C; --gold: #C5A880; }
+    :root { --charcoal: #1C1C1C; --gold: #C5A880; --border: #DDD; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: #F4F6F8; color: #1C1C1C; padding-bottom: 60px; }
+    body { background: #F4F6F8; color: #1C1C1C; padding-bottom: 50px; }
     .topbar { background: var(--charcoal); color: #FFF; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
-    .topbar h1 { font-size: 17px; font-weight: 700; }
+    .topbar h1 { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
     .topbar h1 span { color: var(--gold); }
-    .logout-btn { background: #333; color: #FFF; border: 1px solid #555; padding: 6px 12px; font-size: 12px; border-radius: 4px; }
-    .tabs { display: flex; overflow-x: auto; background: #FFF; border-bottom: 1px solid #DDD; }
-    .tab-btn { padding: 13px 15px; border: none; background: none; font-size: 13px; font-weight: 600; cursor: pointer; color: #666; border-bottom: 3px solid transparent; white-space: nowrap; }
-    .tab-btn.active { color: var(--charcoal); border-color: var(--gold); }
+    .btn { background: var(--charcoal); color: #FFF; border: none; padding: 10px 16px; font-size: 13px; font-weight: 700; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
+    .btn-secondary { background: #666; }
     .container { max-width: 900px; margin: 15px auto; padding: 0 14px; }
-    .card { background: #FFF; border-radius: 6px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-    h2 { font-size: 16px; margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid #EEE; padding-bottom: 6px; }
-    .grid-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-    .stat-box { background: var(--charcoal); color: #FFF; padding: 12px; border-radius: 6px; }
-    .stat-box span { font-size: 11px; color: var(--gold); text-transform: uppercase; }
-    .stat-box h3 { font-size: 20px; margin-top: 4px; }
-    input, select, textarea { width: 100%; padding: 10px; margin: 6px 0 12px; border: 1px solid #CCC; border-radius: 4px; font-size: 14px; }
-    .btn { background: var(--charcoal); color: #FFF; border: none; padding: 12px; width: 100%; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 13px; border-radius: 4px; }
-    .btn-approve { background: #27ae60; color: white; padding: 6px 10px; font-size: 11px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; width: 100%; margin-bottom: 4px; }
-    .btn-reject { background: #e74c3c; color: white; padding: 6px 10px; font-size: 11px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; width: 100%; }
-    .utr-badge { background: #FFF3CD; border: 1px solid #FFEEBA; padding: 4px 6px; font-size: 13px; font-weight: bold; color: #856404; display: inline-block; border-radius: 3px; letter-spacing: 1px; }
+    .card { background: #FFF; border-radius: 6px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border); }
+    h2 { font-size: 15px; margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid #EEE; padding-bottom: 6px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    @media (min-width: 600px) { .metrics-grid { grid-template-columns: repeat(4, 1fr); } }
+    .metric-box { background: var(--charcoal); color: #FFF; padding: 12px; border-radius: 4px; }
+    .metric-box span { font-size: 11px; color: var(--gold); text-transform: uppercase; }
+    .metric-box h3 { font-size: 20px; margin-top: 4px; }
+    input, select, textarea { width: 100%; padding: 9px; margin: 4px 0 10px; border: 1px solid #CCC; border-radius: 4px; font-size: 13px; }
+    .variant-row { background: #F9F9F9; padding: 10px; border: 1px solid #E0E0E0; border-radius: 4px; margin-bottom: 8px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #EEE; vertical-align: top; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #EEE; }
   </style>
 </head>
 <body>
 
-  <!-- Login Modal -->
-  <div id="loginView" class="container" style="margin-top: 50px;">
-    <div class="card" style="max-width: 400px; margin: 0 auto;">
-      <h2>Admin Sign In</h2>
-      <input type="email" id="lEmail" placeholder="Email (zayracarts@gmail.com)">
-      <input type="password" id="lPass" placeholder="Password (ZayraAdmin@2026)">
-      <button class="btn" onclick="login()">Enter Dashboard</button>
+  <!-- Authentication Guard View -->
+  <div id="authScreen" class="container" style="margin-top: 50px;">
+    <div class="card" style="max-width: 380px; margin: 0 auto;">
+      <h2>Operator Sign In</h2>
+      <input type="email" id="loginEmail" placeholder="Email (zayracarts@gmail.com)">
+      <input type="password" id="loginPass" placeholder="Password (ZayraAdmin@2026)">
+      <button class="btn" style="width:100%;" onclick="login()">Enter Console</button>
     </div>
   </div>
 
-  <div id="dashboardView" style="display:none;">
+  <!-- Operational Dashboard View -->
+  <div id="dashScreen" style="display:none;">
     <div class="topbar">
-      <h1>ZAYRA<span>CARTZ</span> ADMIN</h1>
-      <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('tabOrders')">🚚 Orders & UTR</button>
-      <button class="tab-btn" onclick="switchTab('tabProducts')">📦 Products & Edit</button>
-      <button class="tab-btn" onclick="switchTab('tabSettings')">⚙️ UPI ID & Settings</button>
+      <h1>ZAYRA<span>CARTZ</span> OPERATIONS CONSOLE</h1>
+      <button class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="logout()">Logout</button>
     </div>
 
     <div class="container">
+      <!-- Executive KPI Cards -->
+      <div class="metrics-grid">
+        <div class="metric-box"><span>Gross Sales</span><h3 id="mRev">₹0</h3></div>
+        <div class="metric-box"><span>Orders Placed</span><h3 id="mOrders">0</h3></div>
+        <div class="metric-box"><span>Completed</span><h3 id="mCompleted">0</h3></div>
+        <div class="metric-box"><span style="color:#e74c3c;">Low Stock Alert</span><h3 id="mStock" style="color:#e74c3c;">0</h3></div>
+      </div>
 
-      <!-- 1. ORDERS TAB -->
-      <div id="tabOrders">
-        <div class="grid-stats">
-          <div class="stat-box"><span>Verified Sales</span><h3 id="statRev">₹0</h3></div>
-          <div class="stat-box"><span>Orders Placed</span><h3 id="statOrd">0</h3></div>
-          <div class="stat-box" style="background:#856404;"><span style="color:#FFF;">Pending UTR</span><h3 id="statPendingUtr" style="color:#FFF;">0</h3></div>
+      <!-- Multi-Variant Product Publishing -->
+      <div class="card">
+        <h2>Ingest Product & Variants</h2>
+        <input type="text" id="pTitle" placeholder="Product Title (e.g. Architect Oversized Tee)">
+        <input type="text" id="pSlug" placeholder="Unique Slug (e.g. architect-oversized-tee)">
+        <textarea id="pDesc" rows="2" placeholder="Product description..."></textarea>
+        
+        <div style="display:flex; gap:8px;">
+          <input type="number" id="pBasePrice" placeholder="Base Price in ₹ (e.g. 899)">
+          <input type="number" id="pCatId" placeholder="Category ID (e.g. 1)">
         </div>
 
-        <div class="card">
-          <h2>Customer Orders & Bank Verification</h2>
-          <div style="overflow-x:auto;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Order / Amount</th>
-                  <th>Customer / WhatsApp</th>
-                  <th>UTR Number (Check Bank)</th>
-                  <th>Verify Payment</th>
-                </tr>
-              </thead>
-              <tbody id="ordersTbody">Loading...</tbody>
-            </table>
+        <div style="font-size:12px; font-weight:700; margin:10px 0 6px;">Variant Breakdown:</div>
+        <div id="variantsContainer">
+          <div class="variant-row">
+            <div style="display:flex; gap:6px;">
+              <input type="text" placeholder="Title (e.g. 50 ml or XL)" class="v-title">
+              <input type="text" placeholder="SKU (e.g. ZC-01-XL)" class="v-sku">
+            </div>
+            <div style="display:flex; gap:6px;">
+              <input type="number" placeholder="Price in ₹" class="v-price">
+              <input type="number" placeholder="Stock Qty" class="v-stock">
+            </div>
+            <input type="text" placeholder="Image URL (Unsplash or CDN)" class="v-img">
           </div>
         </div>
+
+        <button class="btn btn-secondary" style="margin-bottom:12px; font-size:11px;" onclick="addVariantRow()">+ Add Another Variant</button>
+        <button class="btn" style="width:100%;" onclick="publishProduct()">Publish Product to Catalog</button>
       </div>
 
-      <!-- 2. PRODUCTS TAB -->
-      <div id="tabProducts" style="display:none;">
-        <div class="card">
-          <h2 id="formTitle">+ Add New Product</h2>
-          <input type="hidden" id="editProdId">
-          <label style="font-size:12px; font-weight:bold;">Product Title:</label>
-          <input type="text" id="pTitle" placeholder="e.g. Vintage Oversized Black Tee">
-
-          <div style="display:flex; gap:8px;">
-            <div>
-              <label style="font-size:12px; font-weight:bold;">Price (₹):</label>
-              <input type="number" id="pPrice" placeholder="899">
-            </div>
-            <div>
-              <label style="font-size:12px; font-weight:bold;">Stock Count:</label>
-              <input type="number" id="pStock" placeholder="50">
-            </div>
-          </div>
-
-          <label style="font-size:12px; font-weight:bold;">Product Photo (Gallery se direct upload karein):</label>
-          <input type="file" id="pFile" accept="image/*" onchange="previewImg(event)">
-          <img id="imgPreview" style="width:100px; height:100px; object-fit:cover; display:none; margin-bottom:10px; border:1px solid #ddd;">
-
-          <button class="btn" id="saveProdBtn" onclick="saveProduct()">Save & Publish</button>
-          <button id="cancelEditBtn" class="btn" style="background:#777; margin-top:8px; display:none;" onclick="resetForm()">Cancel</button>
-        </div>
-
-        <div class="card">
-          <h2>Live Store Inventory</h2>
-          <div id="prodsList">Loading...</div>
+      <!-- Live Order Ledger -->
+      <div class="card">
+        <h2>Recent Customer Orders</h2>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTable">Loading...</tbody>
+          </table>
         </div>
       </div>
-
-      <!-- 3. SETTINGS TAB -->
-      <div id="tabSettings" style="display:none;">
-        <div class="card">
-          <h2>Store Settings</h2>
-          <label style="font-size:12px; font-weight:bold;">Your Personal UPI ID (Customer QR me ye link hoga):</label>
-          <input type="text" id="setUpiId" placeholder="e.g. 9876543210@ybl ya aapka@okaxis">
-
-          <label style="font-size:12px; font-weight:bold;">Top Announcement Bar:</label>
-          <input type="text" id="setAnnouncement">
-
-          <button class="btn" onclick="saveSettings()">Save Configuration</button>
-        </div>
-      </div>
-
     </div>
   </div>
 
   <script>
-    let token = localStorage.getItem('zc_jwt');
-    let uploadedBase64 = "";
-
-    if (token) initDashboard();
+    let token = localStorage.getItem('zc_admin_jwt');
+    if (token) loadDashboard();
 
     async function login() {
-      const email = document.getElementById('lEmail').value.trim();
-      const password = document.getElementById('lPass').value.trim();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPass').value.trim();
+
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
+
       const data = await res.json();
-      if (data.token) {
+      if (res.ok && ['owner', 'admin'].includes(data.user.role)) {
         token = data.token;
-        localStorage.setItem('zc_jwt', token);
-        initDashboard();
-      } else alert(data.error || "Login failed");
+        localStorage.setItem('zc_admin_jwt', token);
+        loadDashboard();
+      } else {
+        alert(data.error || 'Authentication denied: Insufficient privileges.');
+      }
     }
 
-    function logout() { localStorage.removeItem('zc_jwt'); location.reload(); }
-
-    function switchTab(tId) {
-      ['tabOrders', 'tabProducts', 'tabSettings'].forEach(t => document.getElementById(t).style.display = (t === tId ? 'block' : 'none'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-      if (tId === 'tabOrders') loadOrders();
-      if (tId === 'tabProducts') loadProducts();
-      if (tId === 'tabSettings') loadSettings();
+    function logout() {
+      localStorage.removeItem('zc_admin_jwt');
+      location.reload();
     }
 
-    async function initDashboard() {
-      document.getElementById('loginView').style.display = 'none';
-      document.getElementById('dashboardView').style.display = 'block';
-      loadOrders();
+    async function loadDashboard() {
+      document.getElementById('authScreen').style.display = 'none';
+      document.getElementById('dashScreen').style.display = 'block';
+
+      try {
+        const res = await fetch('/api/admin/metrics', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!res.ok) return logout();
+
+        const data = await res.json();
+        document.getElementById('mRev').innerText = `₹${data.metrics.gross_sales_inr}`;
+        document.getElementById('mOrders').innerText = data.metrics.total_orders;
+        document.getElementById('mCompleted').innerText = data.metrics.completed_orders;
+        document.getElementById('mStock').innerText = data.metrics.low_stock_variants;
+
+        const tbody = document.getElementById('ordersTable');
+        if (data.recent_orders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4">No orders placed yet.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.recent_orders.map(o => `
+          <tr>
+            <td><b>${o.order_number}</b></td>
+            <td>${o.customer_name}<br><small>${o.customer_phone}</small></td>
+            <td>₹${(Number(o.total_amount_paise) / 100).toFixed(0)}</td>
+            <td><span style="color:${o.payment_status === 'PAID' ? 'green' : 'orange'}; font-weight:700;">${o.payment_status}</span></td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('Dashboard load failed:', err);
+      }
     }
 
-    async function loadOrders() {
-      const res = await fetch('/api/admin/orders', { headers: { 'Authorization': `Bearer ${token}` } });
-      const orders = await res.json();
-      const mRes = await fetch('/api/admin/metrics', { headers: { 'Authorization': `Bearer ${token}` } });
-      const metrics = await mRes.json();
-
-      document.getElementById('statRev').innerText = `₹${metrics.totalRevenue}`;
-      document.getElementById('statOrd').innerText = metrics.totalOrders;
-      document.getElementById('statPendingUtr').innerText = metrics.pendingUtrCount;
-
-      const tb = document.getElementById('ordersTbody');
-      if (orders.length === 0) { tb.innerHTML = '<tr><td colspan="4">No orders placed yet.</td></tr>'; return; }
-
-      tb.innerHTML = orders.map(o => `
-        <tr>
-          <td>
-            <b>${o.order_number}</b><br>
-            ₹${o.total_amount} (${o.payment_method})<br>
-            <small>${new Date(o.created_at).toLocaleDateString()}</small><br>
-            <span style="font-size:11px; font-weight:bold; color:${o.payment_status === 'PAID' ? 'green' : (o.payment_status === 'FAILED_FAKE_UTR' ? 'red' : 'orange')}">
-              ${o.payment_status}
-            </span>
-          </td>
-          <td>
-            <b>${o.customer_name}</b><br>
-            <a href="https://wa.me/91${o.customer_phone}?text=Hi ${o.customer_name}, regarding your ZayraCartz order ${o.order_number}" target="_blank" style="color:green; text-decoration:none; font-weight:bold;">💬 WhatsApp: ${o.customer_phone}</a><br>
-            <small>${o.shipping_street}, ${o.shipping_city}</small>
-          </td>
-          <td>
-            ${o.utr_number ? `<span class="utr-badge">${o.utr_number}</span>` : '<i>COD (No UTR)</i>'}<br>
-            <small>PhonePe/GPay me ye number match karein</small>
-          </td>
-          <td style="min-width: 140px;">
-            ${o.payment_status === 'AWAITING_VERIFICATION' ? `
-              <button class="btn-approve" onclick="verifyPay('${o.id}', 'APPROVE')">✅ Confirm & Mark Paid</button>
-              <button class="btn-reject" onclick="verifyPay('${o.id}', 'REJECT')">❌ Reject Fake UTR</button>
-            ` : (o.payment_status === 'PAID' ? '<b style="color:green;">✓ Verified & Paid</b>' : '<b style="color:red;">✕ Cancelled</b>')}
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    async function verifyPay(id, action) {
-      const msg = action === 'APPROVE' ? "Kya aapke bank account me paisa aa gaya hai?" : "Kya ye UTR fake hai? Is order ko cancel karein?";
-      if (!confirm(msg)) return;
-
-      await fetch(`/api/admin/orders/${id}/verify-pay`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ action })
-      });
-      loadOrders();
-    }
-
-    // Photo preview & upload
-    function previewImg(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const maxDim = 800;
-          let w = img.width, h = img.height;
-          if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
-          else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-          canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-          uploadedBase64 = canvas.toDataURL('image/jpeg', 0.75);
-          document.getElementById('imgPreview').src = uploadedBase64;
-          document.getElementById('imgPreview').style.display = 'block';
-        };
-        img.src = evt.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    let allProds = [];
-    async function loadProducts() {
-      const res = await fetch('/api/admin/products', { headers: { 'Authorization': `Bearer ${token}` } });
-      allProds = await res.json();
-      document.getElementById('prodsList').innerHTML = allProds.map((p, idx) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #EEE; padding:10px 0;">
-          <div style="display:flex; gap:10px; align-items:center;">
-            <img src="${(p.images && p.images[0]) || ''}" style="width:45px; height:45px; object-fit:cover; border-radius:4px; background:#EEE;">
-            <div><b>${p.title}</b><br><small>₹${p.price} | Stock: ${p.stock}</small></div>
-          </div>
-          <button onclick="deleteProd(${p.id})" style="color:red; border:none; background:none; cursor:pointer;">Delete</button>
+    function addVariantRow() {
+      const box = document.getElementById('variantsContainer');
+      const div = document.createElement('div');
+      div.className = 'variant-row';
+      div.innerHTML = `
+        <div style="display:flex; gap:6px;">
+          <input type="text" placeholder="Title (e.g. 100 ml or XXL)" class="v-title">
+          <input type="text" placeholder="SKU" class="v-sku">
         </div>
-      `).join('');
+        <div style="display:flex; gap:6px;">
+          <input type="number" placeholder="Price in ₹" class="v-price">
+          <input type="number" placeholder="Stock Qty" class="v-stock">
+        </div>
+        <input type="text" placeholder="Image URL" class="v-img">
+      `;
+      box.appendChild(div);
     }
 
-    async function saveProduct() {
+    async function publishProduct() {
       const title = document.getElementById('pTitle').value.trim();
-      const price = parseFloat(document.getElementById('pPrice').value);
-      const stock = parseInt(document.getElementById('pStock').value);
-      if (!title || isNaN(price)) return alert("Title and price required.");
+      const slug = document.getElementById('pSlug').value.trim();
+      const description = document.getElementById('pDesc').value.trim();
+      const basePriceInr = parseFloat(document.getElementById('pBasePrice').value);
+      const categoryId = parseInt(document.getElementById('pCatId').value, 10);
 
-      await fetch('/api/admin/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ title, price, stock: isNaN(stock) ? 50 : stock, images: uploadedBase64 ? [uploadedBase64] : [] })
+      if (!title || !slug || isNaN(basePriceInr) || isNaN(categoryId)) {
+        return alert('Please fill in title, slug, price, and category.');
+      }
+
+      const variantRows = document.querySelectorAll('.variant-row');
+      const variants = [];
+
+      variantRows.forEach((r, idx) => {
+        const vTitle = r.querySelector('.v-title').value.trim() || `Option ${idx + 1}`;
+        const vSku = r.querySelector('.v-sku').value.trim() || `SKU-${Date.now()}-${idx}`;
+        const vPriceInr = parseFloat(r.querySelector('.v-price').value) || basePriceInr;
+        const vStock = parseInt(r.querySelector('.v-stock').value, 10) || 50;
+        const vImg = r.querySelector('.v-img').value.trim();
+
+        variants.push({
+          title: vTitle,
+          sku: vSku,
+          price_paise: Math.round(vPriceInr * 100), // Converted to integer paise
+          stock_quantity: vStock,
+          images: vImg ? [vImg] : []
+        });
       });
-      alert("Product saved!");
-      document.getElementById('pTitle').value = '';
-      document.getElementById('pPrice').value = '';
-      document.getElementById('imgPreview').style.display = 'none';
-      uploadedBase64 = '';
-      loadProducts();
-    }
 
-    async function deleteProd(id) {
-      if (!confirm("Are you sure?")) return;
-      await fetch(`/api/admin/products/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-      loadProducts();
-    }
+      const payload = {
+        title,
+        slug,
+        description,
+        category_id: categoryId,
+        base_price_paise: Math.round(basePriceInr * 100),
+        variants
+      };
 
-    async function loadSettings() {
-      const res = await fetch('/api/settings/public');
-      const s = await res.json();
-      document.getElementById('setUpiId').value = s.store_upi_id || '';
-      document.getElementById('setAnnouncement').value = s.announcement_text || '';
-    }
-
-    async function saveSettings() {
-      await fetch('/api/admin/settings', {
+      const res = await fetch('/api/admin/products', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ store_upi_id: document.getElementById('setUpiId').value, announcement_text: document.getElementById('setAnnouncement').value })
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
       });
-      alert("Settings saved!");
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('Product with multi-variants published to live storefront!');
+        location.reload();
+      } else {
+        alert(`Error: ${data.error}`);
+      }
     }
   </script>
 </body>
