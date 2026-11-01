@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ZayraCartz | The Universal Lifestyle Collective</title>
+  <title>ZayraCartz | India's Mega Lifestyle & Fashion Destination</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -17,1309 +17,395 @@
       --card-bg: #F4EFEB;
       --border-subtle: rgba(197, 168, 128, 0.3);
       --white: #FFFFFF;
+      --green: #26a541;
+      --blue: #2874f0;
       --red: #e74c3c;
-      --green: #27ae60;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--ivory); color: var(--charcoal); -webkit-font-smoothing: antialiased; line-height: 1.5; padding-bottom: 65px; }
+    body { background-color: #F1F3F6; color: var(--charcoal); -webkit-font-smoothing: antialiased; line-height: 1.4; padding-bottom: 60px; }
 
-    /* Top Announcement Bar */
-    .announcement {
+    /* Flipkart-Style Header */
+    .top-bar {
       background: var(--charcoal); color: #FFF;
-      text-align: center; padding: 8px 12px;
-      font-size: 11px; letter-spacing: 1.5px;
-      text-transform: uppercase; font-weight: 500;
+      text-align: center; padding: 6px 10px;
+      font-size: 11px; letter-spacing: 1px; font-weight: 500;
       border-bottom: 1px solid var(--gold);
     }
-
-    /* Main Navigation Header */
     header {
       position: sticky; top: 0;
-      background: rgba(250, 248, 245, 0.98);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 14px 20px;
-      display: flex; justify-content: space-between; align-items: center;
-      z-index: 200;
+      background: var(--charcoal); color: #FFF;
+      padding: 10px 16px; display: flex; flex-direction: column; gap: 8px;
+      z-index: 300; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
-    .nav-left { display: flex; align-items: center; gap: 14px; }
-    .menu-trigger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: 4px; }
-    .menu-trigger span { display: block; width: 22px; height: 2px; background: var(--charcoal); }
-
-    .brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 26px; font-weight: 700;
-      letter-spacing: 1px; color: var(--charcoal);
-      text-decoration: none; cursor: pointer;
-    }
+    .header-row { display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: #FFF; text-decoration: none; cursor: pointer; }
     .brand span { color: var(--gold); }
-
-    .nav-right { display: flex; align-items: center; gap: 14px; }
-    .icon-btn { background: none; border: none; cursor: pointer; position: relative; padding: 4px; display: flex; align-items: center; }
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+    .icon-btn { background: none; border: none; cursor: pointer; position: relative; color: #FFF; display: flex; align-items: center; }
     .badge {
-      position: absolute; top: -3px; right: -4px;
+      position: absolute; top: -5px; right: -6px;
       background: var(--gold); color: #000;
       font-size: 10px; font-weight: 700;
       width: 17px; height: 17px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
 
-    /* Side Navigation Drawer */
-    .side-nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 300; }
-    .side-nav {
-      position: fixed; top: 0; left: -100%; width: 290px; height: 100%;
-      background: var(--ivory); z-index: 350;
-      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-      transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex; flex-direction: column; padding: 25px 20px;
-    }
-    .side-nav.open { left: 0; }
-    .side-nav-links { list-style: none; margin-top: 25px; display: flex; flex-direction: column; gap: 16px; }
-    .side-nav-links a {
-      color: var(--charcoal); text-decoration: none;
-      font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
-      text-transform: uppercase; display: flex; justify-content: space-between; cursor: pointer;
-    }
+    /* Flipkart Search Bar */
+    .search-wrap { display: flex; background: #FFF; border-radius: 4px; overflow: hidden; padding: 2px 8px; align-items: center; }
+    .search-input { width: 100%; border: none; outline: none; padding: 8px 6px; font-size: 13px; color: #222; }
 
-    /* SPA Page Views */
-    .page-view { display: none; animation: fadeIn 0.25s ease-in-out; }
-    .page-view.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Buttons */
-    .btn {
-      background: var(--charcoal); color: #FFF;
-      border: 1px solid var(--charcoal);
-      padding: 13px 24px; font-size: 12px; font-weight: 600;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      cursor: pointer; text-decoration: none;
-      display: inline-flex; align-items: center; justify-content: center;
-      transition: all 0.25s ease; border-radius: 0;
+    /* Category Icon Strip (Flipkart 10-Category Row) */
+    .cat-strip {
+      display: flex; gap: 14px; overflow-x: auto;
+      padding: 12px 14px; background: #FFF;
+      border-bottom: 1px solid #DDD; scrollbar-width: none;
     }
-    .btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
-    .btn-secondary { background: transparent; color: var(--charcoal); }
-    .btn-secondary:hover { background: var(--charcoal); color: #FFF; }
-    .btn-gold { background: var(--gold); color: #000; border-color: var(--gold); }
-    .btn-gold:hover { background: var(--gold-dark); color: #FFF; border-color: var(--gold-dark); }
+    .cat-strip::-webkit-scrollbar { display: none; }
+    .cat-item { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 65px; cursor: pointer; text-align: center; }
+    .cat-icon { width: 48px; height: 48px; border-radius: 50%; background: #F1ECE5; display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid var(--border-subtle); }
+    .cat-label { font-size: 11px; font-weight: 600; color: #333; white-space: nowrap; }
 
-    /* Hero Banner */
-    .hero {
-      text-align: center; padding: 50px 20px 40px;
-      background: linear-gradient(180deg, var(--ivory) 0%, #F3EEE7 100%);
-      border-bottom: 1px solid var(--border-subtle);
+    /* Flipkart Flash Deal Countdown Strip */
+    .deal-strip {
+      background: #FFF; margin: 10px 0; padding: 12px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #E0E0E0;
     }
-    .hero-tagline { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-dark); font-weight: 700; margin-bottom: 8px; }
-    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 42px; line-height: 1.15; margin-bottom: 10px; }
-    .hero p { font-size: 14px; color: #555; max-width: 520px; margin: 0 auto 22px; }
-
-    /* Trust Strip */
-    .trust-strip {
-      background: var(--card-bg); border-bottom: 1px solid var(--border-subtle);
-      padding: 14px 10px; display: flex; justify-content: space-around;
-      flex-wrap: wrap; gap: 12px; text-align: center;
-    }
-    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    /* Department / Category Pill Slider */
-    .dept-slider {
-      display: flex; gap: 10px; overflow-x: auto;
-      padding: 16px 20px; background: #FFF;
-      border-bottom: 1px solid var(--border-subtle);
-      scrollbar-width: none;
-    }
-    .dept-slider::-webkit-scrollbar { display: none; }
-    .dept-chip {
-      background: var(--ivory); border: 1px solid #DDD;
-      padding: 9px 18px; border-radius: 20px;
-      font-size: 12px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; transition: 0.2s;
-    }
-    .dept-chip.active { background: var(--charcoal); color: #FFF; border-color: var(--charcoal); }
-
-    /* Section Headers */
-    .section-head { text-align: center; margin: 35px 0 20px; padding: 0 16px; }
-    .section-head span { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold-dark); font-weight: 700; }
-    .section-head h2 { font-family: 'Cormorant Garamond', serif; font-size: 34px; margin-top: 4px; }
+    .deal-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .deal-timer { background: var(--charcoal); color: var(--gold); padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 3px; }
 
     /* Product Grid */
     .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px; max-width: 1140px; margin: 20px auto 50px; padding: 0 16px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px; padding: 8px; max-width: 1200px; margin: 0 auto;
     }
-    .card {
-      background: var(--white); border: 1px solid var(--border-subtle);
-      border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;
-      position: relative; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
-    .card-img-wrap { position: relative; width: 100%; height: 300px; overflow: hidden; background: #EEE; }
-    .card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
-    .card:hover img { transform: scale(1.03); }
-    
-    .discount-tag {
-      position: absolute; top: 10px; left: 10px;
-      background: var(--charcoal); color: #FFF;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-      padding: 4px 8px; text-transform: uppercase;
-    }
-    .wish-toggle {
-      position: absolute; top: 10px; right: 10px;
-      background: rgba(255,255,255,0.92); border: none;
-      width: 32px; height: 32px; border-radius: 50%;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1); z-index: 10;
-    }
-    .wish-toggle.active svg { fill: var(--red); stroke: var(--red); }
+    @media (min-width: 768px) { .grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; padding: 16px; } }
 
-    .card-info { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
-    .card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-    .card-price { font-size: 17px; font-weight: 700; color: var(--charcoal); margin-bottom: 12px; }
-    .card-price s { font-size: 13px; color: #999; font-weight: 400; margin-left: 6px; }
+    .card {
+      background: #FFF; border-radius: 4px; overflow: hidden;
+      display: flex; flex-direction: column; cursor: pointer;
+      border: 1px solid #EBEBEB; position: relative;
+    }
+    .card-img-box { position: relative; width: 100%; height: 210px; background: #FAF8F5; overflow: hidden; }
+    @media (min-width: 768px) { .card-img-box { height: 260px; } }
+    .card-img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .wish-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(255,255,255,0.9); border: none;
+      width: 28px; height: 28px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    .wish-btn.active svg { fill: var(--red); stroke: var(--red); }
+
+    .card-content { padding: 10px; display: flex; flex-direction: column; flex-grow: 1; }
+    .card-brand { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; }
+    .card-title { font-size: 13px; font-weight: 600; color: #212121; margin: 2px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    .rating-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: var(--green); color: #FFF;
+      font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 3px; width: fit-content; margin-bottom: 6px;
+    }
+    .price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .card-price { font-size: 16px; font-weight: 700; color: #111; }
+    .card-mrp { font-size: 12px; color: #878787; text-decoration: line-through; }
+    .card-off { font-size: 12px; color: var(--green); font-weight: 700; }
+    .card-tag { font-size: 10px; color: #888; margin-top: 4px; }
 
     /* ===================================================
-       UNIVERSAL PRODUCT DETAIL VIEW (PDP)
+       FLIPKART-GRADE DEDICATED PRODUCT DETAILS VIEW (PDP)
        =================================================== */
-    .pdp-wrap { max-width: 1140px; margin: 0 auto; padding: 20px 16px 60px; }
-    .breadcrumb { font-size: 12px; color: #777; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .breadcrumb a { color: var(--charcoal); text-decoration: none; cursor: pointer; }
-    .pdp-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
-    @media (min-width: 768px) { .pdp-grid { grid-template-columns: 1fr 1fr; gap: 45px; } }
+    .pdp-page { background: #FFF; max-width: 1200px; margin: 0 auto; min-height: 90vh; }
+    .pdp-grid { display: grid; grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .pdp-grid { grid-template-columns: 1fr 1.2fr; padding: 25px; gap: 40px; } }
 
-    .pdp-main-img-box { width: 100%; height: 440px; background: #EEE; overflow: hidden; border-radius: 4px; border: 1px solid var(--border-subtle); }
-    .pdp-main-img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .pdp-info { display: flex; flex-direction: column; }
-    .pdp-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dark); font-weight: 700; margin-bottom: 6px; }
-    .pdp-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
-    .pdp-pricing { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
-    .pdp-price { font-size: 26px; font-weight: 700; color: var(--charcoal); }
-    .pdp-mrp { font-size: 16px; color: #999; text-decoration: line-through; }
-    .pdp-save { font-size: 12px; font-weight: 700; color: var(--green); text-transform: uppercase; background: #E8F8F0; padding: 3px 8px; border-radius: 2px; }
+    .pdp-img-view { width: 100%; height: 380px; background: #FAF8F5; position: relative; }
+    @media (min-width: 768px) { .pdp-img-view { height: 480px; border: 1px solid #EEE; border-radius: 4px; } }
+    .pdp-img-view img { width: 100%; height: 100%; object-fit: contain; }
 
-    .pdp-stock-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 20px; }
-    .pdp-stock-badge::before { content: ""; width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+    .pdp-details { padding: 16px; }
+    .pdp-title { font-size: 18px; font-weight: 600; line-height: 1.3; color: #212121; margin-bottom: 6px; }
+    .pdp-assured-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .assured-tag { background: #E8F0FE; color: var(--blue); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 2px; }
 
-    /* Dynamic Variant Selector (Adapts to Shoes, Clothes, Watches, Fragrances) */
-    .pdp-variants-container { margin-bottom: 24px; }
-    .variant-label { font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; }
-    .variant-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-    .variant-btn {
-      padding: 10px 16px; border: 1px solid #CCC;
-      background: #FFF; font-size: 13px; font-weight: 600;
-      cursor: pointer; transition: 0.2s; border-radius: 2px;
+    .pdp-price-box { background: #F9F9F9; padding: 12px; border-radius: 4px; margin-bottom: 14px; }
+    .pdp-live-price { font-size: 26px; font-weight: 700; color: #111; }
+    .pdp-live-mrp { font-size: 15px; color: #878787; text-decoration: line-through; margin-left: 8px; }
+    .pdp-live-discount { font-size: 15px; color: var(--green); font-weight: 700; margin-left: 8px; }
+
+    /* Bank Offers Box */
+    .offers-box { border: 1px dashed #DDD; border-radius: 4px; padding: 12px; margin-bottom: 16px; background: #FCFCFC; }
+    .offer-item { display: flex; gap: 8px; font-size: 12px; margin-bottom: 6px; color: #212121; }
+    .offer-tag { color: var(--green); font-weight: 700; }
+
+    /* Pincode Delivery Check */
+    .pincode-box { display: flex; gap: 8px; margin-bottom: 16px; }
+    .pin-input { border: 1px solid #CCC; border-radius: 2px; padding: 8px 10px; font-size: 13px; width: 160px; outline: none; }
+    .pin-btn { background: none; border: none; color: var(--blue); font-weight: 700; font-size: 13px; cursor: pointer; }
+
+    /* Dynamic Variant Selector (Live Price Switching) */
+    .variant-group { margin-bottom: 18px; }
+    .variant-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: #555; }
+    .variant-flex { display: flex; gap: 8px; flex-wrap: wrap; }
+    .variant-pill {
+      border: 1px solid #DDD; background: #FFF;
+      padding: 8px 14px; border-radius: 4px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: 0.2s;
     }
-    .variant-btn.selected { border-color: var(--charcoal); background: var(--charcoal); color: #FFF; }
+    .variant-pill.selected { border-color: var(--blue); background: #E8F0FE; color: var(--blue); }
 
-    /* Actions */
-    .pdp-actions { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-    .pdp-btn-row { display: flex; gap: 10px; }
-    .qty-box { display: flex; border: 1px solid #CCC; width: 110px; }
-    .qty-btn { flex: 1; border: none; background: #FFF; font-size: 16px; cursor: pointer; }
-    .qty-val { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; background: #FAF8F5; }
+    /* Specifications Table */
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+    .spec-table tr { border-bottom: 1px solid #EEE; }
+    .spec-table td { padding: 8px 4px; }
+    .spec-key { color: #878787; width: 35%; }
+    .spec-val { color: #212121; font-weight: 500; }
 
-    /* Accordions */
-    .accordion { border-top: 1px solid var(--border-subtle); }
-    .acc-item { border-bottom: 1px solid var(--border-subtle); }
-    .acc-header {
-      padding: 14px 0; font-size: 13px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      display: flex; justify-content: space-between; cursor: pointer;
+    /* Sticky Mobile Actions Bar */
+    .mobile-pdp-bar {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: #FFF; display: flex; border-top: 1px solid #DDD;
+      z-index: 250;
     }
-    .acc-content { display: none; padding-bottom: 14px; font-size: 13px; color: #555; line-height: 1.6; }
-    .acc-item.open .acc-content { display: block; }
-    .acc-item.open .acc-icon { transform: rotate(180deg); }
-
-    /* Static Pages Layout */
-    .page-container { max-width: 800px; margin: 30px auto 60px; padding: 0 16px; }
-    .page-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; margin-bottom: 12px; }
-    .page-subtitle { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-dark); font-weight: 700; margin-bottom: 24px; }
-    .page-card { background: #FFF; border: 1px solid var(--border-subtle); padding: 24px; border-radius: 4px; margin-bottom: 20px; line-height: 1.7; font-size: 14px; color: #333; }
-    .page-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin: 18px 0 8px; }
+    .pdp-action-btn { flex: 1; padding: 14px; border: none; font-size: 14px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+    .btn-add-cart { background: #FF9F00; color: #FFF; }
+    .btn-buy-now { background: #FB641B; color: #FFF; }
 
     /* Drawers & Modals */
-    .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 400; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 400; }
     .drawer {
       position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
-      background: var(--ivory); z-index: 450;
-      box-shadow: -4px 0 20px rgba(0,0,0,0.2);
-      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #FFF; z-index: 450; transition: right 0.3s ease;
       display: flex; flex-direction: column;
     }
     .drawer.open { right: 0; }
-    .drawer-header { padding: 18px 20px; border-bottom: 1px solid #DDD; display: flex; justify-content: space-between; align-items: center; }
-    .drawer-body { flex-grow: 1; overflow-y: auto; padding: 20px; }
-    .drawer-footer { padding: 20px; background: #F3EFEA; border-top: 1px solid #DDD; }
+    .drawer-head { padding: 16px; border-bottom: 1px solid #DDD; display: flex; justify-content: space-between; align-items: center; }
+    .drawer-body { flex-grow: 1; overflow-y: auto; padding: 16px; }
+    .drawer-foot { padding: 16px; background: #F9F9F9; border-top: 1px solid #DDD; }
 
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      display: none; align-items: center; justify-content: center;
-      z-index: 500; padding: 16px;
-    }
     .modal-box {
-      background: #FFF; max-width: 500px; width: 100%;
-      padding: 26px; border-radius: 4px; max-height: 90vh;
-      overflow-y: auto; position: relative;
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: #FFF; width: 90%; max-width: 480px; padding: 22px;
+      border-radius: 6px; z-index: 500; display: none; max-height: 90vh; overflow-y: auto;
     }
-    .modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 22px; cursor: pointer; color: #555; }
-    .modal-box input, .modal-box textarea, .modal-box select { width: 100%; padding: 11px; margin-bottom: 12px; border: 1px solid #CCC; font-size: 14px; }
 
-    /* ===================================================
-       AI CUSTOMER SUPPORT CHATBOT ("ZAYRA BOT")
-       =================================================== */
-    .bot-trigger {
-      position: fixed; bottom: 75px; right: 20px;
-      background: var(--charcoal); color: var(--gold);
-      border: 2px solid var(--gold);
-      width: 54px; height: 54px; border-radius: 50%;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    /* AI Chatbot */
+    .bot-bubble {
+      position: fixed; bottom: 70px; right: 16px;
+      background: var(--charcoal); color: var(--gold); border: 2px solid var(--gold);
+      width: 52px; height: 52px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 250; transition: transform 0.2s;
+      cursor: pointer; z-index: 350; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
-    .bot-trigger:hover { transform: scale(1.05); }
+    .bot-chat {
+      position: fixed; bottom: 75px; right: 16px; width: 330px; max-width: 90vw; height: 440px;
+      background: #FFF; border-radius: 8px; border: 1px solid #DDD;
+      display: none; flex-direction: column; z-index: 360; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
 
-    .bot-window {
-      position: fixed; bottom: 80px; right: 20px;
-      width: 340px; max-width: 90vw; height: 460px;
-      background: #FFF; border: 1px solid var(--border-subtle);
-      border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      display: none; flex-direction: column; z-index: 300;
-      overflow: hidden;
-    }
-    .bot-header {
-      background: var(--charcoal); color: #FFF; padding: 14px 16px;
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 2px solid var(--gold);
-    }
-    .bot-header-title { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
-    .bot-status-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; display: inline-block; }
-
-    .bot-body {
-      flex-grow: 1; overflow-y: auto; padding: 14px;
-      background: #FAF8F5; display: flex; flex-direction: column; gap: 10px;
-    }
-    .bot-msg { max-width: 82%; padding: 10px 12px; font-size: 13px; line-height: 1.4; border-radius: 6px; }
-    .bot-msg.ai { background: #FFF; border: 1px solid #E5E0D8; color: #222; align-self: flex-start; }
-    .bot-msg.user { background: var(--charcoal); color: #FFF; align-self: flex-end; }
-
-    .bot-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-    .bot-chip {
-      background: #FFF; border: 1px solid var(--gold);
-      color: var(--charcoal); font-size: 11px; font-weight: 600;
-      padding: 5px 10px; border-radius: 12px; cursor: pointer; transition: 0.2s;
-    }
-    .bot-chip:hover { background: var(--gold); }
-
-    .bot-footer {
-      display: flex; padding: 10px; background: #FFF;
-      border-top: 1px solid #EEE; gap: 8px;
-    }
-    .bot-input { flex-grow: 1; padding: 9px 12px; border: 1px solid #CCC; border-radius: 4px; font-size: 13px; outline: none; }
-    .bot-send { background: var(--charcoal); color: #FFF; border: none; padding: 0 14px; font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-
-    /* Mobile Bottom Navigation Bar */
-    .mobile-bar {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: rgba(250, 248, 245, 0.98);
-      border-top: 1px solid var(--border-subtle);
-      display: flex; justify-content: space-around;
-      padding: 8px 0; z-index: 100; backdrop-filter: blur(8px);
-    }
-    .bar-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; font-weight: 600; text-transform: uppercase; color: #666; cursor: pointer; }
-    .bar-item.active { color: var(--charcoal); }
-
-    /* Complete Brand Footer */
-    footer {
-      background: var(--charcoal); color: #AAA;
-      padding: 50px 20px 30px; font-size: 13px;
-      border-top: 2px solid var(--gold);
-    }
-    .footer-grid {
-      max-width: 1140px; margin: 0 auto; display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px; margin-bottom: 40px; text-align: left;
-    }
-    .footer-col h4 { color: #FFF; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-col a { color: #AAA; text-decoration: none; transition: 0.2s; cursor: pointer; }
-    .footer-col a:hover { color: var(--gold); }
-    .footer-bottom { text-align: center; border-top: 1px solid #333; padding-top: 25px; color: #777; font-size: 12px; }
+    .view-section { display: none; }
+    .view-section.active { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- Announcement Bar -->
-  <div class="announcement" id="topAnnouncement">Complimentary Express Shipping Across India | Wear Your Vibe.</div>
+  <div class="top-bar">Fast PAN-India Express Delivery | Official ZayraCartz Store</div>
 
   <!-- Header -->
   <header>
-    <div class="nav-left">
-      <button class="menu-trigger" onclick="toggleSideNav(true)">
-        <span></span><span></span><span></span>
-      </button>
-      <a class="brand" onclick="navigate('home')">ZAYRA<span>CARTZ</span></a>
+    <div class="header-row">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <a class="brand" onclick="openView('home')">ZAYRA<span>CARTZ</span></a>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="openView('track')" title="Track Orders">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        </button>
+        <button class="icon-btn" onclick="toggleCart(true)">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+          <span class="badge" id="cBadge">0</span>
+        </button>
+      </div>
     </div>
-    <div class="nav-right">
-      <button class="icon-btn" onclick="navigate('shop')" title="Search Catalog">
-        <svg width="20" height="20" fill="none" stroke="#1C1C1C" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      </button>
-      <button class="icon-btn" onclick="toggleWishDrawer(true)" title="Wishlist">
-        <svg width="20" height="20" fill="none" stroke="#1C1C1C" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-        <span class="badge" id="wishBadge">0</span>
-      </button>
-      <button class="icon-btn" onclick="toggleCartDrawer(true)" title="Bag">
-        <svg width="20" height="20" fill="none" stroke="#1C1C1C" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
-        <span class="badge" id="cartBadge">0</span>
-      </button>
+    <!-- Search Bar -->
+    <div class="search-wrap">
+      <svg width="18" height="18" fill="none" stroke="#878787" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="mainSearch" class="search-input" placeholder="Search for T-shirts, sneakers, watches, perfumes..." oninput="handleSearch()">
     </div>
   </header>
 
-  <!-- Side Navigation Drawer -->
-  <div class="side-nav-overlay" id="sideNavOverlay" onclick="toggleSideNav(false)"></div>
-  <div class="side-nav" id="sideNav">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <a class="brand" style="font-size:22px;">ZAYRA<span>CARTZ</span></a>
-      <button onclick="toggleSideNav(false)" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
-    </div>
-    <ul class="side-nav-links">
-      <li><a onclick="navigate('home')">Home <span>→</span></a></li>
-      <li><a onclick="navigate('shop')">Shop All Products <span>→</span></a></li>
-      <li><a onclick="navigate('track')">Track Order <span>→</span></a></li>
-      <li><a onclick="toggleWishDrawer(true); toggleSideNav(false)">Saved Wishlist <span>→</span></a></li>
-      <li><a onclick="navigate('about')">Our Story (About) <span>→</span></a></li>
-      <li><a onclick="navigate('contact')">Concierge & Contact <span>→</span></a></li>
-      <li><a onclick="navigate('faq')">FAQs & Help <span>→</span></a></li>
-      <li><a onclick="navigate('policies')">Shipping & Returns <span>→</span></a></li>
-    </ul>
-    <div style="margin-top:auto; font-size:12px; color:#888;">
-      Wear Your Vibe.<br>Official Support: zayracarts@gmail.com
-    </div>
-  </div>
-
-  <!-- ===================================================
-       1. HOME VIEW (view-home)
-       =================================================== -->
-  <div id="view-home" class="page-view active">
-    <div class="hero">
-      <p class="hero-tagline">Wear Your Vibe</p>
-      <h1 id="heroH1">The Universal Lifestyle Drop</h1>
-      <p id="heroSub">Curated luxury streetwear, sneakers, timepieces, tech gear, and lifestyle essentials designed for your unique frequency.</p>
-      <div style="display:flex; justify-content:center; gap:12px;">
-        <button class="btn" onclick="navigate('shop')">Explore All Drops</button>
-        <button class="btn btn-secondary" onclick="navigate('about')">Our Story</button>
-      </div>
+  <!-- ==========================================
+       VIEW: HOMEPAGE (Flipkart Style Layout)
+       ========================================== -->
+  <div id="view-home" class="view-section active">
+    <!-- Category Icon Circle Strip -->
+    <div class="cat-strip">
+      <div class="cat-item" onclick="filterCat('all')"><div class="cat-icon">🔥</div><span class="cat-label">All Drops</span></div>
+      <div class="cat-item" onclick="filterCat('fashion')"><div class="cat-icon">👕</div><span class="cat-label">Fashion</span></div>
+      <div class="cat-item" onclick="filterCat('shoes')"><div class="cat-icon">👟</div><span class="cat-label">Sneakers</span></div>
+      <div class="cat-item" onclick="filterCat('watches')"><div class="cat-icon">⌚</div><span class="cat-label">Watches</span></div>
+      <div class="cat-item" onclick="filterCat('gadgets')"><div class="cat-icon">🎧</div><span class="cat-label">Gadgets</span></div>
+      <div class="cat-item" onclick="filterCat('fragrance')"><div class="cat-icon">🧴</div><span class="cat-label">Perfumes</span></div>
+      <div class="cat-item" onclick="filterCat('bags')"><div class="cat-icon">🎒</div><span class="cat-label">Bags</span></div>
     </div>
 
-    <!-- Trust Strip -->
-    <div class="trust-strip">
-      <div class="trust-item">
-        <svg width="18" height="18" fill="none" stroke="#C5A880" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        100% Verified Quality
-      </div>
-      <div class="trust-item">
-        <svg width="18" height="18" fill="none" stroke="#C5A880" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-        Fast PAN-India Delivery
-      </div>
-      <div class="trust-item">
-        <svg width="18" height="18" fill="none" stroke="#C5A880" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Direct UPI & COD
-      </div>
+    <!-- Deals of the Day Strip -->
+    <div class="deal-strip">
+      <div class="deal-title">⚡ Deals of the Day <span style="font-size:12px; color:#878787; font-weight:normal;">(Limited Stock)</span></div>
+      <div class="deal-timer" id="clockTimer">04h : 18m : 32s</div>
     </div>
 
-    <!-- Department / Category Slider -->
-    <div class="dept-slider">
-      <button class="dept-chip active" onclick="filterByDept('all', this)">All Products</button>
-      <button class="dept-chip" onclick="filterByDept('fashion', this)">Apparel & Tees</button>
-      <button class="dept-chip" onclick="filterByDept('shoes', this)">Footwear & Kicks</button>
-      <button class="dept-chip" onclick="filterByDept('watches', this)">Watches & Jewelry</button>
-      <button class="dept-chip" onclick="filterByDept('gadgets', this)">Tech & Gear</button>
-      <button class="dept-chip" onclick="filterByDept('fragrance', this)">Fragrances & Scents</button>
-      <button class="dept-chip" onclick="filterByDept('bags', this)">Bags & Accessories</button>
-    </div>
-
-    <!-- Featured Products Grid -->
-    <div class="section-head">
-      <span>Latest Curations</span>
-      <h2>Featured Lifestyle Drops</h2>
-    </div>
-    <div class="grid" id="homeProductGrid"><p style="text-align:center; grid-column:1/-1;">Loading collection...</p></div>
-
-    <!-- VIP Banner -->
-    <div class="vip-strip" style="background:var(--charcoal); color:#FFF; padding:50px 20px; text-align:center; border-top:2px solid var(--gold); margin-top:40px;">
-      <p style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); font-weight:bold;">The VIP Circle</p>
-      <h3 style="font-family:'Cormorant Garamond', serif; font-size:32px; margin:8px 0 12px;">Join the Zayra Insider Community</h3>
-      <p style="color:#BBB; font-size:14px; max-width:520px; margin:0 auto 24px;">Get exclusive early access to secret drops, flash deals, and unreleased Telegram discounts before anyone else.</p>
-      <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-        <a href="https://t.me/ZayraDeals" target="_blank" class="btn" style="background:#0088cc; border-color:#0088cc;">Join Telegram @ZayraDeals</a>
-        <a href="https://www.instagram.com/zayracartz.myshopify" target="_blank" class="btn btn-secondary" style="border-color:var(--gold); color:var(--gold);">Follow on Instagram</a>
-      </div>
+    <!-- Product Grid -->
+    <div class="grid" id="productGrid">
+      <p style="text-align:center; grid-column:1/-1; padding:30px;">Loading catalog...</p>
     </div>
   </div>
 
-  <!-- ===================================================
-       2. SHOP / CATALOG VIEW (view-shop)
-       =================================================== -->
-  <div id="view-shop" class="page-view">
-    <div class="section-head" style="margin-top:25px;">
-      <span>Universal Catalog</span>
-      <h2>Explore All Goods</h2>
+  <!-- ==========================================
+       VIEW: FLIPKART STYLE PRODUCT DETAILS (PDP)
+       ========================================== -->
+  <div id="view-pdp" class="view-section pdp-page">
+    <div style="padding:10px 16px; font-size:12px; color:#878787;">
+      <a onclick="openView('home')" style="color:#2874f0; cursor:pointer;">Home</a> &gt; <span id="pdpCatName">Product</span>
     </div>
 
-    <div class="catalog-controls" style="max-width:1140px; margin:0 auto; padding:0 16px;">
-      <div style="display:flex; gap:10px; margin-bottom:14px;">
-        <input type="text" id="shopSearchInput" class="search-input" style="flex-grow:1; padding:11px; border:1px solid #CCC; background:#FFF; font-size:13px;" placeholder="Search apparel, shoes, watches, gadgets..." oninput="renderShopCatalog()">
-        <select id="shopSortSelect" style="padding:11px; border:1px solid #CCC; background:#FFF; font-size:13px;" onchange="renderShopCatalog()">
-          <option value="newest">Latest Drop</option>
-          <option value="price_asc">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="grid" id="shopProductGrid"></div>
-  </div>
-
-  <!-- ===================================================
-       3. UNIVERSAL PRODUCT DETAIL VIEW (view-product)
-       =================================================== -->
-  <div id="view-product" class="page-view">
-    <div class="pdp-wrap">
-      <div class="breadcrumb">
-        <a onclick="navigate('home')">Home</a> / <a onclick="navigate('shop')">Shop</a> / <span id="pdpBreadcrumbTitle">Product</span>
+    <div class="pdp-grid">
+      <div class="pdp-img-view">
+        <img id="pdpMainImg" src="" alt="Product">
       </div>
 
-      <div class="pdp-grid">
-        <div class="pdp-main-img-box">
-          <img id="pdpImg" src="" alt="Product Photo" class="pdp-main-img">
+      <div class="pdp-details">
+        <div class="pdp-assured-row">
+          <span class="assured-tag">✓ ZAYRA ASSURED</span>
+          <span style="font-size:12px; color:#878787;">100% Original Products</span>
+        </div>
+        <h1 class="pdp-title" id="pdpTitle">Product Title</h1>
+
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <span class="rating-badge">4.3 ★</span>
+          <span style="font-size:12px; color:#878787;">(482 ratings & reviews)</span>
         </div>
 
-        <div class="pdp-info">
-          <div class="pdp-tag">Zayra Verified Collection</div>
-          <h1 class="pdp-title" id="pdpTitle">Product Title</h1>
-
-          <div class="pdp-pricing">
-            <span class="pdp-price" id="pdpPrice">₹0</span>
-            <span class="pdp-mrp" id="pdpMrp">₹0</span>
-            <span class="pdp-save" id="pdpSave">40% OFF</span>
-          </div>
-
-          <div class="pdp-stock-badge">In Stock - Ready to Dispatch in 24 Hours</div>
-
-          <!-- Dynamic Universal Variants (Sizes/Colors/Volume/Standard) -->
-          <div class="pdp-variants-container">
-            <span class="variant-label" id="variantHeading">Select Option / Size:</span>
-            <div class="variant-pills" id="variantPillsBox"></div>
-          </div>
-
-          <!-- Quantity & Purchase CTAs -->
-          <div class="pdp-actions">
-            <div class="pdp-btn-row">
-              <div class="qty-box">
-                <button class="qty-btn" onclick="adjustPdpQty(-1)">-</button>
-                <div class="qty-val" id="pdpQtyVal">1</div>
-                <button class="qty-btn" onclick="adjustPdpQty(1)">+</button>
-              </div>
-              <button class="btn btn-secondary" style="flex:1;" onclick="addPdpToBag()">Add to Bag</button>
-            </div>
-            <button class="btn btn-gold" style="width:100%; padding:15px;" onclick="buyNowPdp()">⚡ Buy It Now</button>
-          </div>
-
-          <!-- Universal Product Accordions -->
-          <div class="accordion">
-            <div class="acc-item open" onclick="toggleAcc(this)">
-              <div class="acc-header"><span>Product Specifications & Details</span><span class="acc-icon">▾</span></div>
-              <div class="acc-content" id="pdpDescContent">
-                • Premium grade construction & verified materials.<br>
-                • Crafted for comfort, durability, and modern aesthetics.<br>
-                • Undergoes rigorous visual and tactile quality inspection.
-              </div>
-            </div>
-
-            <div class="acc-item" onclick="toggleAcc(this)">
-              <div class="acc-header"><span>Care, Usage & Maintenance</span><span class="acc-icon">▾</span></div>
-              <div class="acc-content">
-                • Apparel: Machine wash cold inside out, gentle cycle.<br>
-                • Footwear & Accessories: Wipe clean with soft damp cloth.<br>
-                • Fragrances & Tech: Keep away from moisture and extreme heat.
-              </div>
-            </div>
-
-            <div class="acc-item" onclick="toggleAcc(this)">
-              <div class="acc-header"><span>Express Shipping & 5-Day Replacement</span><span class="acc-icon">▾</span></div>
-              <div class="acc-content">
-                • Metro Cities: 2 to 4 business days.<br>
-                • Rest of India: 4 to 7 business days.<br>
-                • Shipped via BlueDart, Delhivery & DTDC with full tracking.<br>
-                • 5-day replacement policy for any transit damage or defects.
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:20px;">
-            <button class="btn btn-secondary" style="width:100%; font-size:11px;" onclick="shareCurrentProduct()">
-              🔗 Share This Vibe with Friends
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================
-       4. DEDICATED ORDER TRACKING VIEW (view-track)
-       =================================================== -->
-  <div id="view-track" class="page-view">
-    <div class="page-container">
-      <div class="page-subtitle">Real-Time Dispatch Stepper</div>
-      <h1 class="page-title">Track Your Order</h1>
-
-      <div class="page-card">
-        <p>Enter your ZayraCartz reference code (e.g. ZC-123456):</p>
-        <div style="display:flex; gap:8px; margin-bottom:12px;">
-          <input type="text" id="trackInput" placeholder="e.g. ZC-123456" style="text-transform:uppercase; font-weight:bold; flex-grow:1; margin-bottom:0; padding:11px; border:1px solid #CCC;">
-          <button class="btn" onclick="performOrderTracking()">Track</button>
-        </div>
-        <div id="trackResultBox"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================
-       5. DEDICATED ABOUT US VIEW (view-about)
-       =================================================== -->
-  <div id="view-about" class="page-view">
-    <div class="page-container">
-      <div class="page-subtitle">The Zayra Identity</div>
-      <h1 class="page-title">Wear Your Vibe</h1>
-
-      <div class="page-card">
-        <h3>Our Mindset</h3>
-        <p>At <strong>ZayraCartz</strong>, style isn't about fitting in—it's about projecting your frequency. Born out of the craving for high-calibre lifestyle goods, streetwear, footwear, and accessories that don't compromise on durability, we curate products that speak before you do.</p>
-        
-        <h3>The Craftsmanship & Sourcing</h3>
-        <p>Whether it's heavyweight 240 GSM cotton tees, precision-crafted watches, durable leather goods, or curated tech gear, every piece in our collection undergoes strict quality testing before reaching your hands.</p>
-        
-        <h3>Direct to Trendsetters</h3>
-        <p>No middlemen markups. We connect directly with our community across India via our official web platform and VIP Telegram network.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================
-       6. DEDICATED CONTACT US VIEW (view-contact)
-       =================================================== -->
-  <div id="view-contact" class="page-view">
-    <div class="page-container">
-      <div class="page-subtitle">Customer Concierge</div>
-      <h1 class="page-title">Get in Touch</h1>
-
-      <div class="page-card">
-        <p>Have questions about sizing, delivery, or custom orders? Reach out directly:</p>
-        
-        <div style="background:var(--card-bg); padding:16px; border-left:3px solid var(--gold); margin:16px 0;">
-          <p style="margin-bottom:6px;"><strong>Support Email:</strong> <a href="mailto:zayracarts@gmail.com" style="color:var(--charcoal);">zayracarts@gmail.com</a></p>
-          <p style="margin-bottom:6px;"><strong>VIP Telegram Community:</strong> <a href="https://t.me/ZayraDeals" target="_blank" style="color:#0088cc; font-weight:bold;">t.me/ZayraDeals</a></p>
-          <p style="margin-bottom:6px;"><strong>Instagram DM:</strong> <a href="https://www.instagram.com/zayracartz.myshopify" target="_blank" style="color:var(--charcoal);">@zayracartz.myshopify</a></p>
-          <p style="margin:0;"><strong>Hours:</strong> Mon – Sat | 10:00 AM – 7:00 PM IST</p>
+        <!-- Live Price Box with Animated Switch -->
+        <div class="pdp-price-box">
+          <span class="pdp-live-price" id="pdpPrice">₹0</span>
+          <span class="pdp-live-mrp" id="pdpMrp">₹0</span>
+          <span class="pdp-live-discount" id="pdpOff">40% off</span>
+          <div style="font-size:11px; color:#26a541; margin-top:4px; font-weight:600;">Special Price ends soon</div>
         </div>
 
-        <h3>Send a Direct Query</h3>
-        <input type="text" placeholder="Your Name" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #CCC;">
-        <input type="email" placeholder="Your Email" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #CCC;">
-        <textarea rows="3" placeholder="How can we help you?" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #CCC;"></textarea>
-        <button class="btn" style="width:100%;" onclick="alert('Message received! Our team will reply to your email within 12 business hours.')">Send Message</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================
-       7. DEDICATED FAQS VIEW (view-faq)
-       =================================================== -->
-  <div id="view-faq" class="page-view">
-    <div class="page-container">
-      <div class="page-subtitle">Help Center</div>
-      <h1 class="page-title">Frequently Asked Questions</h1>
-
-      <div class="page-card">
-        <div class="accordion">
-          <div class="acc-item open" onclick="toggleAcc(this)">
-            <div class="acc-header"><span>1. How long does shipping take?</span><span class="acc-icon">▾</span></div>
-            <div class="acc-content">Orders are dispatched within 24 to 48 hours. Metro deliveries arrive in 2–4 business days; the rest of India takes 4–7 business days.</div>
-          </div>
-          <div class="acc-item" onclick="toggleAcc(this)">
-            <div class="acc-header"><span>2. How do I pay via UPI without gateway errors?</span><span class="acc-icon">▾</span></div>
-            <div class="acc-content">Select Instant UPI at checkout. A live Dynamic QR Code with your exact bill appears, or click the direct GPay/PhonePe button. Enter your 12-digit UTR reference number from your bank receipt to log the order.</div>
-          </div>
-          <div class="acc-item" onclick="toggleAcc(this)">
-            <div class="acc-header"><span>3. What is your return & exchange policy?</span><span class="acc-icon">▾</span></div>
-            <div class="acc-content">We provide a 5-day replacement policy for defective, damaged, or incorrect items upon parcel arrival.</div>
-          </div>
+        <!-- Bank Offers -->
+        <div class="offers-box">
+          <div style="font-weight:700; font-size:13px; margin-bottom:6px;">Available Offers:</div>
+          <div class="offer-item"><span class="offer-tag">Bank Offer:</span> Flat ₹50 Instant Discount on UPI Payments.</div>
+          <div class="offer-item"><span class="offer-tag">Special Price:</span> Extra 10% off on combo orders above ₹999.</div>
         </div>
+
+        <!-- Delivery Pincode Checker -->
+        <div class="pincode-box">
+          <input type="text" id="pinInput" class="pin-input" placeholder="Enter Pincode (e.g. 110001)" maxlength="6">
+          <button class="pin-btn" onclick="checkPincode()">Check</button>
+        </div>
+        <div id="pinStatus" style="font-size:12px; color:#26a541; margin-top:-10px; margin-bottom:14px; font-weight:600;"></div>
+
+        <!-- Dynamic Variant Selector (Live Price Changes Here) -->
+        <div class="variant-group">
+          <div class="variant-title" id="variantLabel">Select Size / Edition:</div>
+          <div class="variant-flex" id="variantOptions"></div>
+        </div>
+
+        <!-- Product Specifications Table -->
+        <div style="font-weight:700; font-size:14px; margin-top:16px;">Product Specifications:</div>
+        <table class="spec-table">
+          <tr><td class="spec-key">In The Box</td><td class="spec-val">1 Unit Brand Sealed Package</td></tr>
+          <tr><td class="spec-key">Brand</td><td class="spec-val">ZayraCartz (Official)</td></tr>
+          <tr><td class="spec-key">Quality</td><td class="spec-val">Verified High-Grade Material</td></tr>
+          <tr><td class="spec-key">Country of Origin</td><td class="spec-val">India</td></tr>
+        </table>
       </div>
     </div>
-  </div>
 
-  <!-- ===================================================
-       8. DEDICATED LEGAL POLICIES VIEW (view-policies)
-       =================================================== -->
-  <div id="view-policies" class="page-view">
-    <div class="page-container">
-      <div class="page-subtitle">Legal & Policies</div>
-      <h1 class="page-title">Store Terms & Policies</h1>
-
-      <div class="page-card">
-        <h3>Shipping Policy</h3>
-        <p>All items ship through BlueDart, Delhivery, or DTDC. Complimentary express delivery is automatically applied on all orders above ₹999. Standard flat ₹79 delivery fee applies on orders below ₹999.</p>
-
-        <h3>5-Day Return & Replacement Policy</h3>
-        <p>To initiate a size exchange or report transit damage, email <strong>zayracarts@gmail.com</strong> with unboxing media within 5 calendar days of package receipt. Items must be in original condition with tags intact.</p>
-
-        <h3>Privacy & Data Safety</h3>
-        <p>We respect customer privacy. Your delivery addresses, phone numbers, and transactional records are encrypted and never shared with external brokers.</p>
-      </div>
+    <!-- Sticky Mobile Action Buttons -->
+    <div class="mobile-pdp-bar">
+      <button class="pdp-action-btn btn-add-cart" onclick="addPdpToCart()">Add To Cart</button>
+      <button class="pdp-action-btn btn-buy-now" onclick="buyNowPdp()">Buy Now</button>
     </div>
   </div>
 
-  <!-- ===================================================
-       DRAWERS: CART, WISHLIST & CHECKOUT MODALS
-       =================================================== -->
-
-  <!-- Wishlist Drawer -->
-  <div class="drawer-overlay" id="wishOverlay" onclick="toggleWishDrawer(false)"></div>
-  <div class="drawer" id="wishDrawer">
-    <div class="drawer-header">
-      <h3 style="font-family:'Cormorant Garamond', serif; font-size:22px;">Saved Wishlist</h3>
-      <button onclick="toggleWishDrawer(false)" style="background:none; border:none; font-size:20px; cursor:pointer;">✕</button>
+  <!-- ==========================================
+       VIEW: ORDER TRACKING (Live Stepper)
+       ========================================== -->
+  <div id="view-track" class="view-section pdp-page" style="padding:20px;">
+    <h2 style="font-family:'Cormorant Garamond', serif; font-size:28px; margin-bottom:10px;">Track Your Package</h2>
+    <p style="font-size:13px; color:#666; margin-bottom:12px;">Enter your 8-digit order number (e.g. ZC-123456):</p>
+    <div style="display:flex; gap:8px; margin-bottom:14px;">
+      <input type="text" id="trackCode" class="search-input" style="border:1px solid #CCC; flex-grow:1;" placeholder="ZC-XXXXXX">
+      <button class="btn-buy-now pdp-action-btn" style="flex:none; padding:10px 20px; border-radius:3px;" onclick="runTracking()">Track</button>
     </div>
-    <div class="drawer-body" id="wishlistItemsBox"></div>
+    <div id="trackResult"></div>
   </div>
 
-  <!-- Shopping Bag Drawer -->
-  <div class="drawer-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)"></div>
+  <!-- Cart Drawer -->
+  <div class="overlay" id="overlay" onclick="closeAll()"></div>
   <div class="drawer" id="cartDrawer">
-    <div class="drawer-header">
-      <h3 style="font-family:'Cormorant Garamond', serif; font-size:22px;">Your Shopping Bag</h3>
-      <button onclick="toggleCartDrawer(false)" style="background:none; border:none; font-size:20px; cursor:pointer;">✕</button>
+    <div class="drawer-head">
+      <h3 style="font-size:16px; font-weight:700;">My Cart</h3>
+      <button onclick="toggleCart(false)" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
     </div>
-    <div class="drawer-body" id="cartItemsBox"></div>
-    <div class="drawer-footer">
-      <div style="display:flex; justify-content:space-between; font-weight:700; font-size:16px; margin-bottom:12px;">
-        <span>Total Payable:</span><span id="cartDrawerTotal">₹0</span>
+    <div class="drawer-body" id="cartList"></div>
+    <div class="drawer-foot">
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:10px;">
+        <span>Total Amount:</span><span id="cartSum">₹0</span>
       </div>
-      <button class="btn" style="width:100%;" onclick="openCheckoutModal()">Proceed to Checkout</button>
+      <button class="pdp-action-btn btn-buy-now" style="width:100%; border-radius:3px;" onclick="startCheckout()">Proceed to Checkout</button>
     </div>
   </div>
 
-  <!-- Checkout Step 1 Modal: Address -->
-  <div class="modal-overlay" id="checkoutAddressModal">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeModals()">✕</button>
-      <h2 style="font-family:'Cormorant Garamond', serif; font-size:24px; margin-bottom:14px;">Delivery Address</h2>
-      <input type="text" id="cName" placeholder="Full Name *" required>
-      <input type="email" id="cEmail" placeholder="Email Address *" required>
-      <input type="tel" id="cPhone" placeholder="10-digit WhatsApp/Mobile Number *" required>
-      <textarea id="cStreet" placeholder="Flat No., House Name, Street & Landmark *" rows="2" required></textarea>
-      <div style="display:flex; gap:8px;">
-        <input type="text" id="cCity" placeholder="City *" required>
-        <input type="text" id="cState" placeholder="State *" required>
-      </div>
-      <input type="text" id="cPin" placeholder="6-digit Pincode *" required>
-      
-      <label style="font-size:12px; font-weight:bold; display:block; margin:6px 0 4px;">Choose Payment Mode:</label>
-      <select id="cPayMethod">
-        <option value="DIRECT_UPI">Instant UPI (Dynamic QR / PhonePe / GPay)</option>
-        <option value="COD">Cash on Delivery (COD)</option>
-      </select>
+  <!-- Checkout Address & Payment Modal -->
+  <div class="modal-box" id="checkoutModal">
+    <h3 style="font-size:18px; font-weight:700; margin-bottom:10px;">Delivery & Payment</h3>
+    <input type="text" id="cName" class="search-input" style="border:1px solid #CCC; margin-bottom:8px;" placeholder="Full Name *">
+    <input type="tel" id="cPhone" class="search-input" style="border:1px solid #CCC; margin-bottom:8px;" placeholder="10-digit Phone Number *">
+    <textarea id="cAddress" class="search-input" style="border:1px solid #CCC; margin-bottom:8px;" rows="2" placeholder="Full Delivery Address *"></textarea>
+    
+    <label style="font-size:12px; font-weight:700; display:block; margin:6px 0;">Payment Method:</label>
+    <select id="cPayMethod" class="search-input" style="border:1px solid #CCC; margin-bottom:12px;">
+      <option value="DIRECT_UPI">Instant UPI (Dynamic QR / GPay / PhonePe)</option>
+      <option value="COD">Cash on Delivery (COD)</option>
+    </select>
 
-      <button class="btn" style="width:100%; margin-top:10px;" onclick="proceedToPaymentStep()">Continue to Payment</button>
+    <div id="upiArea" style="display:none; text-align:center; background:#FAF8F5; padding:12px; border:1px solid #DDD; margin-bottom:10px;">
+      <img id="qrImage" src="" style="width:180px; height:180px; display:block; margin:0 auto 8px;">
+      <a id="intentLink" href="#" style="background:#2874f0; color:#FFF; display:block; padding:10px; font-size:12px; font-weight:700; text-decoration:none; margin-bottom:8px;">Open PhonePe / GPay</a>
+      <input type="text" id="utrCode" class="search-input" style="border:1px solid #CCC;" placeholder="Enter 12-digit UPI Ref / UTR *">
     </div>
+
+    <button class="pdp-action-btn btn-buy-now" style="width:100%;" onclick="placeOrder()">Place Order</button>
+    <button onclick="closeAll()" style="border:none; background:none; color:#888; width:100%; margin-top:8px; cursor:pointer;">Cancel</button>
   </div>
 
-  <!-- Checkout Step 2 Modal: Dynamic UPI QR & UTR -->
-  <div class="modal-overlay" id="checkoutUpiModal">
-    <div class="modal-box" style="text-align:center;">
-      <button class="modal-close" onclick="closeModals()">✕</button>
-      <h2 style="font-family:'Cormorant Garamond', serif; font-size:24px;">Scan & Pay via UPI</h2>
-      <p style="font-size:13px; color:#666; margin-bottom:12px;">Scan with GPay, PhonePe, Paytm, CRED or any UPI App</p>
-
-      <img id="qrImg" src="" alt="Dynamic UPI QR" style="width:210px; height:210px; border:1px solid #DDD; padding:6px; margin:0 auto 10px; display:block; border-radius:4px;">
-      <div style="font-size:20px; font-weight:bold; color:var(--charcoal); margin-bottom:12px;" id="qrTotalText">Pay: ₹0</div>
-
-      <a id="upiIntentLink" href="#" class="btn" style="background:#0088cc; border-color:#0088cc; width:100%; margin-bottom:12px;">📲 Click to Open PhonePe / GPay</a>
-
-      <div style="background:#F4EFEB; padding:14px; border-radius:4px; text-align:left; border-left:3px solid var(--gold);">
-        <label style="font-size:12px; font-weight:bold; display:block; margin-bottom:4px;">Enter 12-Digit UPI Reference / UTR No. *</label>
-        <p style="font-size:11px; color:#666; margin-bottom:8px;">Payment confirm hone ke baad aapke GPay/PhonePe receipt me 12-digit number dikhega:</p>
-        <input type="text" id="custUtr" placeholder="e.g. 412389012345" maxlength="12" style="background:#FFF; font-weight:bold; letter-spacing:1px;">
-        <button class="btn" style="width:100%;" onclick="confirmFinalUpiOrder()">Confirm Payment & Submit Order</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================
-       AI CUSTOMER SUPPORT CHATBOT ("ZAYRA BOT")
-       =================================================== -->
-  <div class="bot-trigger" onclick="toggleBot()" title="Chat with Zayra Assistant">
+  <!-- AI Chatbot Floating Trigger & Box -->
+  <div class="bot-bubble" onclick="toggleBot()" title="Zayra Assistant">
     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
   </div>
-
-  <div class="bot-window" id="botWindow">
-    <div class="bot-header">
-      <div class="bot-header-title">
-        <span class="bot-status-dot"></span>
-        Zayra Concierge Bot
-      </div>
-      <button onclick="toggleBot()" style="background:none; border:none; color:#FFF; font-size:18px; cursor:pointer;">✕</button>
+  <div class="bot-chat" id="botChat">
+    <div style="background:var(--charcoal); color:#FFF; padding:12px; font-size:14px; font-weight:700; display:flex; justify-content:space-between; border-bottom:2px solid var(--gold);">
+      <span>🤖 Zayra AI Assistant</span>
+      <button onclick="toggleBot()" style="background:none; border:none; color:#FFF; cursor:pointer;">✕</button>
     </div>
-    <div class="bot-body" id="botChatBox">
-      <div class="bot-msg ai">
-        Hey! 👋 Welcome to <strong>ZayraCartz</strong>. I can help you with tracking orders, payment instructions, sizing guides, or direct WhatsApp support.
-      </div>
-      <div class="bot-chips">
-        <button class="bot-chip" onclick="botSendQuick('Track my parcel')">🚚 Track Order</button>
-        <button class="bot-chip" onclick="botSendQuick('How does UPI payment work?')">💳 Payment Help</button>
-        <button class="bot-chip" onclick="botSendQuick('Return policy')">🔄 Returns & Exchanges</button>
-        <button class="bot-chip" onclick="botSendQuick('WhatsApp support')">💬 Live Human Support</button>
-      </div>
+    <div id="botMsgs" style="flex-grow:1; overflow-y:auto; padding:12px; font-size:13px; background:#FAF8F5; display:flex; flex-direction:column; gap:8px;">
+      <div style="background:#FFF; padding:8px 10px; border-radius:4px; border:1px solid #DDD;">Hello! I am Zayra Assistant. How can I help you today?</div>
     </div>
-    <div class="bot-footer">
-      <input type="text" id="botInputText" class="bot-input" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') botSendMessage()">
-      <button class="bot-send" onclick="botSendMessage()">Send</button>
+    <div style="display:flex; padding:8px; border-top:1px solid #EEE;">
+      <input type="text" id="botText" class="search-input" style="border:1px solid #CCC; flex-grow:1;" placeholder="Ask anything..." onkeydown="if(event.key==='Enter') sendBot()">
+      <button onclick="sendBot()" style="background:var(--charcoal); color:#FFF; border:none; padding:0 12px; font-size:12px; font-weight:700; border-radius:2px; margin-left:4px;">Send</button>
     </div>
   </div>
 
-  <!-- Mobile Bottom Quick Navigation Bar -->
-  <nav class="mobile-bar">
-    <button class="bar-item active" id="barHome" onclick="navigate('home')">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      Home
-    </button>
-    <button class="bar-item" id="barShop" onclick="navigate('shop')">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      Shop
-    </button>
-    <button class="bar-item" onclick="toggleWishDrawer(true)">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-      Wishlist
-    </button>
-    <button class="bar-item" onclick="toggleCartDrawer(true)">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
-      Bag
-    </button>
-  </nav>
-
-  <!-- Complete Brand Footer -->
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-col">
-        <a class="brand" style="color:#FFF;" onclick="navigate('home')">ZAYRA<span>CARTZ</span></a>
-        <p style="margin-top:10px; line-height:1.6; color:#999;">Wear Your Vibe.<br>Minimalist luxury apparel, footwear, watches, and tech curated for everyday expression.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a onclick="navigate('home')">Home</a></li>
-          <li><a onclick="navigate('shop')">Shop All Products</a></li>
-          <li><a onclick="navigate('track')">Track Order</a></li>
-          <li><a onclick="toggleWishDrawer(true)">Saved Wishlist</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Customer Care</h4>
-        <ul>
-          <li><a onclick="navigate('about')">Our Story</a></li>
-          <li><a onclick="navigate('contact')">Concierge & Contact</a></li>
-          <li><a onclick="navigate('faq')">FAQs & Help</a></li>
-          <li><a onclick="navigate('policies')">Shipping & Returns</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Community</h4>
-        <ul>
-          <li><a href="https://t.me/ZayraDeals" target="_blank">Telegram VIP Deals</a></li>
-          <li><a href="https://www.instagram.com/zayracartz.myshopify" target="_blank">Instagram Profile</a></li>
-          <li><a href="mailto:zayracarts@gmail.com">zayracarts@gmail.com</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 ZayraCartz. All Rights Reserved. Built with Independent Architecture.</p>
-    </div>
-  </footer>
-
-  <!-- ===================================================
-       FULL CLIENT-SIDE JAVASCRIPT ENGINE
-       =================================================== -->
-  <script>
-    let products = [];
-    let cart = JSON.parse(localStorage.getItem('zc_cart') || '[]');
-    let wishlist = JSON.parse(localStorage.getItem('zc_wishlist') || '[]');
-    let storeUpiId = "zayracarts@gmail.com";
-    let activeProduct = null;
-    let selectedVariant = 'Standard';
-    let pdpQty = 1;
-    let pendingOrderPayload = null;
-    let activeDept = 'all';
-
-    // SPA Router
-    function navigate(viewName) {
-      document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-      const target = document.getElementById(`view-${viewName}`);
-      if (target) target.classList.add('active');
-
-      toggleSideNav(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      document.querySelectorAll('.bar-item').forEach(b => b.classList.remove('active'));
-      if (viewName === 'home') document.getElementById('barHome').classList.add('active');
-      if (viewName === 'shop') document.getElementById('barShop').classList.add('active');
-    }
-
-    // Initialize Store
-    async function init() {
-      try {
-        const sRes = await fetch('/api/settings/public');
-        const s = await sRes.json();
-        if (s.announcement_text) document.getElementById('topAnnouncement').innerText = s.announcement_text;
-        if (s.hero_title) document.getElementById('heroH1').innerText = s.hero_title;
-        if (s.hero_subtitle) document.getElementById('heroSub').innerText = s.hero_subtitle;
-        if (s.store_upi_id) storeUpiId = s.store_upi_id;
-
-        const pRes = await fetch('/api/products');
-        products = await pRes.json();
-
-        renderHomeGrid();
-        renderShopCatalog();
-        updateWishUI();
-        updateCartUI();
-      } catch (err) {
-        console.error("Initialization error:", err);
-      }
-    }
-
-    // Filter by Department (Universal Catalog)
-    function filterByDept(dept, btn) {
-      activeDept = dept;
-      document.querySelectorAll('.dept-chip').forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      renderHomeGrid();
-    }
-
-    function renderHomeGrid() {
-      const grid = document.getElementById('homeProductGrid');
-      let filtered = products;
-
-      if (activeDept !== 'all') {
-        filtered = products.filter(p => {
-          const t = p.title.toLowerCase();
-          if (activeDept === 'fashion') return t.includes('tee') || t.includes('shirt') || t.includes('hoodie') || t.includes('pant') || t.includes('cargo');
-          if (activeDept === 'shoes') return t.includes('shoe') || t.includes('sneaker') || t.includes('slide') || t.includes('kicks');
-          if (activeDept === 'watches') return t.includes('watch') || t.includes('bracelet') || t.includes('chain') || t.includes('ring');
-          if (activeDept === 'gadgets') return t.includes('pod') || t.includes('ear') || t.includes('smart') || t.includes('tech') || t.includes('case');
-          if (activeDept === 'fragrance') return t.includes('perfume') || t.includes('scent') || t.includes('cologne') || t.includes('attar');
-          if (activeDept === 'bags') return t.includes('bag') || t.includes('wallet') || t.includes('pack');
-          return true;
-        });
-      }
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:30px 0;">No items in this department yet. Add items in /admin.</p>';
-        return;
-      }
-      grid.innerHTML = filtered.slice(0, 8).map(p => createProductCardHtml(p)).join('');
-    }
-
-    function renderShopCatalog() {
-      const q = document.getElementById('shopSearchInput').value.toLowerCase().trim();
-      const sort = document.getElementById('shopSortSelect').value;
-
-      let filtered = products.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
-
-      if (sort === 'price_asc') filtered.sort((a,b) => a.price - b.price);
-      else if (sort === 'price_desc') filtered.sort((a,b) => b.price - a.price);
-
-      const grid = document.getElementById('shopProductGrid');
-      if (filtered.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px 0;">No items found matching your search.</p>';
-        return;
-      }
-      grid.innerHTML = filtered.map(p => createProductCardHtml(p)).join('');
-    }
-
-    function createProductCardHtml(p) {
-      const isWished = wishlist.includes(p.id);
-      const img = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600';
-      const mrp = p.compare_at_price || Math.round(p.price * 1.4);
-
-      return `
-        <div class="card" onclick="openProductDetail(${p.id})">
-          <div class="card-img-wrap">
-            <span class="discount-tag">NEW DROP</span>
-            <img src="${img}" alt="${p.title}" loading="lazy">
-            <button class="wish-toggle ${isWished ? 'active' : ''}" onclick="event.stopPropagation(); toggleWish(${p.id})">
-              <svg width="18" height="18" fill="none" stroke="#1C1C1C" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            </button>
-          </div>
-          <div class="card-info">
-            <h4 class="card-title">${p.title}</h4>
-            <div class="card-price">₹${p.price} <s>₹${mrp}</s></div>
-            <button class="btn" style="width:100%;" onclick="event.stopPropagation(); openProductDetail(${p.id})">View Product Details</button>
-          </div>
-        </div>
-      `;
-    }
-
-    // ===================================================
-    // UNIVERSAL DYNAMIC PRODUCT DETAIL LOGIC
-    // ===================================================
-    function openProductDetail(id) {
-      const p = products.find(x => x.id === id);
-      if (!p) return;
-      activeProduct = p;
-      pdpQty = 1;
-
-      document.getElementById('pdpBreadcrumbTitle').innerText = p.title;
-      document.getElementById('pdpTitle').innerText = p.title;
-      document.getElementById('pdpPrice').innerText = `₹${p.price}`;
-      
-      const mrp = p.compare_at_price || Math.round(p.price * 1.4);
-      document.getElementById('pdpMrp').innerText = `₹${mrp}`;
-      const savePercent = Math.round(((mrp - p.price) / mrp) * 100);
-      document.getElementById('pdpSave').innerText = `${savePercent}% OFF`;
-
-      const img = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600';
-      document.getElementById('pdpImg').src = img;
-      document.getElementById('pdpQtyVal').innerText = "1";
-
-      // Detect Product Category for Intelligent Variants (Shoes vs Clothes vs Fragrance vs Gadgets)
-      const t = p.title.toLowerCase();
-      let variants = ['Standard'];
-      let vHeading = 'Select Option:';
-
-      if (t.includes('shoe') || t.includes('sneaker') || t.includes('slide') || t.includes('kicks')) {
-        vHeading = 'Select Footwear Size (UK/India):';
-        variants = ['UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'];
-      } else if (t.includes('perfume') || t.includes('scent') || t.includes('cologne') || t.includes('attar')) {
-        vHeading = 'Select Volume / Bottle:';
-        variants = ['50 ml', '100 ml'];
-      } else if (t.includes('tee') || t.includes('shirt') || t.includes('hoodie') || t.includes('pant') || t.includes('cargo') || t.includes('apparel')) {
-        vHeading = 'Select Apparel Size:';
-        variants = ['S', 'M', 'L', 'XL', 'XXL'];
-      } else {
-        vHeading = 'Variant / Edition:';
-        variants = ['Standard Edition', 'Pro Edition'];
-      }
-
-      selectedVariant = variants[0];
-      document.getElementById('variantHeading').innerText = vHeading;
-      document.getElementById('variantPillsBox').innerHTML = variants.map((v, i) => `
-        <button class="variant-btn ${i===0 ? 'selected' : ''}" onclick="selectVariant('${v}', this)">${v}</button>
-      `).join('');
-
-      navigate('product');
-    }
-
-    function selectVariant(val, btn) {
-      selectedVariant = val;
-      document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-    }
-
-    function adjustPdpQty(delta) {
-      pdpQty += delta;
-      if (pdpQty < 1) pdpQty = 1;
-      document.getElementById('pdpQtyVal').innerText = pdpQty;
-    }
-
-    function addPdpToBag() {
-      if (!activeProduct) return;
-      const existing = cart.find(x => x.product_id === activeProduct.id && x.variant === selectedVariant);
-      if (existing) existing.quantity += pdpQty;
-      else cart.push({
-        product_id: activeProduct.id,
-        title: activeProduct.title,
-        price: activeProduct.price,
-        variant: selectedVariant,
-        quantity: pdpQty,
-        image: (activeProduct.images && activeProduct.images[0]) || ''
-      });
-
-      localStorage.setItem('zc_cart', JSON.stringify(cart));
-      updateCartUI();
-      toggleCartDrawer(true);
-    }
-
-    function buyNowPdp() {
-      addPdpToBag();
-      toggleCartDrawer(false);
-      openCheckoutModal();
-    }
-
-    function shareCurrentProduct() {
-      if (!activeProduct) return;
-      if (navigator.share) {
-        navigator.share({ title: `ZayraCartz - ${activeProduct.title}`, url: window.location.href });
-      } else {
-        navigator.clipboard.writeText(window.location.href);
-        alert("Product link copied to clipboard!");
-      }
-    }
-
-    function toggleAcc(el) {
-      el.classList.toggle('open');
-    }
-
-    // ===================================================
-    // DRAWERS (CART & WISHLIST)
-    // ===================================================
-    function toggleWish(id) {
-      if (wishlist.includes(id)) wishlist = wishlist.filter(x => x !== id);
-      else wishlist.push(id);
-      localStorage.setItem('zc_wishlist', JSON.stringify(wishlist));
-      updateWishUI();
-      renderHomeGrid();
-      renderShopCatalog();
-    }
-
-    function updateWishUI() {
-      document.getElementById('wishBadge').innerText = wishlist.length;
-      const box = document.getElementById('wishlistItemsBox');
-      if (wishlist.length === 0) {
-        box.innerHTML = '<p style="text-align:center; color:#888; margin-top:40px;">No saved items in your wishlist.</p>';
-        return;
-      }
-      const wishedProds = products.filter(p => wishlist.includes(p.id));
-      box.innerHTML = wishedProds.map(p => `
-        <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px; border-bottom:1px solid #EEE; padding-bottom:10px;">
-          <img src="${(p.images && p.images[0]) || ''}" style="width:50px; height:60px; object-fit:cover; border-radius:3px;">
-          <div style="flex-grow:1;">
-            <b>${p.title}</b><br>
-            <span>₹${p.price}</span>
-          </div>
-          <button class="btn" style="padding:6px 10px; font-size:11px;" onclick="openProductDetail(${p.id}); toggleWishDrawer(false);">View</button>
-        </div>
-      `).join('');
-    }
-
-    function updateCartQty(idx, delta) {
-      cart[idx].quantity += delta;
-      if (cart[idx].quantity <= 0) cart.splice(idx, 1);
-      localStorage.setItem('zc_cart', JSON.stringify(cart));
-      updateCartUI();
-    }
-
-    function updateCartUI() {
-      document.getElementById('cartBadge').innerText = cart.reduce((a,c) => a + c.quantity, 0);
-      const list = document.getElementById('cartItemsBox');
-      let total = 0;
-
-      if (cart.length === 0) {
-        list.innerHTML = '<p style="text-align:center; color:#888; margin-top:40px;">Your shopping bag is empty.</p>';
-        document.getElementById('cartDrawerTotal').innerText = '₹0';
-        return;
-      }
-
-      list.innerHTML = cart.map((i, idx) => {
-        total += i.price * i.quantity;
-        return `
-          <div style="display:flex; gap:12px; margin-bottom:14px; border-bottom:1px solid #EEE; padding-bottom:10px;">
-            <img src="${i.image}" style="width:50px; height:60px; object-fit:cover; border-radius:3px;">
-            <div style="flex-grow:1;">
-              <b>${i.title}</b>
-              <div style="color:#666; font-size:12px; margin:2px 0;">Option: ${i.variant || 'Standard'} | ₹${i.price}</div>
-              <div style="display:flex; align-items:center; gap:8px;">
-                <button onclick="updateCartQty(${idx}, -1)" style="padding:2px 8px; border:1px solid #CCC; background:#FFF; cursor:pointer;">-</button>
-                <span style="font-weight:bold; font-size:13px;">${i.quantity}</span>
-                <button onclick="updateCartQty(${idx}, 1)" style="padding:2px 8px; border:1px solid #CCC; background:#FFF; cursor:pointer;">+</button>
-              </div>
-            </div>
-            <button onclick="cart.splice(${idx},1); localStorage.setItem('zc_cart', JSON.stringify(cart)); updateCartUI();" style="border:none; color:red; background:none; cursor:pointer; font-size:16px;">✕</button>
-          </div>
-        `;
-      }).join('');
-
-      document.getElementById('cartDrawerTotal').innerText = `₹${total}`;
-    }
-
-    function toggleSideNav(open) {
-      document.getElementById('sideNav').classList.toggle('open', open);
-      document.getElementById('sideNavOverlay').style.display = open ? 'block' : 'none';
-    }
-    function toggleCartDrawer(open) {
-      document.getElementById('cartDrawer').classList.toggle('open', open);
-      document.getElementById('cartOverlay').style.display = open ? 'block' : 'none';
-    }
-    function toggleWishDrawer(open) {
-      document.getElementById('wishDrawer').classList.toggle('open', open);
-      document.getElementById('wishOverlay').style.display = open ? 'block' : 'none';
-    }
-    function closeModals() {
-      document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-    }
-
-    // Checkout Flow
-    function openCheckoutModal() {
-      if (cart.length === 0) return alert("Your bag is empty!");
-      toggleCartDrawer(false);
-      document.getElementById('checkoutAddressModal').style.display = 'flex';
-    }
-
-    function proceedToPaymentStep() {
-      const name = document.getElementById('cName').value.trim();
-      const email = document.getElementById('cEmail').value.trim();
-      const phone = document.getElementById('cPhone').value.trim();
-      const street = document.getElementById('cStreet').value.trim();
-      const city = document.getElementById('cCity').value.trim();
-      const state = document.getElementById('cState').value.trim();
-      const pin = document.getElementById('cPin').value.trim();
-      const method = document.getElementById('cPayMethod').value;
-
-      if (!name || !phone || !street || !city || !pin) {
-        return alert("Please fill all mandatory delivery address fields.");
-      }
-
-      const subtotal = cart.reduce((a,c) => a + (c.price * c.quantity), 0);
-      const shipping = subtotal > 999 ? 0 : 79;
-      const total = subtotal + shipping;
-
-      pendingOrderPayload = {
-        customer_name: name, customer_email: email || 'customer@zayracartz.com',
-        customer_phone: phone, shipping_street: street, shipping_city: city,
-        shipping_state: state || 'India', shipping_pincode: pin,
-        payment_method: method, items: cart
-      };
-
-      closeModals();
-
-      if (method === 'DIRECT_UPI') {
-        const tempCode = 'ZC' + Math.floor(Math.random() * 89999 + 10000);
-        const upiString = `upi://pay?pa=${encodeURIComponent(storeUpiId)}&pn=ZayraCartz&am=${total}&cu=INR&tn=${tempCode}`;
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`;
-
-        document.getElementById('qrImg').src = qrUrl;
-        document.getElementById('qrTotalText').innerText = `Pay Amount: ₹${total}`;
-        document.getElementById('upiIntentLink').href = upiString;
-        document.getElementById('custUtr').value = '';
-        document.getElementById('checkoutUpiModal').style.display = 'flex';
-      } else {
-        submitFinalOrderCall(pendingOrderPayload);
-      }
-    }
-
-    function confirmFinalUpiOrder() {
-      const utr = document.getElementById('custUtr').value.trim();
-      if (!/^\d{12}$/.test(utr)) {
-        return alert("⚠️ Galat UTR!\n\nKripya apne PhonePe ya Google Pay receipt se dekh kar pura 12-digit number daalein.");
-      }
-      pendingOrderPayload.utr_number = utr;
-      submitFinalOrderCall(pendingOrderPayload);
-    }
-
-    async function submitFinalOrderCall(payload) {
-      try {
-        const res = await fetch('/api/checkout/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-          closeModals();
-          if (payload.payment_method === 'DIRECT_UPI') {
-            alert(
-              `⏳ Payment Verification In Progress!\n\n` +
-              `Order Number: ${data.order.order_number}\n` +
-              `Submitted UTR: ${payload.utr_number}\n\n` +
-              `Bank account me credit match hote hi tracking details aapke WhatsApp number par mil jayegi!\n\nThank you for choosing ZayraCartz!`
-            );
-          } else {
-            alert(`🎉 COD Order Placed!\n\nOrder Number: ${data.order.order_number}\nPay ₹${data.order.total_amount} upon parcel arrival.`);
-          }
-          cart = [];
-          localStorage.removeItem('zc_cart');
-          updateCartUI();
-          navigate('home');
-        } else {
-          alert("⚠️ " + (data.error || "Order placement failed."));
-        }
-      } catch (err) {
-        alert("Server network error. Please try again.");
-      }
-    }
-
-    // Live Order Tracking Lookup
-    async function performOrderTracking() {
-      const code = document.getElementById('trackInput').value.trim().toUpperCase();
-      const box = document.getElementById('trackResultBox');
-      if (!code) return alert("Please enter Order Number.");
-
-      box.innerHTML = '<p style="color:#666;">Checking tracking database...</p>';
-      try {
-        const res = await fetch(`/api/orders/track/${encodeURIComponent(code)}`);
-        const data = await res.json();
-        if (res.ok) {
-          box.innerHTML = `
-            <div style="background:var(--card-bg); padding:16px; border-radius:4px; text-align:left; border-left:3px solid var(--gold); margin-top:14px;">
-              <b style="font-size:16px;">Order #${data.order_number}</b><br>
-              <div style="margin:6px 0;">Customer: <b>${data.customer_name}</b></div>
-              <div style="margin:6px 0;">Order Status: <b style="color:var(--charcoal);">${data.order_status}</b> (${data.payment_status})</div>
-              <div style="margin:6px 0;">Courier Partner: <b>${data.tracking_courier || 'Packing in progress'}</b></div>
-              <div style="margin:6px 0;">Tracking AWB: <b>${data.tracking_number || 'Will update upon dispatch'}</b></div>
-            </div>
-          `;
-        } else {
-          box.innerHTML = `<p style="color:var(--red); margin-top:10px;">Order #${code} not found. Please verify your reference number.</p>`;
-        }
-      } catch (err) {
-        box.innerHTML = '<p style="color:var(--red); margin-top:10px;">Tracking service currently unreachable.</p>';
-      }
-    }
-
-    // ===================================================
-    // AI CHATBOT LOGIC ("ZAYRA BOT")
-    // ===================================================
-    function toggleBot() {
-      const w = document.getElementById('botWindow');
-      w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
-    }
-
-    function botSendQuick(text) {
-      document.getElementById('botInputText').value = text;
-      botSendMessage();
-    }
-
-    function botSendMessage() {
-      const inp = document.getElementById('botInputText');
-      const text = inp.value.trim();
-      if (!text) return;
-
-      const chat = document.getElementById('botChatBox');
-      chat.innerHTML += `<div class="bot-msg user">${text}</div>`;
-      inp.value = '';
-
-      let reply = "I am here to help! For immediate bulk inquiries or custom assistance, you can also reach our WhatsApp support directly.";
-
-      const q = text.toLowerCase();
-      if (q.includes('track') || q.includes('order') || q.includes('status') || q.includes('parcel')) {
-        reply = "You can track your order live right now! Click on 'Track Order' in our menu or enter your reference code (e.g. ZC-123456) in the Track Page.";
-      } else if (q.includes('pay') || q.includes('upi') || q.includes('qr') || q.includes('cod')) {
-        reply = "We support Instant UPI (via Dynamic QR & GPay/PhonePe direct buttons) and Cash on Delivery (COD). When paying via UPI, enter your 12-digit UTR from your bank app receipt.";
-      } else if (q.includes('return') || q.includes('exchange') || q.includes('refund')) {
-        reply = "We offer a 5-day replacement policy for damaged, defective, or incorrect size items upon delivery. Email us at zayracarts@gmail.com with your unboxing video/photo.";
-      } else if (q.includes('whatsapp') || q.includes('human') || q.includes('contact') || q.includes('talk')) {
-        reply = `You can chat with our team directly on WhatsApp! Click here: <a href="https://wa.me/919876543210?text=Hi%20ZayraCartz%20Support" target="_blank" style="color:#0088cc; font-weight:bold;">Open WhatsApp Chat</a>`;
-      } else if (q.includes('delivery') || q.includes('time') || q.includes('shipping') || q.includes('courier')) {
-        reply = "We dispatch via BlueDart, Delhivery, and DTDC. Metro deliveries take 2–4 days, while other cities take 4–7 days.";
-      }
-
-      setTimeout(() => {
-        chat.innerHTML += `<div class="bot-msg ai">${reply}</div>`;
-        chat.scrollTop = chat.scrollHeight;
-      }, 400);
-    }
-
-    init();
-  </script>
+  <!-- External App Engine -->
+  <script src="app.js"></script>
 </body>
-  </html>
+</html>
