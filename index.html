@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZayraCartz | Wear Your Vibe.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    :root { --ivory: #FAF8F5; --charcoal: #1C1C1C; --gold: #C5A880; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--ivory); color: var(--charcoal); }
+    .announcement { background: var(--charcoal); color: #FFF; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid var(--gold); }
+    header { position: sticky; top: 0; background: rgba(250, 248, 245, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(197, 168, 128, 0.3); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+    .brand { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--charcoal); text-decoration: none; }
+    .brand span { color: var(--gold); }
+    .cart-btn { background: none; border: none; cursor: pointer; position: relative; }
+    .badge { position: absolute; top: -5px; right: -5px; background: var(--gold); color: #000; font-size: 10px; font-weight: bold; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .hero { text-align: center; padding: 45px 20px; background: linear-gradient(180deg, var(--ivory), #F1ECE5); border-bottom: 1px solid rgba(197, 168, 128, 0.2); }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 38px; margin: 8px 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; max-width: 1100px; margin: 20px auto 50px; padding: 0 16px; }
+    .card { background: #FFF; border: 1px solid rgba(197, 168, 128, 0.3); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+    .card img { width: 100%; height: 300px; object-fit: cover; background: #eee; }
+    .card-info { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
+    .btn { background: var(--charcoal); color: #FFF; border: none; padding: 12px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; margin-top: auto; width: 100%; }
+    .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100%; background: var(--ivory); z-index: 200; box-shadow: -4px 0 20px rgba(0,0,0,0.2); transition: right 0.3s ease; display: flex; flex-direction: column; }
+    .drawer.open { right: 0; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 300; padding: 15px; }
+    .modal-box { background: #FFF; max-width: 480px; width: 100%; padding: 22px; border-radius: 4px; max-height: 90vh; overflow-y: auto; }
+    .modal-box input, .modal-box textarea, .modal-box select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #CCC; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="announcement">Free Express Shipping Across India | Wear Your Vibe.</div>
+
+  <header>
+    <a href="/" class="brand">ZAYRA<span>CARTZ</span></a>
+    <button class="cart-btn" onclick="toggleCart()">
+      <svg width="22" height="22" fill="none" stroke="#1C1C1C" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+      <span class="badge" id="cBadge">0</span>
+    </button>
+  </header>
+
+  <div class="hero">
+    <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #9C7A44; font-weight: bold;">Wear Your Vibe</p>
+    <h1>The Core Drop</h1>
+    <p style="font-size: 13px; color: #666;">Heavyweight everyday streetwear & apparel.</p>
+  </div>
+
+  <div class="grid" id="pGrid"><p style="text-align:center; grid-column:1/-1;">Loading catalog...</p></div>
+
+  <!-- Cart Drawer -->
+  <div class="drawer" id="cDrawer">
+    <div style="padding: 16px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
+      <h3>Your Bag</h3>
+      <button onclick="toggleCart()" style="border:none; background:none; font-size:18px; cursor:pointer;">✕</button>
+    </div>
+    <div id="cItems" style="flex-grow:1; overflow-y:auto; padding:15px;"></div>
+    <div style="padding: 16px; background: #F3EFEA; border-top: 1px solid #ddd;">
+      <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:10px;">
+        <span>Total:</span><span id="cTotal">₹0</span>
+      </div>
+      <button class="btn" onclick="openCheckout()">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal" id="cModal">
+    <div class="modal-box">
+      <h3 style="font-family:'Cormorant Garamond', serif; font-size:22px; margin-bottom:12px;">Delivery Address</h3>
+      <input type="text" id="custName" placeholder="Full Name *" required>
+      <input type="email" id="custEmail" placeholder="Email Address *" required>
+      <input type="tel" id="custPhone" placeholder="10-digit WhatsApp/Phone Number *" required>
+      <textarea id="custStreet" placeholder="Full Address with Landmark *" rows="2" required></textarea>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="custCity" placeholder="City *" required>
+        <input type="text" id="custState" placeholder="State *" required>
+      </div>
+      <input type="text" id="custPin" placeholder="Pincode *" required>
+      
+      <label style="font-size:12px; font-weight:bold;">Payment Method:</label>
+      <select id="payMethod">
+        <option value="ONLINE_UPI">Instant UPI / QR / Cards</option>
+        <option value="COD">Cash on Delivery (COD)</option>
+      </select>
+
+      <button class="btn" style="margin-top:10px;" onclick="placeOrder()">Place Order</button>
+      <button onclick="closeCheckout()" style="background:none; border:none; width:100%; margin-top:8px; color:#888; cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+
+  <footer style="background:#1C1C1C; color:#AAA; text-align:center; padding:35px 20px; font-size:12px; margin-top:40px; border-top:2px solid var(--gold);">
+    <p>© 2026 ZayraCartz. All Rights Reserved. | Wear Your Vibe.</p>
+    <p style="margin-top:6px;">Support: zayracarts@gmail.com | <a href="https://t.me/ZayraDeals" target="_blank" style="color:var(--gold);">Telegram Deals</a></p>
+  </footer>
+
+  <script>
+    let products = [];
+    let cart = JSON.parse(localStorage.getItem('zc_cart') || '[]');
+
+    async function load() {
+      const res = await fetch('/api/products');
+      products = await res.json();
+      const grid = document.getElementById('pGrid');
+      if(products.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No products yet. Add your first item in /admin.html</p>';
+        return;
+      }
+      grid.innerHTML = products.map(p => `
+        <div class="card">
+          <img src="${(p.images && p.images[0]) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600'}">
+          <div class="card-info">
+            <h4 style="font-size:15px; margin-bottom:5px;">${p.title}</h4>
+            <div style="font-weight:bold; margin-bottom:12px;">₹${p.price}</div>
+            <button class="btn" onclick="add(${p.id})">Add to Bag</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function add(id) {
+      const p = products.find(x => x.id === id);
+      const item = cart.find(x => x.product_id === id);
+      if(item) item.quantity++;
+      else cart.push({ product_id: p.id, title: p.title, price: p.price, quantity: 1 });
+      localStorage.setItem('zc_cart', JSON.stringify(cart));
+      updateCart();
+      toggleCart(true);
+    }
+
+    function updateCart() {
+      document.getElementById('cBadge').innerText = cart.reduce((a,c) => a + c.quantity, 0);
+      let total = 0;
+      document.getElementById('cItems').innerHTML = cart.map((i, idx) => {
+        total += i.price * i.quantity;
+        return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:6px;">
+          <div><b>${i.title}</b><div style="font-size:12px; color:#666;">₹${i.price} × ${i.quantity}</div></div>
+          <button onclick="cart.splice(${idx},1); localStorage.setItem('zc_cart', JSON.stringify(cart)); updateCart();" style="border:none; color:red; background:none; cursor:pointer;">✕</button>
+        </div>`;
+      }).join('');
+      document.getElementById('cTotal').innerText = `₹${total}`;
+    }
+
+    function toggleCart(force) {
+      const d = document.getElementById('cDrawer');
+      if(force) d.classList.add('open');
+      else d.classList.toggle('open');
+    }
+
+    function openCheckout() {
+      if(cart.length === 0) return alert("Cart empty!");
+      toggleCart(false);
+      document.getElementById('cModal').style.display = 'flex';
+    }
+    function closeCheckout() { document.getElementById('cModal').style.display = 'none'; }
+
+    async function placeOrder() {
+      const payload = {
+        customer_name: document.getElementById('custName').value,
+        customer_email: document.getElementById('custEmail').value,
+        customer_phone: document.getElementById('custPhone').value,
+        shipping_street: document.getElementById('custStreet').value,
+        shipping_city: document.getElementById('custCity').value,
+        shipping_state: document.getElementById('custState').value,
+        shipping_pincode: document.getElementById('custPin').value,
+        payment_method: document.getElementById('payMethod').value,
+        items: cart
+      };
+
+      if(!payload.customer_name || !payload.customer_phone || !payload.shipping_street) {
+        return alert("Please fill all mandatory fields.");
+      }
+
+      const res = await fetch('/api/checkout/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if(!res.ok) return alert(data.error);
+
+      if(payload.payment_method === 'ONLINE_UPI' && data.razorpay_order_id) {
+        const rzp = new Razorpay({
+          key: data.razorpay_key_id,
+          amount: data.order.total_amount * 100,
+          currency: 'INR',
+          name: 'ZayraCartz',
+          order_id: data.razorpay_order_id,
+          handler: () => { alert("Payment successful!"); cart = []; localStorage.removeItem('zc_cart'); location.reload(); }
+        });
+        rzp.open();
+      } else {
+        alert(`Order Placed! Reference: ${data.order.order_number}`);
+        cart = [];
+        localStorage.removeItem('zc_cart');
+        location.reload();
+      }
+    }
+
+    updateCart();
+    load();
+  </script>
+</body>
+</html>
