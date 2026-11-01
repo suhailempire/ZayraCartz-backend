@@ -3,30 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ZayraCartz | Wear Your Vibe.</title>
+  <title>ZayraCartz | India's Mega Lifestyle Destination</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --ivory: #FAF8F5;
-      --charcoal: #1C1C1C;
-      --gold: #C5A880;
-      --gold-dark: #A38458;
-      --card-bg: #F4EFEB;
-      --border-subtle: rgba(197, 168, 128, 0.35);
-      --white: #FFFFFF;
-      --green: #26a541;
-      --blue: #2874f0;
-      --red: #e74c3c;
+      --ivory: #FAF8F5; --charcoal: #1C1C1C; --gold: #C5A880; --gold-dark: #A38458;
+      --white: #FFFFFF; --green: #26a541; --blue: #2874f0; --red: #e74c3c;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: #F1F3F6; color: var(--charcoal); -webkit-font-smoothing: antialiased; padding-bottom: 65px; }
 
-    /* Flipkart-Style Header */
+    /* Top Strip & Header */
     .top-bar { background: var(--charcoal); color: #FFF; text-align: center; padding: 6px 12px; font-size: 11px; letter-spacing: 1px; font-weight: 500; border-bottom: 1px solid var(--gold); }
-    header { position: sticky; top: 0; background: var(--charcoal); color: #FFF; padding: 10px 16px; display: flex; flex-direction: column; gap: 8px; z-index: 300; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    header { position: sticky; top: 0; background: var(--charcoal); color: #FFF; padding: 10px 16px; display: flex; flex-direction: column; gap: 8px; z-index: 300; }
     .header-row { display: flex; justify-content: space-between; align-items: center; }
     .brand { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: #FFF; text-decoration: none; cursor: pointer; }
     .brand span { color: var(--gold); }
@@ -40,24 +32,21 @@
     .cat-strip { display: flex; gap: 14px; overflow-x: auto; padding: 12px 14px; background: #FFF; border-bottom: 1px solid #DDD; scrollbar-width: none; }
     .cat-strip::-webkit-scrollbar { display: none; }
     .cat-item { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 65px; cursor: pointer; text-align: center; }
-    .cat-icon { width: 48px; height: 48px; border-radius: 50%; background: #F1ECE5; display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid var(--border-subtle); }
+    .cat-icon { width: 48px; height: 48px; border-radius: 50%; background: #FAF8F5; display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid rgba(197,168,128,0.4); }
     .cat-label { font-size: 11px; font-weight: 600; color: #333; white-space: nowrap; }
 
-    /* Deal of the Day Banner */
+    /* Flash Deal Banner */
     .deal-strip { background: #FFF; margin: 10px 0; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E0E0E0; }
-    .deal-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .deal-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .deal-timer { background: var(--charcoal); color: var(--gold); padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 3px; }
 
     /* Product Grid */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; padding: 8px; max-width: 1200px; margin: 0 auto; }
     @media (min-width: 768px) { .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; padding: 16px; } }
     .card { background: #FFF; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; border: 1px solid #EBEBEB; position: relative; }
-    .card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
     .card-img-box { position: relative; width: 100%; height: 210px; background: #FAF8F5; overflow: hidden; }
     @media (min-width: 768px) { .card-img-box { height: 260px; } }
     .card-img { width: 100%; height: 100%; object-fit: cover; }
-    .wish-btn { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.9); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
-    .wish-btn.active svg { fill: var(--red); stroke: var(--red); }
     .card-content { padding: 10px; display: flex; flex-direction: column; flex-grow: 1; }
     .card-brand { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; }
     .card-title { font-size: 13px; font-weight: 600; color: #212121; margin: 2px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -66,9 +55,8 @@
     .card-price { font-size: 16px; font-weight: 700; color: #111; }
     .card-mrp { font-size: 12px; color: #878787; text-decoration: line-through; }
     .card-off { font-size: 12px; color: var(--green); font-weight: 700; }
-    .card-tag { font-size: 10px; color: #888; margin-top: 4px; }
 
-    /* Flipkart-Style Product Detail View (PDP) */
+    /* DEDICATED FULL PRODUCT DETAIL VIEW (PDP) */
     .pdp-page { background: #FFF; max-width: 1200px; margin: 0 auto; min-height: 90vh; }
     .pdp-grid { display: grid; grid-template-columns: 1fr; }
     @media (min-width: 768px) { .pdp-grid { grid-template-columns: 1fr 1.2fr; padding: 25px; gap: 40px; } }
@@ -77,22 +65,23 @@
     .pdp-img-view img { width: 100%; height: 100%; object-fit: contain; }
     .pdp-details { padding: 16px; }
     .pdp-title { font-size: 18px; font-weight: 600; line-height: 1.3; color: #212121; margin-bottom: 6px; }
-    .pdp-assured-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
     .assured-tag { background: #E8F0FE; color: var(--blue); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 2px; }
-    .pdp-price-box { background: #F9F9F9; padding: 12px; border-radius: 4px; margin-bottom: 14px; }
-    .pdp-live-price { font-size: 26px; font-weight: 700; color: #111; }
+
+    /* Animated Live Price Box */
+    .pdp-price-box { background: #F9F9F9; padding: 12px; border-radius: 4px; margin: 12px 0; }
+    .pdp-live-price { font-size: 26px; font-weight: 700; color: #111; transition: 0.2s; }
     .pdp-live-mrp { font-size: 15px; color: #878787; text-decoration: line-through; margin-left: 8px; }
     .pdp-live-discount { font-size: 15px; color: var(--green); font-weight: 700; margin-left: 8px; }
 
-    /* Dynamic Variant Selector (Live Price Switching) */
-    .variant-group { margin-bottom: 18px; }
-    .variant-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: #555; }
+    /* Dynamic Variants (50ml vs 100ml / Sizes) */
+    .variant-group { margin: 16px 0; }
+    .variant-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #555; margin-bottom: 8px; }
     .variant-flex { display: flex; gap: 8px; flex-wrap: wrap; }
     .variant-pill { border: 1px solid #DDD; background: #FFF; padding: 8px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .variant-pill.selected { border-color: var(--blue); background: #E8F0FE; color: var(--blue); }
 
     /* Pincode & Delivery */
-    .pincode-box { display: flex; gap: 8px; margin-bottom: 16px; }
+    .pincode-box { display: flex; gap: 8px; margin: 14px 0; }
     .pin-input { border: 1px solid #CCC; border-radius: 2px; padding: 8px 10px; font-size: 13px; width: 160px; outline: none; }
     .pin-btn { background: none; border: none; color: var(--blue); font-weight: 700; font-size: 13px; cursor: pointer; }
 
@@ -109,9 +98,9 @@
     .drawer-head { padding: 16px; border-bottom: 1px solid #DDD; display: flex; justify-content: space-between; align-items: center; }
     .drawer-body { flex-grow: 1; overflow-y: auto; padding: 16px; }
     .drawer-foot { padding: 16px; background: #F9F9F9; border-top: 1px solid #DDD; }
-    .modal-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #FFF; width: 90%; max-width: 480px; padding: 22px; border-radius: 6px; z-index: 500; display: none; max-height: 90vh; overflow-y: auto; }
+    .modal-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #FFF; width: 90%; max-width: 460px; padding: 22px; border-radius: 6px; z-index: 500; display: none; max-height: 90vh; overflow-y: auto; }
 
-    /* AI Assistant */
+    /* AI Chatbot */
     .bot-bubble { position: fixed; bottom: 70px; right: 16px; background: var(--charcoal); color: var(--gold); border: 2px solid var(--gold); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 350; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
     .bot-chat { position: fixed; bottom: 75px; right: 16px; width: 330px; max-width: 90vw; height: 440px; background: #FFF; border-radius: 8px; border: 1px solid #DDD; display: none; flex-direction: column; z-index: 360; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
 
@@ -137,9 +126,10 @@
         </button>
       </div>
     </div>
+    <!-- Search Bar -->
     <div class="search-wrap">
       <svg width="18" height="18" fill="none" stroke="#878787" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="mainSearch" class="search-input" placeholder="Search for T-shirts, sneakers, watches, perfumes..." oninput="handleSearch()">
+      <input type="text" id="mainSearch" class="search-input" placeholder="Search T-shirts, sneakers, watches, perfumes..." oninput="handleSearch()">
     </div>
   </header>
 
@@ -147,21 +137,22 @@
        VIEW: HOMEPAGE (Flipkart Style Layout)
        ========================================== -->
   <div id="view-home" class="view-section active">
+    <!-- Category Icon Circle Strip -->
     <div class="cat-strip">
       <div class="cat-item" onclick="filterCat('all')"><div class="cat-icon">🔥</div><span class="cat-label">All Drops</span></div>
       <div class="cat-item" onclick="filterCat('fashion')"><div class="cat-icon">👕</div><span class="cat-label">Fashion</span></div>
       <div class="cat-item" onclick="filterCat('shoes')"><div class="cat-icon">👟</div><span class="cat-label">Sneakers</span></div>
       <div class="cat-item" onclick="filterCat('watches')"><div class="cat-icon">⌚</div><span class="cat-label">Watches</span></div>
-      <div class="cat-item" onclick="filterCat('gadgets')"><div class="cat-icon">🎧</div><span class="cat-label">Gadgets</span></div>
       <div class="cat-item" onclick="filterCat('fragrance')"><div class="cat-icon">🧴</div><span class="cat-label">Perfumes</span></div>
-      <div class="cat-item" onclick="filterCat('bags')"><div class="cat-icon">🎒</div><span class="cat-label">Bags</span></div>
     </div>
 
+    <!-- Deals of the Day Strip -->
     <div class="deal-strip">
       <div class="deal-title">⚡ Deals of the Day <span style="font-size:12px; color:#878787; font-weight:normal;">(Limited Stock)</span></div>
       <div class="deal-timer" id="clockTimer">04h : 18m : 32s</div>
     </div>
 
+    <!-- Product Grid -->
     <div class="grid" id="productGrid">
       <p style="text-align:center; grid-column:1/-1; padding:30px;">Loading catalog...</p>
     </div>
@@ -181,18 +172,18 @@
       </div>
 
       <div class="pdp-details">
-        <div class="pdp-assured-row">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
           <span class="assured-tag">✓ ZAYRA ASSURED</span>
           <span style="font-size:12px; color:#878787;">100% Original Products</span>
         </div>
         <h1 class="pdp-title" id="pdpTitle">Product Title</h1>
 
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
           <span class="rating-badge">4.3 ★</span>
           <span style="font-size:12px; color:#878787;">(482 ratings & reviews)</span>
         </div>
 
-        <!-- Dynamic Live Price Display -->
+        <!-- Live Price Box with Animated Switch -->
         <div class="pdp-price-box">
           <span class="pdp-live-price" id="pdpPrice">₹0</span>
           <span class="pdp-live-mrp" id="pdpMrp">₹0</span>
@@ -200,28 +191,30 @@
           <div style="font-size:11px; color:#26a541; margin-top:4px; font-weight:600;">Special Price ends soon</div>
         </div>
 
+        <!-- Delivery Pincode Checker -->
         <div class="pincode-box">
           <input type="text" id="pinInput" class="pin-input" placeholder="Enter Pincode (e.g. 110001)" maxlength="6">
           <button class="pin-btn" onclick="checkPincode()">Check</button>
         </div>
-        <div id="pinStatus" style="font-size:12px; margin-top:-10px; margin-bottom:14px; font-weight:600;"></div>
+        <div id="pinStatus" style="font-size:12px; margin-top:-8px; margin-bottom:12px; font-weight:600;"></div>
 
-        <!-- Dynamic Variants -->
+        <!-- Dynamic Variant Selector (Live Price Changes Here: 50ml vs 100ml) -->
         <div class="variant-group">
-          <div class="variant-title" id="variantLabel">Select Option:</div>
+          <div class="variant-title" id="variantLabel">Select Option / Volume:</div>
           <div class="variant-flex" id="variantOptions"></div>
         </div>
 
-        <div style="font-weight:700; font-size:14px; margin-top:16px;">Product Specifications:</div>
-        <table style="width:100%; border-collapse:collapse; font-size:13px; margin:10px 0;">
-          <tr style="border-bottom:1px solid #EEE;"><td style="color:#878787; padding:8px 0; width:35%;">Brand</td><td style="font-weight:500;">ZayraCartz</td></tr>
-          <tr style="border-bottom:1px solid #EEE;"><td style="color:#878787; padding:8px 0;">Origin</td><td style="font-weight:500;">India</td></tr>
-          <tr><td style="color:#878787; padding:8px 0;">Dispatch</td><td style="font-weight:500;">Within 24 Hours</td></tr>
+        <!-- Product Specifications Table -->
+        <div style="font-weight:700; font-size:13px; margin-top:14px; text-transform:uppercase;">Specifications:</div>
+        <table style="width:100%; border-collapse:collapse; font-size:13px; margin:8px 0;">
+          <tr style="border-bottom:1px solid #EEE;"><td style="color:#878787; padding:6px 0; width:35%;">Brand</td><td style="font-weight:500;">ZayraCartz</td></tr>
+          <tr style="border-bottom:1px solid #EEE;"><td style="color:#878787; padding:6px 0;">Country of Origin</td><td style="font-weight:500;">India</td></tr>
+          <tr><td style="color:#878787; padding:6px 0;">Dispatch</td><td style="font-weight:500;">Within 24 Hours</td></tr>
         </table>
       </div>
     </div>
 
-    <!-- Sticky Mobile Actions -->
+    <!-- Sticky Mobile Action Buttons -->
     <div class="mobile-pdp-bar">
       <button class="pdp-action-btn btn-add-cart" onclick="addPdpToCart()">Add To Cart</button>
       <button class="pdp-action-btn btn-buy-now" onclick="buyNowPdp()">Buy Now</button>
@@ -235,8 +228,8 @@
     <h2 style="font-family:'Cormorant Garamond', serif; font-size:28px; margin-bottom:10px;">Track Your Package</h2>
     <p style="font-size:13px; color:#666; margin-bottom:12px;">Enter your order number (e.g. ZC-123456):</p>
     <div style="display:flex; gap:8px; margin-bottom:14px;">
-      <input type="text" id="trackCode" class="search-input" style="border:1px solid #CCC; flex-grow:1;" placeholder="ZC-XXXXXX">
-      <button class="pdp-action-btn btn-buy-now" style="flex:none; padding:10px 20px; border-radius:3px;" onclick="runTracking()">Track</button>
+      <input type="text" id="trackCode" class="search-input" style="border:1px solid #CCC; flex-grow:1; padding:10px;" placeholder="ZC-XXXXXX">
+      <button class="btn-buy-now pdp-action-btn" style="flex:none; padding:10px 20px; border-radius:3px;" onclick="runTracking()">Track</button>
     </div>
     <div id="trackResult"></div>
   </div>
@@ -259,33 +252,28 @@
 
   <!-- Checkout Address & Payment Modal -->
   <div class="modal-box" id="checkoutModal">
-    <h3 style="font-size:18px; font-weight:700; margin-bottom:10px;">Delivery & Payment</h3>
-    <input type="text" id="cName" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:8px;" placeholder="Full Name *">
-    <input type="email" id="cEmail" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:8px;" placeholder="Email Address *">
-    <input type="tel" id="cPhone" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:8px;" placeholder="10-digit Phone Number *">
-    <textarea id="cAddress" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:8px;" rows="2" placeholder="Full Delivery Address *"></textarea>
-    <div style="display:flex; gap:8px; margin-bottom:8px;">
-      <input type="text" id="cCity" class="search-input" style="border:1px solid #CCC; flex:1; padding:8px;" placeholder="City *">
-      <input type="text" id="cState" class="search-input" style="border:1px solid #CCC; flex:1; padding:8px;" placeholder="State *">
-    </div>
-    <input type="text" id="cPin" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:8px;" placeholder="6-digit Pincode *">
-
+    <h3 style="font-size:18px; font-weight:700; margin-bottom:10px;">Delivery Details</h3>
+    <input type="text" id="cName" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:9px;" placeholder="Full Name *">
+    <input type="tel" id="cPhone" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:9px;" placeholder="10-digit Phone Number *">
+    <textarea id="cAddress" class="search-input" style="border:1px solid #CCC; margin-bottom:8px; width:100%; padding:9px;" rows="2" placeholder="Full Delivery Address *"></textarea>
+    
     <label style="font-size:12px; font-weight:700; display:block; margin:6px 0;">Payment Method:</label>
-    <select id="cPayMethod" class="search-input" style="border:1px solid #CCC; margin-bottom:12px; width:100%; padding:8px;">
-      <option value="DIRECT_UPI_QR">Instant UPI (Dynamic QR / GPay / PhonePe)</option>
+    <select id="cPayMethod" class="search-input" style="border:1px solid #CCC; margin-bottom:12px; width:100%; padding:9px;">
+      <option value="DIRECT_UPI">Instant UPI (Dynamic QR / GPay / PhonePe)</option>
       <option value="COD">Cash on Delivery (COD)</option>
     </select>
 
     <div id="upiArea" style="display:none; text-align:center; background:#FAF8F5; padding:12px; border:1px solid #DDD; margin-bottom:10px;">
-      <img id="qrImage" src="" style="width:180px; height:180px; display:block; margin:0 auto 8px;">
-      <a id="intentLink" href="#" style="background:#2874f0; color:#FFF; display:block; padding:10px; font-size:12px; font-weight:700; text-decoration:none; margin-bottom:8px;">Open PhonePe / GPay</a>
+      <img id="qrImage" src="" style="width:170px; height:170px; display:block; margin:0 auto 8px;">
+      <a id="intentLink" href="#" style="background:#2874f0; color:#FFF; display:block; padding:9px; font-size:12px; font-weight:700; text-decoration:none; margin-bottom:8px; border-radius:3px;">Open PhonePe / GPay</a>
+      <input type="text" id="utrCode" class="search-input" style="border:1px solid #CCC; padding:8px; width:100%;" placeholder="Enter 12-digit UPI Ref / UTR *">
     </div>
 
-    <button class="pdp-action-btn btn-buy-now" style="width:100%;" onclick="placeOrder()">Place Order</button>
+    <button class="pdp-action-btn btn-buy-now" style="width:100%; border-radius:3px;" onclick="placeOrder()">Place Order</button>
     <button onclick="closeAll()" style="border:none; background:none; color:#888; width:100%; margin-top:8px; cursor:pointer;">Cancel</button>
   </div>
 
-  <!-- AI Chatbot Bubble & Window -->
+  <!-- AI Chatbot Floating Trigger & Box -->
   <div class="bot-bubble" onclick="toggleBot()" title="Zayra Assistant">
     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
   </div>
@@ -295,15 +283,381 @@
       <button onclick="toggleBot()" style="background:none; border:none; color:#FFF; cursor:pointer;">✕</button>
     </div>
     <div id="botMsgs" style="flex-grow:1; overflow-y:auto; padding:12px; font-size:13px; background:#FAF8F5; display:flex; flex-direction:column; gap:8px;">
-      <div style="background:#FFF; padding:8px 10px; border-radius:4px; border:1px solid #DDD;">Hello! I am Zayra Assistant. How can I assist your shopping today?</div>
+      <div style="background:#FFF; padding:8px 10px; border-radius:4px; border:1px solid #DDD;">Hello! I am Zayra Assistant. How can I help you today?</div>
     </div>
     <div style="display:flex; padding:8px; border-top:1px solid #EEE;">
-      <input type="text" id="botText" class="search-input" style="border:1px solid #CCC; flex-grow:1;" placeholder="Ask anything..." onkeydown="if(event.key==='Enter') sendBot()">
+      <input type="text" id="botText" class="search-input" style="border:1px solid #CCC; flex-grow:1; padding:8px;" placeholder="Ask anything..." onkeydown="if(event.key==='Enter') sendBot()">
       <button onclick="sendBot()" style="background:var(--charcoal); color:#FFF; border:none; padding:0 12px; font-size:12px; font-weight:700; border-radius:2px; margin-left:4px;">Send</button>
     </div>
   </div>
 
-  <!-- Script Wiring -->
-  <script src="app.js"></script>
+  <!-- ===================================================
+       ALL-IN-ONE CLIENT JAVASCRIPT (ZERO 404 FILE ERRORS)
+       =================================================== -->
+  <script>
+    let products = [];
+    let cart = JSON.parse(localStorage.getItem('zc_cart') || '[]');
+    let activeProduct = null;
+    let selectedVariant = null;
+    let storeUpiId = "zayracarts@gmail.com";
+    let activeCategory = 'all';
+
+    async function init() {
+      try {
+        const sRes = await fetch('/api/settings/public');
+        const s = await sRes.json();
+        if (s.store_upi_id) storeUpiId = s.store_upi_id;
+
+        const pRes = await fetch('/api/products');
+        products = await pRes.json();
+
+        renderGrid();
+        updateCartBadge();
+        startTimer();
+      } catch (err) {
+        console.error("Init Error:", err);
+      }
+    }
+
+    function startTimer() {
+      const t = document.getElementById('clockTimer');
+      let sec = 15480;
+      setInterval(() => {
+        sec--;
+        if (sec <= 0) sec = 18000;
+        const h = String(Math.floor(sec / 3600)).padStart(2, '0');
+        const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+        const s = String(sec % 60).padStart(2, '0');
+        t.innerText = `${h}h : ${m}m : ${s}s`;
+      }, 1000);
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('productGrid');
+      let filtered = products;
+
+      if (activeCategory !== 'all') {
+        filtered = products.filter(p => (p.category || '').toLowerCase() === activeCategory);
+      }
+
+      const q = (document.getElementById('mainSearch').value || '').toLowerCase().trim();
+      if (q) {
+        filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:30px; color:#888;">No products found in this category.</p>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => {
+        const img = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800';
+        const mrp = p.compare_price || Math.round(p.price * 1.45);
+        const off = Math.round(((mrp - p.price) / mrp) * 100);
+
+        return `
+          <div class="card" onclick="openPdp(${p.id})">
+            <div class="card-img-box">
+              <img src="${img}" alt="${p.title}" class="card-img" loading="lazy">
+            </div>
+            <div class="card-content">
+              <span class="card-brand">Zayra Verified</span>
+              <h4 class="card-title">${p.title}</h4>
+              <div class="rating-badge">4.3 ★</div>
+              <div class="price-row">
+                <span class="card-price">₹${p.price}</span>
+                <span class="card-mrp">₹${mrp}</span>
+                <span class="card-off">${off}% off</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterCat(c) {
+      activeCategory = c;
+      openView('home');
+      renderGrid();
+    }
+
+    function handleSearch() {
+      openView('home');
+      renderGrid();
+    }
+
+    // DYNAMIC PDP WITH LIVE PRICE SWITCHING (50ml vs 100ml)
+    function openPdp(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      activeProduct = p;
+
+      document.getElementById('pdpCatName').innerText = p.title;
+      document.getElementById('pdpTitle').innerText = p.title;
+      document.getElementById('pdpMainImg').src = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800';
+
+      // Parse Variants
+      let variants = [];
+      try {
+        variants = Array.isArray(p.variants) ? p.variants : JSON.parse(p.variants || '[]');
+      } catch (e) { variants = []; }
+
+      if (variants.length === 0) {
+        variants = [{ name: 'Standard', price: p.price, mrp: p.compare_price || Math.round(p.price * 1.45) }];
+      }
+
+      const vBox = document.getElementById('variantOptions');
+      vBox.innerHTML = variants.map((v, idx) => `
+        <button class="variant-pill ${idx === 0 ? 'selected' : ''}" onclick="switchVariant('${v.name}', ${v.price}, ${v.mrp || Math.round(v.price * 1.45)}, this)">
+          ${v.name}
+        </button>
+      `).join('');
+
+      // Auto-select first variant
+      switchVariant(variants[0].name, variants[0].price, variants[0].mrp || Math.round(variants[0].price * 1.45), null);
+
+      document.getElementById('pinInput').value = '';
+      document.getElementById('pinStatus').innerText = '';
+      openView('pdp');
+    }
+
+    // LIVE PRICE SWITCH LOGIC
+    function switchVariant(name, price, mrp, btn) {
+      selectedVariant = { name, price, mrp };
+
+      if (btn) {
+        document.querySelectorAll('.variant-pill').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      }
+
+      // Update Screen Price instantly
+      document.getElementById('pdpPrice').innerText = `₹${price}`;
+      document.getElementById('pdpMrp').innerText = `₹${mrp}`;
+      const off = Math.round(((mrp - price) / mrp) * 100);
+      document.getElementById('pdpOff').innerText = `${off}% off`;
+    }
+
+    function checkPincode() {
+      const pin = document.getElementById('pinInput').value.trim();
+      const status = document.getElementById('pinStatus');
+      if (!/^[1-9][0-9]{5}$/.test(pin)) {
+        status.style.color = "#e74c3c";
+        status.innerText = "Please enter valid 6-digit Pincode.";
+        return;
+      }
+      status.style.color = "#26a541";
+      status.innerText = `✓ Express Delivery available to ${pin} by Tomorrow | Free Delivery`;
+    }
+
+    // CART & CHECKOUT
+    function addPdpToCart() {
+      if (!activeProduct || !selectedVariant) return;
+      const existing = cart.find(x => x.product_id === activeProduct.id && x.variant === selectedVariant.name);
+      if (existing) existing.quantity++;
+      else cart.push({
+        product_id: activeProduct.id,
+        title: activeProduct.title,
+        price: selectedVariant.price,
+        variant: selectedVariant.name,
+        quantity: 1,
+        image: (activeProduct.images && activeProduct.images[0]) || ''
+      });
+
+      localStorage.setItem('zc_cart', JSON.stringify(cart));
+      updateCartBadge();
+      toggleCart(true);
+    }
+
+    function buyNowPdp() {
+      addPdpToCart();
+      toggleCart(false);
+      startCheckout();
+    }
+
+    function toggleCart(open) {
+      const d = document.getElementById('cartDrawer');
+      const o = document.getElementById('overlay');
+      if (open) {
+        renderCartList();
+        d.classList.add('open');
+        o.style.display = 'block';
+      } else {
+        d.classList.remove('open');
+        o.style.display = 'none';
+      }
+    }
+
+    function renderCartList() {
+      const box = document.getElementById('cartList');
+      let total = 0;
+      if (cart.length === 0) {
+        box.innerHTML = '<p style="text-align:center; padding:40px 10px; color:#888;">Your cart is empty.</p>';
+        document.getElementById('cartSum').innerText = '₹0';
+        return;
+      }
+
+      box.innerHTML = cart.map((item, idx) => {
+        total += item.price * item.quantity;
+        return `
+          <div style="display:flex; gap:10px; margin-bottom:12px; border-bottom:1px solid #EEE; padding-bottom:10px;">
+            <img src="${item.image}" style="width:55px; height:65px; object-fit:cover; border-radius:3px;">
+            <div style="flex-grow:1;">
+              <b style="font-size:13px;">${item.title}</b>
+              <div style="font-size:11px; color:#888;">Option: ${item.variant}</div>
+              <div style="font-weight:700; font-size:14px; margin-top:2px;">₹${item.price}</div>
+              <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+                <button onclick="changeQty(${idx}, -1)" style="padding:2px 8px; border:1px solid #CCC; background:#FFF; cursor:pointer;">-</button>
+                <span style="font-size:13px; font-weight:700;">${item.quantity}</span>
+                <button onclick="changeQty(${idx}, 1)" style="padding:2px 8px; border:1px solid #CCC; background:#FFF; cursor:pointer;">+</button>
+                <button onclick="cart.splice(${idx},1); localStorage.setItem('zc_cart', JSON.stringify(cart)); renderCartList(); updateCartBadge();" style="border:none; background:none; color:red; font-size:12px; margin-left:auto; cursor:pointer;">Remove</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('cartSum').innerText = `₹${total}`;
+    }
+
+    function changeQty(idx, delta) {
+      cart[idx].quantity += delta;
+      if (cart[idx].quantity <= 0) cart.splice(idx, 1);
+      localStorage.setItem('zc_cart', JSON.stringify(cart));
+      renderCartList();
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      document.getElementById('cBadge').innerText = cart.reduce((a,c) => a + c.quantity, 0);
+    }
+
+    function startCheckout() {
+      if (cart.length === 0) return alert("Your cart is empty!");
+      toggleCart(false);
+      document.getElementById('checkoutModal').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+
+      const select = document.getElementById('cPayMethod');
+      select.onchange = toggleUpiView;
+      toggleUpiView();
+    }
+
+    function toggleUpiView() {
+      const method = document.getElementById('cPayMethod').value;
+      const upiBox = document.getElementById('upiArea');
+      if (method === 'DIRECT_UPI') {
+        const total = cart.reduce((a,c) => a + (c.price * c.quantity), 0);
+        const upiStr = `upi://pay?pa=${encodeURIComponent(storeUpiId)}&pn=ZayraCartz&am=${total}&cu=INR&tn=ZC_Order`;
+        document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiStr)}`;
+        document.getElementById('intentLink').href = upiStr;
+        upiBox.style.display = 'block';
+      } else {
+        upiBox.style.display = 'none';
+      }
+    }
+
+    async function placeOrder() {
+      const name = document.getElementById('cName').value.trim();
+      const phone = document.getElementById('cPhone').value.trim();
+      const address = document.getElementById('cAddress').value.trim();
+      const method = document.getElementById('cPayMethod').value;
+      const utr = document.getElementById('utrCode').value.trim();
+
+      if (!name || !phone || !address) return alert("Please fill Name, Phone, and Address!");
+      if (method === 'DIRECT_UPI' && !/^\d{12}$/.test(utr)) {
+        return alert("⚠️ Please enter exact 12-digit UTR from your UPI payment receipt.");
+      }
+
+      try {
+        const res = await fetch('/api/checkout/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ customer_name: name, customer_phone: phone, shipping_address: address, payment_method: method, utr_number: method === 'DIRECT_UPI' ? utr : null, items: cart })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          closeAll();
+          alert(`🎉 Order Placed Successfully!\n\nOrder No: ${data.order.order_number}\nStatus: ${data.order.payment_status}\n\nThank you for choosing ZayraCartz!`);
+          cart = [];
+          localStorage.removeItem('zc_cart');
+          updateCartBadge();
+          openView('home');
+        } else {
+          alert("⚠️ " + (data.error || "Order placement failed."));
+        }
+      } catch (err) {
+        alert("Server error. Please try again.");
+      }
+    }
+
+    // ORDER TRACKING
+    async function runTracking() {
+      const code = document.getElementById('trackCode').value.trim().toUpperCase();
+      const resBox = document.getElementById('trackResult');
+      if (!code) return alert("Enter order number (e.g. ZC-123456)");
+
+      resBox.innerHTML = '<p style="color:#666;">Checking database...</p>';
+      try {
+        const res = await fetch(`/api/orders/track/${encodeURIComponent(code)}`);
+        const data = await res.json();
+        if (res.ok) {
+          resBox.innerHTML = `
+            <div style="background:#FFF; border:1px solid #2874f0; padding:16px; border-radius:4px; margin-top:14px;">
+              <b style="font-size:16px;">Order #${data.order_number}</b><br>
+              <p style="margin:4px 0;">Customer: <b>${data.customer_name}</b></p>
+              <p style="margin:4px 0;">Status: <b style="color:#2874f0;">${data.order_status}</b> (${data.payment_status})</p>
+              <p style="margin:4px 0;">Courier: <b>${data.tracking_courier || 'Packing in progress'}</b></p>
+              <p style="margin:4px 0;">AWB: <b>${data.tracking_number || 'Will update on dispatch'}</b></p>
+            </div>
+          `;
+        } else {
+          resBox.innerHTML = `<p style="color:red; margin-top:10px;">${data.error}</p>`;
+        }
+      } catch (err) {
+        resBox.innerHTML = '<p style="color:red; margin-top:10px;">Tracking service offline.</p>';
+      }
+    }
+
+    // AI CHATBOT
+    function toggleBot() {
+      const b = document.getElementById('botChat');
+      b.style.display = b.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function sendBot() {
+      const inp = document.getElementById('botText');
+      const text = inp.value.trim();
+      if (!text) return;
+      const chat = document.getElementById('botMsgs');
+      chat.innerHTML += `<div style="background:var(--charcoal); color:#FFF; padding:8px 10px; border-radius:4px; align-self:flex-end;">${text}</div>`;
+      inp.value = '';
+
+      let reply = "I am here to help! You can track orders, ask about UPI/COD, or chat on WhatsApp.";
+      const q = text.toLowerCase();
+      if (q.includes('track') || q.includes('order')) reply = "To track an order, tap the delivery box icon in the header and enter your order code (e.g. ZC-XXXXXX).";
+      else if (q.includes('pay') || q.includes('upi') || q.includes('cod')) reply = "We accept Dynamic UPI QR payments (GPay/PhonePe) with 12-digit UTR verification and Cash on Delivery.";
+      else if (q.includes('return') || q.includes('exchange')) reply = "We have a 5-day replacement policy for damaged or defective items upon delivery.";
+      else if (q.includes('whatsapp') || q.includes('human')) reply = `<a href="https://wa.me/919876543210?text=Hi%20ZayraCartz" target="_blank" style="color:#2874f0; font-weight:700;">Click to Open WhatsApp</a>`;
+
+      setTimeout(() => {
+        chat.innerHTML += `<div style="background:#FFF; padding:8px 10px; border-radius:4px; border:1px solid #DDD; align-self:flex-start;">${reply}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }, 300);
+    }
+
+    function openView(v) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(`view-${v}`);
+      if (target) target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeAll() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('cartDrawer').classList.remove('open');
+      document.getElementById('checkoutModal').style.display = 'none';
+    }
+
+    init();
+  </script>
 </body>
 </html>
