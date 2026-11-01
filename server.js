@@ -11,22 +11,26 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Security & High Payload Parsers (Phone gallery HD photos ke liye)
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ limit: '15mb', extended: true }));
 
+// Smart Static Serving (Root aur Public folder dono check karega)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
 
+// Neon PostgreSQL Database Connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-// Self-Healing DB Setup
+// Self-Healing Database Initialization
 (async () => {
   try {
+    // 1. Zaroori tables aur columns ensure karna
     await pool.query(`
       CREATE TABLE IF NOT EXISTS store_settings (
         id SERIAL PRIMARY KEY,
@@ -38,36 +42,42 @@ const pool = new Pool({
       ALTER TABLE orders ADD COLUMN IF NOT EXISTS tracking_number VARCHAR(100);
     `);
 
+    // 2. Default Store Settings
     await pool.query(`
       INSERT INTO store_settings (key, value) VALUES
       ('upi_enabled', 'true'),
       ('cod_enabled', 'true'),
       ('store_upi_id', 'zayracarts@gmail.com'),
-      ('announcement_text', 'Free Express Shipping Across India | Wear Your Vibe.'),
-      ('hero_title', 'The Core Drop'),
-      ('hero_subtitle', 'Official Minimalist Streetwear Collection')
+      ('announcement_text', 'Complimentary Express Shipping Across India | Wear Your Vibe.'),
+      ('hero_title', 'Elevate Everyday Aesthetic'),
+      ('hero_subtitle', 'Heavyweight luxury cotton apparel curated for effortless individuality and streetwear comfort.')
       ON CONFLICT (key) DO NOTHING;
     `);
 
-    const hash = await bcrypt.hash('ZayraAdmin@2026', 10);
+    // 3. Master Admin Login Guarantee Sync
+    const adminEmail = 'zayracarts@gmail.com';
+    const adminPass = 'ZayraAdmin@2026';
+    const hash = await bcrypt.hash(adminPass, 10);
+    
     await pool.query(`
       INSERT INTO users (full_name, email, phone, password_hash, role)
-      VALUES ('Master Admin', 'zayracarts@gmail.com', '9876543210', $1, 'admin')
-      ON CONFLICT (email) DO UPDATE SET password_hash = $1, role = 'admin'
-    `, [hash]);
+      VALUES ('Master Admin', $1, '9876543210', $2, 'admin')
+      ON CONFLICT (email) DO UPDATE SET password_hash = $2, role = 'admin'
+    `, [adminEmail, hash]);
 
-    console.log('✅ ZayraCartz UTR Verification Engine Online.');
+    console.log('✅ ZayraCartz Master Engine & Admin Ready.');
   } catch (err) {
-    console.error('Init Notice:', err.message);
+    console.error('Init Error Notice:', err.message);
   }
 })();
 
+// JWT Authentication Middleware
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: 'Auth token missing' });
   const token = authHeader.split(' ')[1];
   jwt.verify(token, process.env.JWT_SECRET || 'zayracartz_master_secret_jwt_2026', (err, user) => {
-    if (err) return res.status(403).json({ error: 'Session expired' });
+    if (err) return res.status(403).json({ error: 'Session expired, please login again' });
     req.user = user;
     next();
   });
@@ -78,7 +88,11 @@ const requireAdmin = (req, res, next) => {
   else res.status(403).json({ error: 'Admin permission required' });
 };
 
-// ---------------- PUBLIC APIS ----------------
+// ==========================================
+// 1. PUBLIC STOREFRONT APIS
+// ==========================================
+
+// Public Store Settings
 app.get('/api/settings/public', async (req, res) => {
   try {
     const { rows } = await pool.query('SELECT key, value FROM store_settings');
@@ -86,10 +100,11 @@ app.get('/api/settings/public', async (req, res) => {
     rows.forEach(r => s[r.key] = r.value);
     res.json(s);
   } catch (err) {
-    res.status(500).json({ error: 'Settings error' });
+    res.status(500).json({ error: 'Failed to load settings' });
   }
 });
 
+// Active Product Catalog
 app.get('/api/products', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM products WHERE is_active = true ORDER BY created_at DESC');
@@ -99,7 +114,22 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// SECURE ORDER CREATION WITH STRICT UTR CHECK
+// Customer Live Order Tracking Lookup
+app.get('/api/orders/track/:order_number', async (req, res) => {
+  try {
+    const num = req.params.order_number.trim().toUpperCase();
+    const result = await pool.query(
+      'SELECT order_number, customer_name, total_amount, order_status, payment_status, tracking_courier, tracking_number, created_at FROM orders WHERE order_number = $1',
+      [num]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Order not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Tracking service error' });
+  }
+});
+
+// Secure Checkout with Strict Anti-Fake UTR Verification
 app.post('/api/checkout/create-order', async (req, res) => {
   const {
     customer_name, customer_email, customer_phone,
@@ -107,9 +137,9 @@ app.post('/api/checkout/create-order', async (req, res) => {
     items, payment_method, utr_number
   } = req.body;
 
-  if (!items || items.length === 0) return res.status(400).json({ error: 'Cart empty' });
+  if (!items || items.length === 0) return res.status(400).json({ error: 'Cart is empty' });
 
-  // 1. Strict UTR Validation for UPI Orders
+  // Strict UTR Checks for UPI
   if (payment_method === 'DIRECT_UPI') {
     const cleanUtr = (utr_number || '').trim();
 
@@ -118,7 +148,7 @@ app.post('/api/checkout/create-order', async (req, res) => {
       return res.status(400).json({ error: 'Invalid UTR! Please enter the exact 12-digit numeric Reference Number from your GPay/PhonePe receipt.' });
     }
 
-    // Dummy numbers like 000000000000, 111111111111, 123456789012 block
+    // Block obvious dummy numbers
     if (/^(\d)\1{11}$/.test(cleanUtr) || cleanUtr === '123456789012') {
       return res.status(400).json({ error: 'Fake UTR detected! Please enter genuine bank transaction reference.' });
     }
@@ -148,7 +178,6 @@ app.post('/api/checkout/create-order', async (req, res) => {
     const total_amount = subtotal + shipping_fee;
     const order_number = 'ZC-' + Date.now().toString().slice(-6);
 
-    // UPI orders start as AWAITING_VERIFICATION and ON_HOLD
     const payment_status = (payment_method === 'DIRECT_UPI') ? 'AWAITING_VERIFICATION' : 'PENDING';
     const order_status = (payment_method === 'DIRECT_UPI') ? 'ON_HOLD' : 'PLACED';
 
@@ -161,18 +190,22 @@ app.post('/api/checkout/create-order', async (req, res) => {
       [order_number, customer_name, customer_email, customer_phone, shipping_street, shipping_city, shipping_state, shipping_pincode, JSON.stringify(validated), subtotal, shipping_fee, total_amount, payment_method, payment_status, order_status, utr_number ? utr_number.trim() : null]
     );
 
-    // Decrement stock
+    // Auto decrement inventory stock
     for (const it of validated) {
       await pool.query('UPDATE products SET stock = GREATEST(0, stock - $1) WHERE id = $2', [it.quantity, it.product_id]);
     }
 
     res.status(201).json({ order: result.rows[0] });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Order creation failed: ' + err.message });
   }
 });
 
-// ---------------- ADMIN APIS ----------------
+// ==========================================
+// 2. ADMIN CONSOLE APIS
+// ==========================================
+
+// Admin Login
 app.post('/api/auth/login', async (req, res) => {
   let { email, password } = req.body;
   email = (email || '').trim().toLowerCase();
@@ -185,13 +218,18 @@ app.post('/api/auth/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET || 'zayracartz_master_secret_jwt_2026', { expiresIn: '15d' });
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'zayracartz_master_secret_jwt_2026',
+      { expiresIn: '15d' }
+    );
     res.json({ token, user: { id: user.id, full_name: user.full_name, email: user.email, role: user.role } });
   } catch (err) {
     res.status(500).json({ error: 'Auth failed' });
   }
 });
 
+// Admin Metrics & Stats
 app.get('/api/admin/metrics', authenticateJWT, requireAdmin, async (req, res) => {
   try {
     const rev = await pool.query("SELECT SUM(total_amount) as total FROM orders WHERE payment_status = 'PAID'");
@@ -210,12 +248,17 @@ app.get('/api/admin/metrics', authenticateJWT, requireAdmin, async (req, res) =>
   }
 });
 
+// Admin Orders
 app.get('/api/admin/orders', authenticateJWT, requireAdmin, async (req, res) => {
-  const result = await pool.query('SELECT * FROM orders ORDER BY created_at DESC');
-  res.json(result.rows);
+  try {
+    const result = await pool.query('SELECT * FROM orders ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to retrieve orders' });
+  }
 });
 
-// 1-CLICK UTR VERIFY OR REJECT
+// 1-Click UTR Verification: Approve or Reject
 app.put('/api/admin/orders/:id/verify-pay', authenticateJWT, requireAdmin, async (req, res) => {
   const { action } = req.body; // 'APPROVE' ya 'REJECT'
   try {
@@ -236,24 +279,33 @@ app.put('/api/admin/orders/:id/verify-pay', authenticateJWT, requireAdmin, async
   }
 });
 
+// Order Fulfillment & Tracking Update
 app.put('/api/admin/orders/:id/status', authenticateJWT, requireAdmin, async (req, res) => {
   const { order_status, payment_status, tracking_courier, tracking_number } = req.body;
-  const result = await pool.query(
-    `UPDATE orders SET 
-      order_status = COALESCE($1, order_status),
-      payment_status = COALESCE($2, payment_status),
-      tracking_courier = COALESCE($3, tracking_courier),
-      tracking_number = COALESCE($4, tracking_number)
-     WHERE id = $5 RETURNING *`,
-    [order_status, payment_status, tracking_courier, tracking_number, req.params.id]
-  );
-  res.json(result.rows[0]);
+  try {
+    const result = await pool.query(
+      `UPDATE orders SET 
+        order_status = COALESCE($1, order_status),
+        payment_status = COALESCE($2, payment_status),
+        tracking_courier = COALESCE($3, tracking_courier),
+        tracking_number = COALESCE($4, tracking_number)
+       WHERE id = $5 RETURNING *`,
+      [order_status, payment_status, tracking_courier, tracking_number, req.params.id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Order update error' });
+  }
 });
 
-// Products & Settings
+// Products CRUD
 app.get('/api/admin/products', authenticateJWT, requireAdmin, async (req, res) => {
-  const result = await pool.query('SELECT * FROM products ORDER BY created_at DESC');
-  res.json(result.rows);
+  try {
+    const result = await pool.query('SELECT * FROM products ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch inventory' });
+  }
 });
 
 app.post('/api/admin/products', authenticateJWT, requireAdmin, async (req, res) => {
@@ -272,28 +324,64 @@ app.post('/api/admin/products', authenticateJWT, requireAdmin, async (req, res) 
 
 app.put('/api/admin/products/:id', authenticateJWT, requireAdmin, async (req, res) => {
   const { title, price, stock, images } = req.body;
-  const result = await pool.query(
-    `UPDATE products SET title = COALESCE($1, title), price = COALESCE($2, price), stock = COALESCE($3, stock), images = COALESCE($4, images) WHERE id = $5 RETURNING *`,
-    [title, price, stock, images, req.params.id]
-  );
-  res.json(result.rows[0]);
+  try {
+    const result = await pool.query(
+      `UPDATE products SET 
+        title = COALESCE($1, title),
+        price = COALESCE($2, price),
+        stock = COALESCE($3, stock),
+        images = COALESCE($4, images)
+       WHERE id = $5 RETURNING *`,
+      [title, price, stock, images, req.params.id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Update error' });
+  }
 });
 
 app.delete('/api/admin/products/:id', authenticateJWT, requireAdmin, async (req, res) => {
-  await pool.query('DELETE FROM products WHERE id = $1', [req.params.id]);
-  res.json({ success: true });
-});
-
-app.post('/api/admin/settings', authenticateJWT, requireAdmin, async (req, res) => {
-  for (const [k, v] of Object.entries(req.body)) {
-    if (v !== undefined) {
-      await pool.query('INSERT INTO store_settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET value = $2', [k, String(v)]);
-    }
+  try {
+    await pool.query('DELETE FROM products WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Delete error' });
   }
-  res.json({ success: true });
 });
 
-// Smart Routes
+// Dynamic Settings Update
+app.post('/api/admin/settings', authenticateJWT, requireAdmin, async (req, res) => {
+  try {
+    for (const [k, v] of Object.entries(req.body)) {
+      if (v !== undefined) {
+        await pool.query('INSERT INTO store_settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET value = $2', [k, String(v)]);
+      }
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Settings update failed' });
+  }
+});
+
+// Orders CSV Export
+app.get('/api/admin/export/orders.csv', authenticateJWT, requireAdmin, async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT order_number, customer_name, customer_phone, total_amount, payment_method, payment_status, utr_number, order_status, shipping_street, shipping_city, shipping_pincode, created_at FROM orders ORDER BY created_at DESC');
+    let csv = 'Order No,Customer,Phone,Amount,Payment Method,Payment Status,UTR Number,Order Status,Address,City,Pincode,Date\n';
+    rows.forEach(r => {
+      csv += `"${r.order_number}","${r.customer_name}","${r.customer_phone}",${r.total_amount},"${r.payment_method}","${r.payment_status}","${r.utr_number || '-'}","${r.order_status}","${r.shipping_street}","${r.shipping_city}","${r.shipping_pincode}","${r.created_at.toISOString()}"\n`;
+    });
+    res.header('Content-Type', 'text/csv');
+    res.attachment('ZayraCartz_Orders.csv');
+    res.send(csv);
+  } catch (err) {
+    res.status(500).send('CSV export generation error');
+  }
+});
+
+// ==========================================
+// 3. SMART ANTI-CRASH FALLBACK ROUTES
+// ==========================================
 app.get('/admin', (req, res) => {
   const p = path.join(__dirname, 'public', 'admin.html');
   const r = path.join(__dirname, 'admin.html');
@@ -307,5 +395,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`ZayraCartz server running on port ${PORT}`);
+  console.log(`🚀 ZayraCartz Master Server running on port ${PORT}`);
 });
