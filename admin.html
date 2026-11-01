@@ -18,17 +18,17 @@
     .container { max-width: 900px; margin: 15px auto; padding: 0 14px; }
     .card { background: #FFF; border-radius: 6px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
     h2 { font-size: 16px; margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid #EEE; padding-bottom: 6px; }
-    .grid-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    .grid-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
     .stat-box { background: var(--charcoal); color: #FFF; padding: 12px; border-radius: 6px; }
     .stat-box span { font-size: 11px; color: var(--gold); text-transform: uppercase; }
     .stat-box h3 { font-size: 20px; margin-top: 4px; }
     input, select, textarea { width: 100%; padding: 10px; margin: 6px 0 12px; border: 1px solid #CCC; border-radius: 4px; font-size: 14px; }
     .btn { background: var(--charcoal); color: #FFF; border: none; padding: 12px; width: 100%; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 13px; border-radius: 4px; }
-    .btn-edit { background: #3498db; color: white; padding: 5px 10px; font-size: 12px; border: none; border-radius: 3px; cursor: pointer; }
-    .btn-del { background: #e74c3c; color: white; padding: 5px 10px; font-size: 12px; border: none; border-radius: 3px; cursor: pointer; }
-    .preview-box { width: 100px; height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #DDD; display: none; margin-bottom: 10px; }
+    .btn-approve { background: #27ae60; color: white; padding: 6px 10px; font-size: 11px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; width: 100%; margin-bottom: 4px; }
+    .btn-reject { background: #e74c3c; color: white; padding: 6px 10px; font-size: 11px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; width: 100%; }
+    .utr-badge { background: #FFF3CD; border: 1px solid #FFEEBA; padding: 4px 6px; font-size: 13px; font-weight: bold; color: #856404; display: inline-block; border-radius: 3px; letter-spacing: 1px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #EEE; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #EEE; vertical-align: top; }
   </style>
 </head>
 <body>
@@ -52,7 +52,7 @@
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('tabOrders')">🚚 Orders & UTR</button>
       <button class="tab-btn" onclick="switchTab('tabProducts')">📦 Products & Edit</button>
-      <button class="tab-btn" onclick="switchTab('tabSettings')">🎨 Banners & Settings</button>
+      <button class="tab-btn" onclick="switchTab('tabSettings')">⚙️ UPI ID & Settings</button>
     </div>
 
     <div class="container">
@@ -60,20 +60,21 @@
       <!-- 1. ORDERS TAB -->
       <div id="tabOrders">
         <div class="grid-stats">
-          <div class="stat-box"><span>Total Sales</span><h3 id="statRev">₹0</h3></div>
-          <div class="stat-box"><span>Total Orders</span><h3 id="statOrd">0</h3></div>
+          <div class="stat-box"><span>Verified Sales</span><h3 id="statRev">₹0</h3></div>
+          <div class="stat-box"><span>Orders Placed</span><h3 id="statOrd">0</h3></div>
+          <div class="stat-box" style="background:#856404;"><span style="color:#FFF;">Pending UTR</span><h3 id="statPendingUtr" style="color:#FFF;">0</h3></div>
         </div>
 
         <div class="card">
-          <h2>Customer Orders</h2>
+          <h2>Customer Orders & Bank Verification</h2>
           <div style="overflow-x:auto;">
             <table>
               <thead>
                 <tr>
                   <th>Order / Amount</th>
-                  <th>Customer / Address</th>
-                  <th>UTR & Payment</th>
-                  <th>Action</th>
+                  <th>Customer / WhatsApp</th>
+                  <th>UTR Number (Check Bank)</th>
+                  <th>Verify Payment</th>
                 </tr>
               </thead>
               <tbody id="ordersTbody">Loading...</tbody>
@@ -82,7 +83,7 @@
         </div>
       </div>
 
-      <!-- 2. PRODUCTS & PHOTO UPLOAD TAB -->
+      <!-- 2. PRODUCTS TAB -->
       <div id="tabProducts" style="display:none;">
         <div class="card">
           <h2 id="formTitle">+ Add New Product</h2>
@@ -103,10 +104,10 @@
 
           <label style="font-size:12px; font-weight:bold;">Product Photo (Gallery se direct upload karein):</label>
           <input type="file" id="pFile" accept="image/*" onchange="previewImg(event)">
-          <img id="imgPreview" class="preview-box">
+          <img id="imgPreview" style="width:100px; height:100px; object-fit:cover; display:none; margin-bottom:10px; border:1px solid #ddd;">
 
-          <button class="btn" id="saveProdBtn" onclick="saveProduct()">Save & Publish to Store</button>
-          <button id="cancelEditBtn" class="btn" style="background:#777; margin-top:8px; display:none;" onclick="resetForm()">Cancel Edit</button>
+          <button class="btn" id="saveProdBtn" onclick="saveProduct()">Save & Publish</button>
+          <button id="cancelEditBtn" class="btn" style="background:#777; margin-top:8px; display:none;" onclick="resetForm()">Cancel</button>
         </div>
 
         <div class="card">
@@ -115,23 +116,17 @@
         </div>
       </div>
 
-      <!-- 3. BANNERS & SETTINGS TAB -->
+      <!-- 3. SETTINGS TAB -->
       <div id="tabSettings" style="display:none;">
         <div class="card">
-          <h2>Homepage Banner & Text Customization</h2>
-          <label style="font-size:12px; font-weight:bold;">Top Black Announcement Bar:</label>
+          <h2>Store Settings</h2>
+          <label style="font-size:12px; font-weight:bold;">Your Personal UPI ID (Customer QR me ye link hoga):</label>
+          <input type="text" id="setUpiId" placeholder="e.g. 9876543210@ybl ya aapka@okaxis">
+
+          <label style="font-size:12px; font-weight:bold;">Top Announcement Bar:</label>
           <input type="text" id="setAnnouncement">
 
-          <label style="font-size:12px; font-weight:bold;">Hero Banner Big Title:</label>
-          <input type="text" id="setHeroTitle">
-
-          <label style="font-size:12px; font-weight:bold;">Hero Banner Subtitle:</label>
-          <input type="text" id="setHeroSub">
-
-          <label style="font-size:12px; font-weight:bold;">Store UPI ID (Payments will go here):</label>
-          <input type="text" id="setUpiId">
-
-          <button class="btn" onclick="saveSettings()">Save Changes</button>
+          <button class="btn" onclick="saveSettings()">Save Configuration</button>
         </div>
       </div>
 
@@ -177,7 +172,6 @@
       loadOrders();
     }
 
-    // Orders with UTR and WhatsApp Direct Chat
     async function loadOrders() {
       const res = await fetch('/api/admin/orders', { headers: { 'Authorization': `Bearer ${token}` } });
       const orders = await res.json();
@@ -186,16 +180,20 @@
 
       document.getElementById('statRev').innerText = `₹${metrics.totalRevenue}`;
       document.getElementById('statOrd').innerText = metrics.totalOrders;
+      document.getElementById('statPendingUtr').innerText = metrics.pendingUtrCount;
 
       const tb = document.getElementById('ordersTbody');
-      if (orders.length === 0) { tb.innerHTML = '<tr><td colspan="4">No orders yet.</td></tr>'; return; }
+      if (orders.length === 0) { tb.innerHTML = '<tr><td colspan="4">No orders placed yet.</td></tr>'; return; }
 
       tb.innerHTML = orders.map(o => `
         <tr>
           <td>
             <b>${o.order_number}</b><br>
             ₹${o.total_amount} (${o.payment_method})<br>
-            <small>${new Date(o.created_at).toLocaleDateString()}</small>
+            <small>${new Date(o.created_at).toLocaleDateString()}</small><br>
+            <span style="font-size:11px; font-weight:bold; color:${o.payment_status === 'PAID' ? 'green' : (o.payment_status === 'FAILED_FAKE_UTR' ? 'red' : 'orange')}">
+              ${o.payment_status}
+            </span>
           </td>
           <td>
             <b>${o.customer_name}</b><br>
@@ -203,39 +201,32 @@
             <small>${o.shipping_street}, ${o.shipping_city}</small>
           </td>
           <td>
-            <b>UTR:</b> <span style="background:#FFF3CD; padding:2px 5px; font-weight:bold;">${o.utr_number || 'No UTR (COD)'}</span><br>
-            <b>Status:</b> ${o.order_status} (${o.payment_status})
+            ${o.utr_number ? `<span class="utr-badge">${o.utr_number}</span>` : '<i>COD (No UTR)</i>'}<br>
+            <small>PhonePe/GPay me ye number match karein</small>
           </td>
-          <td>
-            <select onchange="updateStatus('${o.id}', this.value)" style="padding:4px; font-size:12px; margin:0 0 4px;">
-              <option value="">Change Status</option>
-              <option value="PAID_CONFIRMED">Confirm & Paid</option>
-              <option value="SHIPPED">Mark Shipped</option>
-              <option value="DELIVERED">Mark Delivered</option>
-              <option value="CANCELLED">Cancel</option>
-            </select>
+          <td style="min-width: 140px;">
+            ${o.payment_status === 'AWAITING_VERIFICATION' ? `
+              <button class="btn-approve" onclick="verifyPay('${o.id}', 'APPROVE')">✅ Confirm & Mark Paid</button>
+              <button class="btn-reject" onclick="verifyPay('${o.id}', 'REJECT')">❌ Reject Fake UTR</button>
+            ` : (o.payment_status === 'PAID' ? '<b style="color:green;">✓ Verified & Paid</b>' : '<b style="color:red;">✕ Cancelled</b>')}
           </td>
         </tr>
       `).join('');
     }
 
-    async function updateStatus(id, val) {
-      if (!val) return;
-      let order_status = val;
-      let payment_status = undefined;
-      if (val === 'PAID_CONFIRMED') {
-        order_status = 'CONFIRMED';
-        payment_status = 'PAID';
-      }
-      await fetch(`/api/admin/orders/${id}/status`, {
+    async function verifyPay(id, action) {
+      const msg = action === 'APPROVE' ? "Kya aapke bank account me paisa aa gaya hai?" : "Kya ye UTR fake hai? Is order ko cancel karein?";
+      if (!confirm(msg)) return;
+
+      await fetch(`/api/admin/orders/${id}/verify-pay`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ order_status, payment_status })
+        body: JSON.stringify({ action })
       });
       loadOrders();
     }
 
-    // Auto-compress & preview image from phone gallery
+    // Photo preview & upload
     function previewImg(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -259,7 +250,6 @@
       reader.readAsDataURL(file);
     }
 
-    // Products List & Edit
     let allProds = [];
     async function loadProducts() {
       const res = await fetch('/api/admin/products', { headers: { 'Authorization': `Bearer ${token}` } });
@@ -267,81 +257,30 @@
       document.getElementById('prodsList').innerHTML = allProds.map((p, idx) => `
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #EEE; padding:10px 0;">
           <div style="display:flex; gap:10px; align-items:center;">
-            <img src="${(p.images && p.images[0]) || ''}" style="width:50px; height:50px; object-fit:cover; border-radius:4px; background:#EEE;">
-            <div>
-              <b>${p.title}</b><br>
-              <small>₹${p.price} | Stock: ${p.stock}</small>
-            </div>
+            <img src="${(p.images && p.images[0]) || ''}" style="width:45px; height:45px; object-fit:cover; border-radius:4px; background:#EEE;">
+            <div><b>${p.title}</b><br><small>₹${p.price} | Stock: ${p.stock}</small></div>
           </div>
-          <div style="display:flex; gap:6px;">
-            <button class="btn-edit" onclick="startEdit(${idx})">Edit</button>
-            <button class="btn-del" onclick="deleteProd(${p.id})">Delete</button>
-          </div>
+          <button onclick="deleteProd(${p.id})" style="color:red; border:none; background:none; cursor:pointer;">Delete</button>
         </div>
       `).join('');
     }
 
-    function startEdit(idx) {
-      const p = allProds[idx];
-      document.getElementById('editProdId').value = p.id;
-      document.getElementById('pTitle').value = p.title;
-      document.getElementById('pPrice').value = p.price;
-      document.getElementById('pStock').value = p.stock;
-      if (p.images && p.images[0]) {
-        uploadedBase64 = p.images[0];
-        document.getElementById('imgPreview').src = uploadedBase64;
-        document.getElementById('imgPreview').style.display = 'block';
-      }
-      document.getElementById('formTitle').innerText = "✏️ Edit Product";
-      document.getElementById('saveProdBtn').innerText = "Update Product";
-      document.getElementById('cancelEditBtn').style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function resetForm() {
-      document.getElementById('editProdId').value = '';
-      document.getElementById('pTitle').value = '';
-      document.getElementById('pPrice').value = '';
-      document.getElementById('pStock').value = '';
-      document.getElementById('pFile').value = '';
-      document.getElementById('imgPreview').style.display = 'none';
-      uploadedBase64 = '';
-      document.getElementById('formTitle').innerText = "+ Add New Product";
-      document.getElementById('saveProdBtn').innerText = "Save & Publish to Store";
-      document.getElementById('cancelEditBtn').style.display = 'none';
-    }
-
     async function saveProduct() {
-      const editId = document.getElementById('editProdId').value;
       const title = document.getElementById('pTitle').value.trim();
       const price = parseFloat(document.getElementById('pPrice').value);
       const stock = parseInt(document.getElementById('pStock').value);
+      if (!title || isNaN(price)) return alert("Title and price required.");
 
-      if (!title || isNaN(price)) return alert("Please enter title and price.");
-
-      const payload = {
-        title,
-        price,
-        stock: isNaN(stock) ? 50 : stock,
-        images: uploadedBase64 ? [uploadedBase64] : []
-      };
-
-      if (editId) {
-        await fetch(`/api/admin/products/${editId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify(payload)
-        });
-        alert("Product updated!");
-      } else {
-        await fetch('/api/admin/products', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify(payload)
-        });
-        alert("Product published!");
-      }
-      resetForm();
+      await fetch('/api/admin/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ title, price, stock: isNaN(stock) ? 50 : stock, images: uploadedBase64 ? [uploadedBase64] : [] })
+      });
+      alert("Product saved!");
+      document.getElementById('pTitle').value = '';
+      document.getElementById('pPrice').value = '';
+      document.getElementById('imgPreview').style.display = 'none';
+      uploadedBase64 = '';
       loadProducts();
     }
 
@@ -351,29 +290,20 @@
       loadProducts();
     }
 
-    // Settings & Banners
     async function loadSettings() {
       const res = await fetch('/api/settings/public');
       const s = await res.json();
-      document.getElementById('setAnnouncement').value = s.announcement_text || '';
-      document.getElementById('setHeroTitle').value = s.hero_title || '';
-      document.getElementById('setHeroSub').value = s.hero_subtitle || '';
       document.getElementById('setUpiId').value = s.store_upi_id || '';
+      document.getElementById('setAnnouncement').value = s.announcement_text || '';
     }
 
     async function saveSettings() {
-      const payload = {
-        announcement_text: document.getElementById('setAnnouncement').value,
-        hero_title: document.getElementById('setHeroTitle').value,
-        hero_subtitle: document.getElementById('setHeroSub').value,
-        store_upi_id: document.getElementById('setUpiId').value
-      };
       await fetch('/api/admin/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ store_upi_id: document.getElementById('setUpiId').value, announcement_text: document.getElementById('setAnnouncement').value })
       });
-      alert("Settings & Banners Updated!");
+      alert("Settings saved!");
     }
   </script>
 </body>
