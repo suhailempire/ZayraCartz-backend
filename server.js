@@ -17,7 +17,6 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(express.json());
 
-// Smart Static Serving: Dono jagah check karega (root ya public folder)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
 
@@ -25,6 +24,23 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
+
+// AUTO-SYNC MASTER ADMIN CREDENTIALS (Guaranteed Fix)
+(async () => {
+  try {
+    const adminEmail = 'zayracarts@gmail.com';
+    const hash = await bcrypt.hash('ZayraAdmin@2026', 10);
+    await pool.query(
+      `INSERT INTO users (full_name, email, phone, password_hash, role)
+       VALUES ('Master Admin', $1, '9876543210', $2, 'admin')
+       ON CONFLICT (email) DO UPDATE SET password_hash = $2, role = 'admin'`,
+      [adminEmail, hash]
+    );
+    console.log('Master Admin synced successfully: zayracarts@gmail.com');
+  } catch (err) {
+    console.error('Admin sync notice:', err.message);
+  }
+})();
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder',
@@ -47,12 +63,18 @@ const requireAdmin = (req, res, next) => {
   else res.status(403).json({ error: 'Admin access required' });
 };
 
-// 1. Auth APIs
+// 1. Auth APIs with Auto-Trim for Mobile Keyboards
 app.post('/api/auth/login', async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+  
+  email = email.trim().toLowerCase();
+  password = password.trim();
+
   try {
-    const result = await pool.query('SELECT * FROM users WHERE email = LOWER($1)', [email]);
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length === 0) return res.status(401).json({ error: 'Invalid credentials' });
+    
     const user = result.rows[0];
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
@@ -171,7 +193,6 @@ app.post('/api/admin/products', authenticateJWT, requireAdmin, async (req, res) 
   }
 });
 
-// Smart Admin Route
 app.get('/admin', (req, res) => {
   const publicAdmin = path.join(__dirname, 'public', 'admin.html');
   const rootAdmin = path.join(__dirname, 'admin.html');
@@ -180,7 +201,6 @@ app.get('/admin', (req, res) => {
   res.send('Admin dashboard file not found on server.');
 });
 
-// Smart Frontend Fallback Route
 app.get('*', (req, res) => {
   const publicIndex = path.join(__dirname, 'public', 'index.html');
   const rootIndex = path.join(__dirname, 'index.html');
