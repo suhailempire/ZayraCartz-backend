@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const Razorpay = require('razorpay');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +16,10 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(express.json());
+
+// Smart Static Serving: Dono jagah check karega (root ya public folder)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -86,7 +90,7 @@ app.post('/api/checkout/create-order', async (req, res) => {
   const { 
     customer_name, customer_email, customer_phone,
     shipping_street, shipping_city, shipping_state, shipping_pincode,
-    items, payment_method, coupon_code 
+    items, payment_method 
   } = req.body;
 
   if (!items || items.length === 0) return res.status(400).json({ error: 'Cart empty' });
@@ -167,8 +171,22 @@ app.post('/api/admin/products', authenticateJWT, requireAdmin, async (req, res) 
   }
 });
 
+// Smart Admin Route
+app.get('/admin', (req, res) => {
+  const publicAdmin = path.join(__dirname, 'public', 'admin.html');
+  const rootAdmin = path.join(__dirname, 'admin.html');
+  if (fs.existsSync(publicAdmin)) return res.sendFile(publicAdmin);
+  if (fs.existsSync(rootAdmin)) return res.sendFile(rootAdmin);
+  res.send('Admin dashboard file not found on server.');
+});
+
+// Smart Frontend Fallback Route
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const publicIndex = path.join(__dirname, 'public', 'index.html');
+  const rootIndex = path.join(__dirname, 'index.html');
+  if (fs.existsSync(publicIndex)) return res.sendFile(publicIndex);
+  if (fs.existsSync(rootIndex)) return res.sendFile(rootIndex);
+  res.send('Storefront index.html not found on server.');
 });
 
 app.listen(PORT, () => {
