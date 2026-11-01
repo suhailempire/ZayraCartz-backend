@@ -5,34 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZayraCartz | Wear Your Vibe.</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root { --ivory: #FAF8F5; --charcoal: #1C1C1C; --gold: #C5A880; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background-color: var(--ivory); color: var(--charcoal); }
-    .announcement { background: var(--charcoal); color: #FFF; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid var(--gold); }
-    header { position: sticky; top: 0; background: rgba(250, 248, 245, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(197, 168, 128, 0.3); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+
+    /* Announcement */
+    .announcement { background: var(--charcoal); color: #FFF; text-align: center; padding: 9px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid var(--gold); }
+
+    /* Header */
+    header { position: sticky; top: 0; background: rgba(250, 248, 245, 0.96); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(197, 168, 128, 0.3); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
     .brand { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--charcoal); text-decoration: none; }
     .brand span { color: var(--gold); }
     .cart-btn { background: none; border: none; cursor: pointer; position: relative; }
-    .badge { position: absolute; top: -5px; right: -5px; background: var(--gold); color: #000; font-size: 10px; font-weight: bold; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .hero { text-align: center; padding: 45px 20px; background: linear-gradient(180deg, var(--ivory), #F1ECE5); border-bottom: 1px solid rgba(197, 168, 128, 0.2); }
-    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 38px; margin: 8px 0; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; max-width: 1100px; margin: 20px auto 50px; padding: 0 16px; }
+    .badge { position: absolute; top: -5px; right: -5px; background: var(--gold); color: #000; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    /* Hero Banner */
+    .hero { text-align: center; padding: 45px 20px 35px; background: linear-gradient(180deg, var(--ivory), #F1ECE5); border-bottom: 1px solid rgba(197, 168, 128, 0.2); }
+    .hero p { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #9C7A44; font-weight: bold; margin-bottom: 6px; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 38px; margin: 0 0 8px 0; }
+    .hero span { font-size: 13px; color: #666; }
+
+    /* Products Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; max-width: 1100px; margin: 25px auto 50px; padding: 0 16px; }
     .card { background: #FFF; border: 1px solid rgba(197, 168, 128, 0.3); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
-    .card img { width: 100%; height: 300px; object-fit: cover; background: #eee; }
+    .card img { width: 100%; height: 320px; object-fit: cover; background: #eee; }
     .card-info { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
-    .btn { background: var(--charcoal); color: #FFF; border: none; padding: 12px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; margin-top: auto; width: 100%; }
-    .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100%; background: var(--ivory); z-index: 200; box-shadow: -4px 0 20px rgba(0,0,0,0.2); transition: right 0.3s ease; display: flex; flex-direction: column; }
+    .card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .card-price { font-size: 16px; font-weight: 700; color: var(--charcoal); margin-bottom: 14px; }
+    .btn { background: var(--charcoal); color: #FFF; border: none; padding: 12px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; width: 100%; text-decoration: none; display: block; text-align: center; border-radius: 2px; }
+    .btn-upi { background: #0088cc; margin-bottom: 12px; }
+    .btn-upi:hover { background: #006da6; }
+
+    /* Cart Drawer */
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 200; }
+    .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100%; background: var(--ivory); z-index: 250; box-shadow: -4px 0 20px rgba(0,0,0,0.2); transition: right 0.3s ease; display: flex; flex-direction: column; }
     .drawer.open { right: 0; }
+    .drawer-header { padding: 16px 20px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+    .drawer-items { flex-grow: 1; overflow-y: auto; padding: 16px 20px; }
+    .drawer-footer { padding: 18px 20px; background: #F3EFEA; border-top: 1px solid #ddd; }
+
+    /* Modals */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 300; padding: 15px; }
-    .modal-box { background: #FFF; max-width: 480px; width: 100%; padding: 22px; border-radius: 4px; max-height: 90vh; overflow-y: auto; }
-    .modal-box input, .modal-box textarea, .modal-box select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #CCC; font-size: 14px; }
+    .modal-box { background: #FFF; max-width: 460px; width: 100%; padding: 24px; border-radius: 4px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .modal-box input, .modal-box textarea, .modal-box select { width: 100%; padding: 11px; margin-bottom: 10px; border: 1px solid #CCC; border-radius: 3px; font-size: 14px; }
   </style>
 </head>
 <body>
-  <div class="announcement">Free Express Shipping Across India | Wear Your Vibe.</div>
 
+  <!-- Announcement Bar (Admin se dynamic change hoga) -->
+  <div class="announcement" id="barText">Free Express Shipping Across India | Wear Your Vibe.</div>
+
+  <!-- Header -->
   <header>
     <a href="/" class="brand">ZAYRA<span>CARTZ</span></a>
     <button class="cart-btn" onclick="toggleCart()">
@@ -41,164 +65,275 @@
     </button>
   </header>
 
+  <!-- Hero Banner (Admin se dynamic change hoga) -->
   <div class="hero">
-    <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #9C7A44; font-weight: bold;">Wear Your Vibe</p>
-    <h1>The Core Drop</h1>
-    <p style="font-size: 13px; color: #666;">Heavyweight everyday streetwear & apparel.</p>
+    <p>Official Collection</p>
+    <h1 id="heroH1">The Core Drop</h1>
+    <span id="heroSub">Official Minimalist Streetwear Collection</span>
   </div>
 
-  <div class="grid" id="pGrid"><p style="text-align:center; grid-column:1/-1;">Loading catalog...</p></div>
+  <!-- Product Catalog Grid -->
+  <div class="grid" id="pGrid"><p style="text-align:center; grid-column:1/-1;">Loading latest collection...</p></div>
 
   <!-- Cart Drawer -->
+  <div class="drawer-overlay" id="cOverlay" onclick="toggleCart()"></div>
   <div class="drawer" id="cDrawer">
-    <div style="padding: 16px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
-      <h3>Your Bag</h3>
-      <button onclick="toggleCart()" style="border:none; background:none; font-size:18px; cursor:pointer;">✕</button>
+    <div class="drawer-header">
+      <h3 style="font-family:'Cormorant Garamond', serif; font-size:22px;">Your Bag</h3>
+      <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
     </div>
-    <div id="cItems" style="flex-grow:1; overflow-y:auto; padding:15px;"></div>
-    <div style="padding: 16px; background: #F3EFEA; border-top: 1px solid #ddd;">
-      <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:10px;">
+    <div class="drawer-items" id="cItems"></div>
+    <div class="drawer-footer">
+      <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:16px; margin-bottom:12px;">
         <span>Total:</span><span id="cTotal">₹0</span>
       </div>
-      <button class="btn" onclick="openCheckout()">Checkout</button>
+      <button class="btn" onclick="openAddressModal()">Proceed to Checkout</button>
     </div>
   </div>
 
-  <!-- Checkout Modal -->
-  <div class="modal" id="cModal">
+  <!-- Step 1 Modal: Address & Payment Selection -->
+  <div class="modal" id="addrModal">
     <div class="modal-box">
-      <h3 style="font-family:'Cormorant Garamond', serif; font-size:22px; margin-bottom:12px;">Delivery Address</h3>
+      <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; margin-bottom:14px;">Delivery Address</h3>
       <input type="text" id="custName" placeholder="Full Name *" required>
       <input type="email" id="custEmail" placeholder="Email Address *" required>
-      <input type="tel" id="custPhone" placeholder="10-digit WhatsApp/Phone Number *" required>
-      <textarea id="custStreet" placeholder="Full Address with Landmark *" rows="2" required></textarea>
+      <input type="tel" id="custPhone" placeholder="10-digit WhatsApp/Mobile Number *" required>
+      <textarea id="custStreet" placeholder="Street Address / Flat / Landmark *" rows="2" required></textarea>
       <div style="display: flex; gap: 8px;">
         <input type="text" id="custCity" placeholder="City *" required>
         <input type="text" id="custState" placeholder="State *" required>
       </div>
-      <input type="text" id="custPin" placeholder="Pincode *" required>
+      <input type="text" id="custPin" placeholder="6-digit Pincode *" required>
       
-      <label style="font-size:12px; font-weight:bold;">Payment Method:</label>
+      <label style="font-size:12px; font-weight:bold; display:block; margin: 6px 0 4px;">Choose Payment Mode:</label>
       <select id="payMethod">
-        <option value="ONLINE_UPI">Instant UPI / QR / Cards</option>
+        <option value="DIRECT_UPI">Instant UPI (Dynamic QR / PhonePe / GPay)</option>
         <option value="COD">Cash on Delivery (COD)</option>
       </select>
 
-      <button class="btn" style="margin-top:10px;" onclick="placeOrder()">Place Order</button>
-      <button onclick="closeCheckout()" style="background:none; border:none; width:100%; margin-top:8px; color:#888; cursor:pointer;">Cancel</button>
+      <button class="btn" style="margin-top:12px;" onclick="proceedToPayment()">Continue to Payment</button>
+      <button onclick="closeModal('addrModal')" style="background:none; border:none; width:100%; margin-top:8px; color:#888; cursor:pointer;">Cancel</button>
     </div>
   </div>
 
-  <footer style="background:#1C1C1C; color:#AAA; text-align:center; padding:35px 20px; font-size:12px; margin-top:40px; border-top:2px solid var(--gold);">
+  <!-- Step 2 Modal: Live Dynamic UPI QR & UTR Verification -->
+  <div class="modal" id="upiModal">
+    <div class="modal-box" style="text-align: center;">
+      <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px;">Scan & Pay via UPI</h3>
+      <p style="font-size: 13px; color: #666; margin: 4px 0 14px;">Scan with GPay, PhonePe, Paytm, Cred or any UPI App</p>
+
+      <!-- Live Generated Dynamic QR Image with Exact Amount Included -->
+      <img id="dynamicQrImg" src="" alt="UPI QR" style="width: 220px; height: 220px; border: 1px solid #DDD; padding: 6px; margin: 0 auto 10px; display: block; border-radius: 4px;">
+
+      <div style="font-size: 20px; font-weight: bold; margin-bottom: 12px; color: #1C1C1C;" id="qrAmountDisplay">Pay: ₹0</div>
+
+      <!-- 1-Tap Mobile Intent Link (Opens PhonePe/GPay directly on phone) -->
+      <a id="upiIntentBtn" href="#" class="btn btn-upi">📲 Click to Open PhonePe / GPay</a>
+
+      <!-- UTR Reference Input Box -->
+      <div style="background:#F4EFEB; padding: 14px; border-radius: 4px; margin-top: 14px; text-align: left; border-left: 3px solid var(--gold);">
+        <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 4px;">Enter 12-Digit UPI Ref / UTR No. *</label>
+        <p style="font-size: 11px; color: #666; margin-bottom: 8px;">Payment successful hone ke baad aapke GPay/PhonePe me 12-digit number dikhega:</p>
+        <input type="text" id="utrInput" placeholder="e.g. 412389012345" maxlength="18" style="background:#FFF; font-weight:600; letter-spacing:1px;">
+        <button class="btn" onclick="confirmUpiOrder()">Confirm Payment & Place Order</button>
+      </div>
+
+      <button onclick="closeModal('upiModal')" style="background:none; border:none; width:100%; margin-top:10px; color:#888; cursor:pointer;">← Back to Address</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background:#1C1C1C; color:#AAA; text-align:center; padding:35px 20px; font-size:12px; margin-top:50px; border-top:2px solid var(--gold);">
     <p>© 2026 ZayraCartz. All Rights Reserved. | Wear Your Vibe.</p>
-    <p style="margin-top:6px;">Support: zayracarts@gmail.com | <a href="https://t.me/ZayraDeals" target="_blank" style="color:var(--gold);">Telegram Deals</a></p>
+    <p style="margin-top:6px;">Support: zayracarts@gmail.com | <a href="https://t.me/ZayraDeals" target="_blank" style="color:var(--gold); text-decoration:none;">VIP Telegram Deals</a></p>
   </footer>
 
   <script>
     let products = [];
     let cart = JSON.parse(localStorage.getItem('zc_cart') || '[]');
+    let storeUpiId = "zayracarts@gmail.com";
+    let pendingOrderPayload = null;
 
-    async function load() {
-      const res = await fetch('/api/products');
-      products = await res.json();
+    // Load dynamic settings & products from backend
+    async function initStore() {
+      try {
+        const sRes = await fetch('/api/settings/public');
+        const s = await sRes.json();
+        if (s.announcement_text) document.getElementById('barText').innerText = s.announcement_text;
+        if (s.hero_title) document.getElementById('heroH1').innerText = s.hero_title;
+        if (s.hero_subtitle) document.getElementById('heroSub').innerText = s.hero_subtitle;
+        if (s.store_upi_id) storeUpiId = s.store_upi_id;
+
+        const res = await fetch('/api/products');
+        products = await res.json();
+        renderProducts();
+      } catch (err) {
+        console.error("Storefront initialization error:", err);
+      }
+    }
+
+    function renderProducts() {
       const grid = document.getElementById('pGrid');
-      if(products.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No products yet. Add your first item in /admin.html</p>';
+      if (products.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:30px 0;">No apparel in inventory right now. Add items from /admin</p>';
         return;
       }
       grid.innerHTML = products.map(p => `
         <div class="card">
-          <img src="${(p.images && p.images[0]) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600'}">
+          <img src="${(p.images && p.images[0]) || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600'}" alt="${p.title}">
           <div class="card-info">
-            <h4 style="font-size:15px; margin-bottom:5px;">${p.title}</h4>
-            <div style="font-weight:bold; margin-bottom:12px;">₹${p.price}</div>
-            <button class="btn" onclick="add(${p.id})">Add to Bag</button>
+            <h4 class="card-title">${p.title}</h4>
+            <div class="card-price">₹${p.price}</div>
+            <button class="btn" onclick="addToCart(${p.id})">Add to Bag</button>
           </div>
         </div>
       `).join('');
     }
 
-    function add(id) {
+    function addToCart(id) {
       const p = products.find(x => x.id === id);
-      const item = cart.find(x => x.product_id === id);
-      if(item) item.quantity++;
+      const existing = cart.find(x => x.product_id === id);
+      if (existing) existing.quantity++;
       else cart.push({ product_id: p.id, title: p.title, price: p.price, quantity: 1 });
+      
       localStorage.setItem('zc_cart', JSON.stringify(cart));
-      updateCart();
+      updateCartUI();
       toggleCart(true);
     }
 
-    function updateCart() {
+    function updateCartUI() {
       document.getElementById('cBadge').innerText = cart.reduce((a,c) => a + c.quantity, 0);
       let total = 0;
-      document.getElementById('cItems').innerHTML = cart.map((i, idx) => {
+      const list = document.getElementById('cItems');
+      if (cart.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:#888; margin-top:40px;">Your bag is currently empty.</p>';
+        document.getElementById('cTotal').innerText = '₹0';
+        return;
+      }
+
+      list.innerHTML = cart.map((i, idx) => {
         total += i.price * i.quantity;
-        return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:6px;">
-          <div><b>${i.title}</b><div style="font-size:12px; color:#666;">₹${i.price} × ${i.quantity}</div></div>
-          <button onclick="cart.splice(${idx},1); localStorage.setItem('zc_cart', JSON.stringify(cart)); updateCart();" style="border:none; color:red; background:none; cursor:pointer;">✕</button>
-        </div>`;
+        return `
+          <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid #EEE; padding-bottom:8px;">
+            <div>
+              <b style="font-size:14px;">${i.title}</b>
+              <div style="font-size:12px; color:#666; margin-top:2px;">₹${i.price} × ${i.quantity}</div>
+            </div>
+            <button onclick="cart.splice(${idx},1); localStorage.setItem('zc_cart', JSON.stringify(cart)); updateCartUI();" style="border:none; color:red; background:none; cursor:pointer; font-size:16px;">✕</button>
+          </div>
+        `;
       }).join('');
       document.getElementById('cTotal').innerText = `₹${total}`;
     }
 
-    function toggleCart(force) {
+    function toggleCart(forceOpen) {
       const d = document.getElementById('cDrawer');
-      if(force) d.classList.add('open');
-      else d.classList.toggle('open');
+      const o = document.getElementById('cOverlay');
+      if (forceOpen || !d.classList.contains('open')) {
+        d.classList.add('open');
+        o.style.display = 'block';
+      } else {
+        d.classList.remove('open');
+        o.style.display = 'none';
+      }
     }
 
-    function openCheckout() {
-      if(cart.length === 0) return alert("Cart empty!");
+    function openAddressModal() {
+      if (cart.length === 0) return alert("Your cart is empty!");
       toggleCart(false);
-      document.getElementById('cModal').style.display = 'flex';
+      document.getElementById('addrModal').style.display = 'flex';
     }
-    function closeCheckout() { document.getElementById('cModal').style.display = 'none'; }
 
-    async function placeOrder() {
-      const payload = {
-        customer_name: document.getElementById('custName').value,
-        customer_email: document.getElementById('custEmail').value,
-        customer_phone: document.getElementById('custPhone').value,
-        shipping_street: document.getElementById('custStreet').value,
-        shipping_city: document.getElementById('custCity').value,
-        shipping_state: document.getElementById('custState').value,
-        shipping_pincode: document.getElementById('custPin').value,
-        payment_method: document.getElementById('payMethod').value,
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    // Step 1: Validate address & handle Payment Selection
+    function proceedToPayment() {
+      const name = document.getElementById('custName').value.trim();
+      const email = document.getElementById('custEmail').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const street = document.getElementById('custStreet').value.trim();
+      const city = document.getElementById('custCity').value.trim();
+      const state = document.getElementById('custState').value.trim();
+      const pin = document.getElementById('custPin').value.trim();
+      const method = document.getElementById('payMethod').value;
+
+      if (!name || !phone || !street || !city || !pin) {
+        return alert("Please fill all required delivery address fields.");
+      }
+
+      const subtotal = cart.reduce((a,c) => a + (c.price * c.quantity), 0);
+      const shipping = subtotal > 999 ? 0 : 79;
+      const total = subtotal + shipping;
+
+      pendingOrderPayload = {
+        customer_name: name,
+        customer_email: email || 'guest@zayracartz.com',
+        customer_phone: phone,
+        shipping_street: street,
+        shipping_city: city,
+        shipping_state: state || 'India',
+        shipping_pincode: pin,
+        payment_method: method,
         items: cart
       };
 
-      if(!payload.customer_name || !payload.customer_phone || !payload.shipping_street) {
-        return alert("Please fill all mandatory fields.");
-      }
+      closeModal('addrModal');
 
-      const res = await fetch('/api/checkout/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if(!res.ok) return alert(data.error);
+      if (method === 'DIRECT_UPI') {
+        // Step 2: Open Dynamic UPI QR & Intent Modal
+        const orderTempId = 'ZC' + Math.floor(Math.random() * 89999 + 10000);
+        const upiString = `upi://pay?pa=${encodeURIComponent(storeUpiId)}&pn=ZayraCartz&am=${total}&cu=INR&tn=${orderTempId}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`;
 
-      if(payload.payment_method === 'ONLINE_UPI' && data.razorpay_order_id) {
-        const rzp = new Razorpay({
-          key: data.razorpay_key_id,
-          amount: data.order.total_amount * 100,
-          currency: 'INR',
-          name: 'ZayraCartz',
-          order_id: data.razorpay_order_id,
-          handler: () => { alert("Payment successful!"); cart = []; localStorage.removeItem('zc_cart'); location.reload(); }
-        });
-        rzp.open();
+        document.getElementById('dynamicQrImg').src = qrUrl;
+        document.getElementById('qrAmountDisplay').innerText = `Pay Amount: ₹${total}`;
+        document.getElementById('upiIntentBtn').href = upiString;
+        document.getElementById('utrInput').value = '';
+
+        document.getElementById('upiModal').style.display = 'flex';
       } else {
-        alert(`Order Placed! Reference: ${data.order.order_number}`);
-        cart = [];
-        localStorage.removeItem('zc_cart');
-        location.reload();
+        // Cash on Delivery Direct Confirmation
+        submitFinalOrder(pendingOrderPayload);
       }
     }
 
-    updateCart();
-    load();
+    // Step 2: Customer enters UTR and submits
+    async function confirmUpiOrder() {
+      const utr = document.getElementById('utrInput').value.trim();
+      if (!utr || utr.length < 8) {
+        return alert("Please enter a valid 12-digit UPI Reference / UTR Number from your GPay/PhonePe receipt.");
+      }
+      pendingOrderPayload.utr_number = utr;
+      submitFinalOrder(pendingOrderPayload);
+    }
+
+    async function submitFinalOrder(payload) {
+      try {
+        const res = await fetch('/api/checkout/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          closeModal('upiModal');
+          alert(`🎉 Order Confirmed!\n\nOrder Number: ${data.order.order_number}\nPayment Mode: ${data.order.payment_method}\nStatus: ${data.order.payment_status}\n\nThank you for choosing ZayraCartz!`);
+          cart = [];
+          localStorage.removeItem('zc_cart');
+          location.reload();
+        } else {
+          alert(data.error || "Order placement failed.");
+        }
+      } catch (err) {
+        alert("Server network error. Please try again.");
+      }
+    }
+
+    updateCartUI();
+    initStore();
   </script>
 </body>
 </html>
