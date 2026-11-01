@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZayraCartz Admin</title>
+  <style>
+    body { font-family: sans-serif; background: #F8F9FA; color: #1C1C1C; padding: 15px; margin: 0; }
+    .card { background: #FFF; border-radius: 6px; padding: 18px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    h2 { font-size: 18px; margin-top: 0; text-transform: uppercase; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+    .stat { background: #1C1C1C; color: #FFF; padding: 12px; border-radius: 4px; }
+    .stat span { font-size: 11px; color: #C5A880; }
+    .stat h3 { font-size: 20px; margin-top: 4px; }
+    input, textarea { width: 100%; padding: 10px; margin: 6px 0 12px; border: 1px solid #CCC; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+    .btn { background: #1C1C1C; color: #FFF; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="authBox" class="card">
+    <h2>Admin Login</h2>
+    <input type="email" id="lEmail" placeholder="Email (zayracarts@gmail.com)">
+    <input type="password" id="lPass" placeholder="Password (ZayraAdmin@2026)">
+    <button class="btn" onclick="login()">Enter Dashboard</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashBox" style="display:none;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h2 style="margin:0;">ZayraCartz Console</h2>
+      <button onclick="logout()" style="padding:6px 10px; font-size:12px;">Logout</button>
+    </div>
+
+    <div class="grid">
+      <div class="stat"><span>Sales</span><h3 id="mRev">₹0</h3></div>
+      <div class="stat"><span>Orders</span><h3 id="mOrd">0</h3></div>
+      <div class="stat"><span>Low Stock</span><h3 id="mStock">0</h3></div>
+      <div class="stat"><span>Status</span><h3 style="color:#2ecc71;">Active</h3></div>
+    </div>
+
+    <!-- Add Product -->
+    <div class="card">
+      <h2>+ Add New Apparel</h2>
+      <input type="text" id="pTitle" placeholder="Product Title (e.g. Vintage Oversized Tee)">
+      <input type="text" id="pSlug" placeholder="Slug (e.g. vintage-oversized-tee)">
+      <input type="number" id="pPrice" placeholder="Price in INR (e.g. 899)">
+      <input type="number" id="pStock" placeholder="Inventory Count (e.g. 50)">
+      <input type="text" id="pSku" placeholder="SKU Code (e.g. ZC-TEE-01)">
+      <input type="text" id="pImg" placeholder="Image URL (Unsplash or any hosted image link)">
+      <button class="btn" onclick="saveProd()">Publish to Storefront</button>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="card">
+      <h2>Recent Orders</h2>
+      <div id="orderList">Loading orders...</div>
+    </div>
+  </div>
+
+  <script>
+    let token = localStorage.getItem('zc_jwt');
+    if (token) loadDash();
+
+    async function login() {
+      const email = document.getElementById('lEmail').value;
+      const password = document.getElementById('lPass').value;
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if(data.token && data.user.role === 'admin') {
+        token = data.token;
+        localStorage.setItem('zc_jwt', token);
+        loadDash();
+      } else {
+        alert(data.error || "Login failed");
+      }
+    }
+
+    function logout() { localStorage.removeItem('zc_jwt'); location.reload(); }
+
+    async function loadDash() {
+      document.getElementById('authBox').style.display = 'none';
+      document.getElementById('dashBox').style.display = 'block';
+
+      const res = await fetch('/api/admin/metrics', { headers: { 'Authorization': `Bearer ${token}` } });
+      if(!res.ok) return logout();
+      const d = await res.json();
+
+      document.getElementById('mRev').innerText = `₹${d.totalRevenue}`;
+      document.getElementById('mOrd').innerText = d.totalOrders;
+      document.getElementById('mStock').innerText = d.lowStockCount;
+
+      document.getElementById('orderList').innerHTML = d.recentOrders.length === 0 ? '<p>No orders yet.</p>' : d.recentOrders.map(o => `
+        <div style="padding:8px 0; border-bottom:1px solid #EEE;">
+          <b>${o.order_number}</b> - ${o.customer_name} (₹${o.total_amount})<br>
+          <span style="font-size:12px; color:#666;">Status: ${o.order_status} | Method: ${o.payment_method}</span>
+        </div>
+      `).join('');
+    }
+
+    async function saveProd() {
+      const payload = {
+        title: document.getElementById('pTitle').value,
+        slug: document.getElementById('pSlug').value,
+        price: parseFloat(document.getElementById('pPrice').value),
+        stock: parseInt(document.getElementById('pStock').value),
+        sku: document.getElementById('pSku').value,
+        images: [document.getElementById('pImg').value]
+      };
+      const res = await fetch('/api/admin/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(payload)
+      });
+      if(res.ok) { alert("Product live!"); location.reload(); }
+      else alert("Error saving product.");
+    }
+  </script>
+</body>
+</html>
